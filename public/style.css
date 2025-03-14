@@ -36,14 +36,19 @@ blockquote:before, blockquote:after,
 q:before, q:after { content: ''; content: none; }
 table { border-collapse: collapse; border-spacing: 0; }
 
-/* Cabeçalho e Rodapé (mesma largura do painel central) */
-header, footer {
+/* 
+   Cabeçalho, Rodapé e #app 
+   -> Mesma largura, mesma margem
+*/
+header, footer, #app {
   width: 90%;
   max-width: 650px;
-  margin: 20px auto; /* Unificado com #app */
+  margin: 20px auto; /* para alinhar todos igualmente */
   border-radius: 5px;
   text-align: center;
 }
+
+/* Cabeçalho */
 header {
   background-color: #000;
   color: #fff;
@@ -51,6 +56,8 @@ header {
   font-size: 1.6em;
   font-weight: 600;
 }
+
+/* Rodapé */
 footer {
   background-color: #000;
   color: #fff;
@@ -58,18 +65,15 @@ footer {
   font-size: 10px;
 }
 
-/* Container principal */
+/* Painel principal (#app) */
 #app {
   background: #fff;
-  width: 90%;
-  max-width: 650px;
-  border-radius: 8px;
+  /* Já tem width, max-width, margin acima */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 30px;
-  margin: 20px auto; /* mesma margem do header/footer */
 }
-.hidden { 
-  display: none; 
+.hidden {
+  display: none;
 }
 
 /* Tela de Introdução */
@@ -216,12 +220,13 @@ footer {
 .percentage-fill {
   height: 100%;
   line-height: 24px;
-  color: #fff; /* Exibe o texto (porcentagem) em branco */
   text-align: center;
   font-weight: bold;
   border-radius: 4px;
   transition: width 0.5s;
-  background: linear-gradient(90deg, #5A6EAA, #4A5A8A);
+  /* Paleta profissional: degrade azul-escuro */
+  background: linear-gradient(90deg, #357ABD, #235A8A);
+  color: #fff; /* texto sempre branco, contrasta bem com azul escuro */
 }
 .sabotador-label {
   font-size: 0.9em;

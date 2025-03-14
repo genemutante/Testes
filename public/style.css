@@ -1,3 +1,10 @@
+/* Garantindo box-sizing: border-box para todos os elementos */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* RESET BÁSICO */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -37,24 +44,24 @@ q:before, q:after { content: ''; content: none; }
 table { border-collapse: collapse; border-spacing: 0; }
 
 /* 
-   Cabeçalho, Rodapé e #app 
-   -> Mesma largura, mesma margem
+   Header, Footer e #app
+   -> mesma largura, mesmo margin, mesma border-radius
 */
 header, footer, #app {
   width: 90%;
   max-width: 650px;
-  margin: 20px auto; /* para alinhar todos igualmente */
-  border-radius: 5px;
-  text-align: center;
+  margin: 20px auto;
+  border-radius: 8px;
 }
 
-/* Cabeçalho */
+/* Header */
 header {
   background-color: #000;
   color: #fff;
   padding: 15px 10px;
   font-size: 1.6em;
   font-weight: 600;
+  text-align: center; /* já está no reset, mas reforçamos */
 }
 
 /* Rodapé */
@@ -63,12 +70,13 @@ footer {
   color: #fff;
   padding: 5px 10px;
   font-size: 10px;
+  text-align: center;
 }
 
 /* Painel principal (#app) */
 #app {
   background: #fff;
-  /* Já tem width, max-width, margin acima */
+  /* Já tem width, max-width, margin e border-radius acima */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 30px;
 }
@@ -224,9 +232,9 @@ footer {
   font-weight: bold;
   border-radius: 4px;
   transition: width 0.5s;
-  /* Paleta profissional: degrade azul-escuro */
+  /* degrade azul-escuro */
   background: linear-gradient(90deg, #357ABD, #235A8A);
-  color: #fff; /* texto sempre branco, contrasta bem com azul escuro */
+  color: #fff; /* texto sempre branco */
 }
 .sabotador-label {
   font-size: 0.9em;

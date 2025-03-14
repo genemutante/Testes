@@ -239,6 +239,8 @@
           const fill = document.createElement("div");
           fill.className = "percentage-fill";
           fill.style.width = percent + "%";
+          // Adicione esta linha para exibir a porcentagem
+          fill.textContent = percent + "%";
 
           bar.appendChild(fill);
 

@@ -1,0 +1,362 @@
+[
+  {
+    "text": "Quando preciso lidar com um prazo apertado, eu: (P1)",
+    "options": [
+      { "text": "Tomo o controle da situação para garantir que tudo seja feito no prazo. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo obsessivamente com os detalhes para evitar erros. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Tento agradar os outros para evitar conflitos enquanto trabalho. (Agradador)", "profile": "Agradador" },
+      { "text": "Procrastino e adio as tarefas difíceis. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando recebo críticas sobre meu trabalho, eu: (P2)",
+    "options": [
+      { "text": "Reflito obsessivamente sobre o que poderia ter feito melhor. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Tento justificar o que fiz para evitar ser culpado. (Controlador)", "profile": "Controlador" },
+      { "text": "Me sinto magoado, achando que as pessoas não reconhecem meu esforço. (Vítima)", "profile": "Vítima" },
+      { "text": "Fico pensando em outra atividade para esquecer o ocorrido. (Inquieto)", "profile": "Inquieto" }
+    ]
+  },
+  {
+    "text": "Quando trabalho em grupo, eu: (P3)",
+    "options": [
+      { "text": "Faço tudo o que posso para que todos gostem de mim. (Agradador)", "profile": "Agradador" },
+      { "text": "Me esforço ao máximo para ser o mais produtivo. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Me preocupo demais com os riscos de conflitos na equipe. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Tento explicar minhas ações para justificar meu comportamento. (Racionalizador)", "profile": "Racionalizador" }
+    ]
+  },
+  {
+    "text": "Quando algo dá errado no trabalho, eu: (P4)",
+    "options": [
+      { "text": "Me sinto injustiçado, pensando que não tenho apoio suficiente. (Vítima)", "profile": "Vítima" },
+      { "text": "Tento introduzir uma abordagem nova para resolver o problema. (Inquieto)", "profile": "Inquieto" },
+      { "text": "Assumo o controle para garantir que o erro seja corrigido. (Controlador)", "profile": "Controlador" },
+      { "text": "Reflito sobre o que poderia ter feito diferente para evitar o problema. (Perfeccionista)", "profile": "Perfeccionista" }
+    ]
+  },
+  {
+    "text": "Quando recebo uma tarefa inesperada, eu: (P5)",
+    "options": [
+      { "text": "Me esforço ao máximo para entregá-la rapidamente. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Tento justificar o motivo de não poder fazer naquele momento. (Racionalizador)", "profile": "Racionalizador" },
+      { "text": "Aceito a tarefa, mas fico preocupado em agradar a todos. (Agradador)", "profile": "Agradador" },
+      { "text": "Adio o início até que eu tenha mais tempo ou motivação. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando enfrento mudanças no trabalho, eu: (P6)",
+    "options": [
+      { "text": "Fico ansioso pensando nos riscos futuros. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Reflito obsessivamente sobre os detalhes para evitar problemas. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Assumo o controle para garantir que as mudanças não saiam do controle. (Controlador)", "profile": "Controlador" },
+      { "text": "Me sinto desmotivado, achando que não vou conseguir me adaptar. (Vítima)", "profile": "Vítima" }
+    ]
+  },
+  {
+    "text": "Quando começo algo novo, eu: (P7)",
+    "options": [
+      { "text": "Busco introduzir várias ideias ao mesmo tempo. (Inquieto)", "profile": "Inquieto" },
+      { "text": "Me esforço ao máximo para impressionar quem está me avaliando. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Tento justificar meus métodos para que pareçam melhores. (Racionalizador)", "profile": "Racionalizador" },
+      { "text": "Adio as tarefas iniciais até que me sinta confiante. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando sou interrompido durante uma tarefa importante, eu: (P8)",
+    "options": [
+      { "text": "Adio o retorno à tarefa principal. (Evitador)", "profile": "Evitador" },
+      { "text": "Fico ansioso com o impacto da interrupção nos prazos. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Tento retomar o controle da situação rapidamente. (Controlador)", "profile": "Controlador" },
+      { "text": "Aceito a interrupção, mas fico preocupado em agradar quem me interrompe. (Agradador)", "profile": "Agradador" }
+    ]
+  },
+  {
+    "text": "Quando explico minhas ações no trabalho, eu: (P9)",
+    "options": [
+      { "text": "Tento justificar que fiz o que era melhor na situação. (Racionalizador)", "profile": "Racionalizador" },
+      { "text": "Penso muito nos detalhes antes de dar qualquer explicação. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Tento agradar o ouvinte, mesmo que comprometa minha posição. (Agradador)", "profile": "Agradador" },
+      { "text": "Fico ansioso com o impacto da explicação em meu desempenho. (Hiper-vigilante)", "profile": "Hiper-vigilante" }
+    ]
+  },
+  {
+    "text": "Quando estou sobrecarregado com tarefas, eu: (P10)",
+    "options": [
+      { "text": "Assumo o controle de tudo, sem delegar nada. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo obsessivamente com os detalhes para garantir perfeição. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Fico desmotivado e evito começar as tarefas mais difíceis. (Evitador)", "profile": "Evitador" },
+      { "text": "Me esforço ao máximo, mesmo que isso me desgaste. (Hiper-realizador)", "profile": "Hiper-realizador" }
+    ]
+  },
+  {
+    "text": "Quando preciso liderar uma equipe, eu: (P11)",
+    "options": [
+      { "text": "Tomo o controle para garantir que tudo funcione bem. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo em agradar a equipe para manter o clima harmonioso. (Agradador)", "profile": "Agradador" },
+      { "text": "Me esforço para ser reconhecido como o melhor líder. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Reflito sobre os riscos e problemas que podem surgir. (Hiper-vigilante)", "profile": "Hiper-vigilante" }
+    ]
+  },
+  {
+    "text": "Quando algo dá errado, eu: (P12)",
+    "options": [
+      { "text": "Reflito obsessivamente sobre o que poderia ter feito melhor. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Tento justificar o erro para diminuir sua gravidade. (Racionalizador)", "profile": "Racionalizador" },
+      { "text": "Me sinto desmotivado, pensando que ninguém valoriza meu esforço. (Vítima)", "profile": "Vítima" },
+      { "text": "Adio enfrentar o problema porque não sei como resolvê-lo. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando enfrento críticas construtivas, eu: (P13)",
+    "options": [
+      { "text": "Aceito, mas fico preocupado em agradar a pessoa que fez a crítica. (Agradador)", "profile": "Agradador" },
+      { "text": "Tento justificar imediatamente o motivo da minha ação. (Racionalizador)", "profile": "Racionalizador" },
+      { "text": "Uso a crítica como motivação para trabalhar ainda mais duro. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Fico ansioso, achando que posso cometer outros erros. (Hiper-vigilante)", "profile": "Hiper-vigilante" }
+    ]
+  },
+  {
+    "text": "Quando preciso planejar algo, eu: (P14)",
+    "options": [
+      { "text": "Penso nos mínimos detalhes para garantir que tudo esteja perfeito. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Introduzo várias ideias, mesmo que nem todas sejam viáveis. (Inquieto)", "profile": "Inquieto" },
+      { "text": "Me preocupo em agradar todos os envolvidos no processo. (Agradador)", "profile": "Agradador" },
+      { "text": "Evito planejar demais porque tenho medo de não conseguir executar. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando enfrento um desafio inesperado, eu: (P15)",
+    "options": [
+      { "text": "Me esforço ao máximo para superá-lo rapidamente. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Tento introduzir soluções criativas, mesmo que algumas não funcionem. (Inquieto)", "profile": "Inquieto" },
+      { "text": "Assumo o controle para evitar que o problema se agrave. (Controlador)", "profile": "Controlador" },
+      { "text": "Me sinto frustrado e desmotivado, achando que não vou conseguir. (Vítima)", "profile": "Vítima" }
+    ]
+  },
+  {
+    "text": "Quando trabalho sob pressão, eu: (P16)",
+    "options": [
+      { "text": "Fico ansioso, pensando nos riscos de não atender ao prazo. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Penso obsessivamente nos detalhes para evitar qualquer erro. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Adio algumas tarefas até ter mais clareza sobre o que fazer. (Evitador)", "profile": "Evitador" },
+      { "text": "Me esforço ao máximo para impressionar quem depende de mim. (Hiper-realizador)", "profile": "Hiper-realizador" }
+    ]
+  },
+  {
+    "text": "Quando recebo um novo projeto, eu: (P17)",
+    "options": [
+      { "text": "Introduzo ideias e começo várias partes ao mesmo tempo. (Inquieto)", "profile": "Inquieto" },
+      { "text": "Tomo o controle para garantir que tudo seja bem executado. (Controlador)", "profile": "Controlador" },
+      { "text": "Tento justificar por que o projeto pode ter desafios complicados. (Racionalizador)", "profile": "Racionalizador" },
+      { "text": "Me preocupo em agradar os envolvidos no projeto. (Agradador)", "profile": "Agradador" }
+    ]
+  },
+  {
+    "text": "Quando trabalho em equipe, eu: (P18)",
+    "options": [
+      { "text": "Me mantenho na minha, esperando que os outros tomem a iniciativa. (Evitador)", "profile": "Evitador" },
+      { "text": "Tento liderar para garantir que tudo seja feito corretamente. (Controlador)", "profile": "Controlador" },
+      { "text": "Penso nos riscos e problemas que podem surgir durante o trabalho. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Reflito sobre como justificar as ações do grupo. (Racionalizador)", "profile": "Racionalizador" }
+    ]
+  },
+  {
+    "text": "Quando recebo elogios, eu: (P19)",
+    "options": [
+      { "text": "Justifico que foi algo simples ou esperado. (Racionalizador)", "profile": "Racionalizador" },
+      { "text": "Me preocupo em manter o mesmo padrão para continuar impressionando. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Aceito, mas fico pensando que não fiz o suficiente. (Vítima)", "profile": "Vítima" },
+      { "text": "Retribuo o elogio para agradar a outra pessoa. (Agradador)", "profile": "Agradador" }
+    ]
+  },
+  {
+    "text": "Quando enfrento dificuldades técnicas, eu: (P20)",
+    "options": [
+      { "text": "Tento introduzir várias soluções, mesmo que algumas não funcionem. (Inquieto)", "profile": "Inquieto" },
+      { "text": "Me cobro muito, pensando que deveria ter previsto o problema. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Me sinto ansioso, pensando nas possíveis consequências. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Adio resolver o problema, esperando que se resolva sozinho. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando preciso tomar uma decisão difícil, eu: (P21)",
+    "options": [
+      { "text": "Tomo o controle para garantir que a decisão seja correta. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo obsessivamente com todos os detalhes antes de decidir. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Hesito e evito decidir até ter mais informações. (Evitador)", "profile": "Evitador" },
+      { "text": "Penso nas possíveis consequências negativas antes de agir. (Hiper-vigilante)", "profile": "Hiper-vigilante" }
+    ]
+  },
+  {
+    "text": "Quando um prazo está apertado, eu: (P22)",
+    "options": [
+      { "text": "Microgerencio tudo para garantir que nada saia errado. (Controlador)", "profile": "Controlador" },
+      { "text": "Adio tarefas mais difíceis, pensando que não vou conseguir terminá-las. (Evitador)", "profile": "Evitador" },
+      { "text": "Me preocupo em agradar todos, mesmo que isso me sobrecarregue. (Agradador)", "profile": "Agradador" },
+      { "text": "Me esforço ao máximo para entregar no prazo. (Hiper-realizador)", "profile": "Hiper-realizador" }
+    ]
+  },
+  {
+    "text": "Quando recebo responsabilidades extras, eu: (P23)",
+    "options": [
+      { "text": "Tomo o controle para garantir que tudo seja feito corretamente. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo em agradar quem me deu as responsabilidades. (Agradador)", "profile": "Agradador" },
+      { "text": "Penso em todos os detalhes e fico ansioso com o que pode dar errado. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Tento justificar por que a tarefa é mais difícil do que parece. (Racionalizador)", "profile": "Racionalizador" }
+    ]
+  },
+  {
+    "text": "Quando percebo que cometi um erro, eu: (P24)",
+    "options": [
+      { "text": "Tento corrigir rapidamente, sem envolver os outros. (Controlador)", "profile": "Controlador" },
+      { "text": "Me cobro muito, pensando que deveria ter feito melhor. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Me sinto desmotivado, achando que não sou bom o suficiente. (Vítima)", "profile": "Vítima" },
+      { "text": "Tento justificar o erro para reduzir sua gravidade. (Racionalizador)", "profile": "Racionalizador" }
+    ]
+  },
+  {
+    "text": "Quando um colega precisa de ajuda, eu: (P25)",
+    "options": [
+      { "text": "Faço o máximo para ajudar, mesmo que atrapalhe meu trabalho. (Agradador)", "profile": "Agradador" },
+      { "text": "Assumo o controle para garantir que o problema seja resolvido. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo com os riscos de ajudar, pensando se conseguirei cumprir minhas tarefas. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Evito ajudar diretamente, esperando que outra pessoa o faça. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando participo de reuniões em equipe, eu: (P26)",
+    "options": [
+      { "text": "Tento liderar a discussão para garantir eficiência. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo em agradar todos, evitando conflitos. (Agradador)", "profile": "Agradador" },
+      { "text": "Penso nos riscos das decisões tomadas e tento alertar a equipe. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Evito dar opiniões, esperando que outros tomem a liderança. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando enfrento muitas tarefas simultaneamente, eu: (P27)",
+    "options": [
+      { "text": "Tento gerenciar tudo sozinho, sem delegar nada. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo obsessivamente com os detalhes de cada tarefa. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Pulo de uma tarefa para outra, sem terminar nenhuma. (Inquieto)", "profile": "Inquieto" },
+      { "text": "Fico ansioso, achando que não conseguirei dar conta de tudo. (Hiper-vigilante)", "profile": "Hiper-vigilante" }
+    ]
+  },
+  {
+    "text": "Quando recebo uma tarefa repetitiva, eu: (P28)",
+    "options": [
+      { "text": "Adio a tarefa, esperando que outra pessoa a assuma. (Evitador)", "profile": "Evitador" },
+      { "text": "Tento torná-la interessante, introduzindo novas ideias. (Inquieto)", "profile": "Inquieto" },
+      { "text": "Me preocupo em fazê-la perfeitamente, mesmo que demore mais. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Aceito a tarefa, mas me sinto desmotivado ao realizá-la. (Vítima)", "profile": "Vítima" }
+    ]
+  },
+  {
+    "text": "Quando me sinto pressionado, eu: (P29)",
+    "options": [
+      { "text": "Tomo o controle para gerenciar a situação da melhor forma possível. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo em agradar os outros, mesmo que isso me prejudique. (Agradador)", "profile": "Agradador" },
+      { "text": "Penso obsessivamente nos detalhes para evitar erros. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Fico ansioso, pensando em todas as possíveis consequências negativas. (Hiper-vigilante)", "profile": "Hiper-vigilante" }
+    ]
+  },
+  {
+    "text": "Quando enfrento algo fora da minha zona de conforto, eu: (P30)",
+    "options": [
+      { "text": "Tento controlar todos os aspectos para me sentir mais seguro. (Controlador)", "profile": "Controlador" },
+      { "text": "Evito a tarefa o máximo possível. (Evitador)", "profile": "Evitador" },
+      { "text": "Penso obsessivamente nos detalhes para evitar erros. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Tento justificar por que não estou preparado para aquilo. (Racionalizador)", "profile": "Racionalizador" }
+    ]
+  },
+  {
+    "text": "Quando vejo que algo está fora do planejado, eu: (P31)",
+    "options": [
+      { "text": "Tomo a frente para organizar a situação. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo em agradar os envolvidos para evitar conflitos. (Agradador)", "profile": "Agradador" },
+      { "text": "Fico ansioso, pensando em como corrigir os erros. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Tento justificar por que não era possível seguir o plano. (Racionalizador)", "profile": "Racionalizador" }
+    ]
+  },
+  {
+    "text": "Quando trabalho com pessoas de opiniões diferentes, eu: (P32)",
+    "options": [
+      { "text": "Tento liderar para direcionar o grupo à minha maneira. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo em agradar todos para evitar tensões. (Agradador)", "profile": "Agradador" },
+      { "text": "Evito discutir e deixo que os outros tomem a decisão. (Evitador)", "profile": "Evitador" },
+      { "text": "Reflito sobre como justificar minha posição, caso necessário. (Racionalizador)", "profile": "Racionalizador" }
+    ]
+  },
+  {
+    "text": "Quando algo me preocupa no trabalho, eu: (P33)",
+    "options": [
+      { "text": "Assumo o controle para lidar com a preocupação imediatamente. (Controlador)", "profile": "Controlador" },
+      { "text": "Reflito obsessivamente sobre os detalhes para evitar problemas futuros. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Me sinto ansioso, pensando nos riscos que podem surgir. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Evito lidar com o problema diretamente, esperando que desapareça. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando recebo uma crítica inesperada, eu: (P34)",
+    "options": [
+      { "text": "Justifico imediatamente minhas ações para minimizar o impacto. (Racionalizador)", "profile": "Racionalizador" },
+      { "text": "Uso a crítica como motivação para trabalhar ainda mais duro. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Me sinto magoado, achando que não valorizam meu esforço. (Vítima)", "profile": "Vítima" },
+      { "text": "Aceito a crítica, mas me preocupo em agradar quem a fez. (Agradador)", "profile": "Agradador" }
+    ]
+  },
+  {
+    "text": "Quando trabalho em algo importante, eu: (P35)",
+    "options": [
+      { "text": "Penso obsessivamente em como fazer perfeitamente. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Fico ansioso com todos os detalhes e possíveis problemas. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Me esforço ao máximo para impressionar os outros. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Adio as partes mais difíceis para fazer depois. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando me dão feedback positivo, eu: (P36)",
+    "options": [
+      { "text": "Justifico que foi algo simples ou esperado. (Racionalizador)", "profile": "Racionalizador" },
+      { "text": "Me preocupo em manter o mesmo padrão para impressionar novamente. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Aceito, mas penso que não fiz o suficiente para merecer. (Vítima)", "profile": "Vítima" },
+      { "text": "Retribuo o elogio para agradar a pessoa. (Agradador)", "profile": "Agradador" }
+    ]
+  },
+  {
+    "text": "Quando algo inesperado surge no trabalho, eu: (P37)",
+    "options": [
+      { "text": "Tomo o controle para garantir que tudo seja resolvido. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo obsessivamente com os detalhes. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Tento criar soluções novas, mesmo que nem todas funcionem. (Inquieto)", "profile": "Inquieto" },
+      { "text": "Evito lidar com o problema imediatamente. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando preciso entregar algo rapidamente, eu: (P38)",
+    "options": [
+      { "text": "Me concentro em controlar cada detalhe para evitar erros. (Controlador)", "profile": "Controlador" },
+      { "text": "Penso obsessivamente nas consequências de não entregar a tempo. (Hiper-vigilante)", "profile": "Hiper-vigilante" },
+      { "text": "Faço o máximo possível para agradar quem está esperando. (Agradador)", "profile": "Agradador" },
+      { "text": "Adio o trabalho, esperando que o prazo seja estendido. (Evitador)", "profile": "Evitador" }
+    ]
+  },
+  {
+    "text": "Quando participo de uma apresentação, eu: (P39)",
+    "options": [
+      { "text": "Tento justificar qualquer falha para minimizar críticas. (Racionalizador)", "profile": "Racionalizador" },
+      { "text": "Me preocupo em fazer tudo de forma perfeita. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Me esforço ao máximo para impressionar a audiência. (Hiper-realizador)", "profile": "Hiper-realizador" },
+      { "text": "Fico ansioso, pensando nos riscos de algo dar errado. (Hiper-vigilante)", "profile": "Hiper-vigilante" }
+    ]
+  },
+  {
+    "text": "Quando me sinto sobrecarregado, eu: (P40)",
+    "options": [
+      { "text": "Tento gerenciar tudo sozinho, sem pedir ajuda. (Controlador)", "profile": "Controlador" },
+      { "text": "Me preocupo obsessivamente com os detalhes para evitar falhas. (Perfeccionista)", "profile": "Perfeccionista" },
+      { "text": "Pulo entre tarefas para tentar aliviar o estresse. (Inquieto)", "profile": "Inquieto" },
+      { "text": "Evito as partes mais difíceis, esperando que melhorem. (Evitador)", "profile": "Evitador" }
+    ]
+  }
+]

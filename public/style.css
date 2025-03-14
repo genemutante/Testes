@@ -1,4 +1,4 @@
-/* Garantindo box-sizing para alinhar perfeitamente header, footer e painel */
+/* Exemplo de config para box-sizing e reset (opcional) */
 *,
 *::before,
 *::after {
@@ -24,10 +24,8 @@ section, summary, time, mark, audio, video {
   font: inherit;
   vertical-align: baseline;
 }
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-  display: block;
-}
+
+/* Layout principal */
 body {
   line-height: 1;
   font-family: 'Roboto', sans-serif;
@@ -37,40 +35,26 @@ body {
   align-items: center;
   min-height: 100vh;
 }
-ol, ul { list-style: none; }
-blockquote, q { quotes: none; }
-blockquote:before, blockquote:after,
-q:before, q:after { content: ''; content: none; }
-table { border-collapse: collapse; border-spacing: 0; }
-
-/* Header, Footer e #app: mesma largura, margin e borda */
 header, footer, #app {
   width: 90%;
   max-width: 650px;
   margin: 20px auto;
   border-radius: 8px;
+  text-align: center;
 }
-
-/* Cabeçalho */
 header {
   background-color: #000;
   color: #fff;
   padding: 15px 10px;
   font-size: 1.6em;
   font-weight: 600;
-  text-align: center;
 }
-
-/* Rodapé */
 footer {
   background-color: #000;
   color: #fff;
   padding: 5px 10px;
   font-size: 10px;
-  text-align: center;
 }
-
-/* Painel principal (#app) */
 #app {
   background: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -212,15 +196,22 @@ footer {
   align-items: center;
   margin: 8px 0;
 }
+/* 
+   .percentage-bar: a parte não preenchida (fundo) 
+   -> Ajustado para tom mais escuro 
+*/
 .percentage-bar {
   width: 50%;
-  background: #e9ecef;
+  background: #444; /* Fica escuro para destacar */
   border-radius: 4px;
   overflow: hidden;
   margin-right: 10px;
   height: 24px;
 }
-/* Cor escura para a barra, mantendo bom contraste com o texto branco */
+/* 
+   .percentage-fill: a parte preenchida 
+   -> Mantém o degrade original (ou mude se quiser outro)
+*/
 .percentage-fill {
   height: 100%;
   line-height: 24px;
@@ -228,8 +219,8 @@ footer {
   font-weight: bold;
   border-radius: 4px;
   transition: width 0.5s;
-  background: linear-gradient(90deg, #444444, #666666); /* degrade cinza-escuro */
-  color: #fff; /* texto branco, ótimo contraste */
+  background: linear-gradient(90deg, #5A6EAA, #4A5A8A); /* degrade original */
+  color: #fff;
 }
 .sabotador-label {
   font-size: 0.9em;

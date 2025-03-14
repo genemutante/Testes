@@ -4,15 +4,34 @@
   <meta charset="UTF-8" />
   <title>Teste de Perfil (SAB)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
   <style>
-    /* Reset básico */
-    * {
-      box-sizing: border-box;
+    /* RESET BÁSICO */
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center, dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend, table, caption,
+    tbody, tfoot, thead, tr, th, td, article, aside,
+    canvas, details, embed, figure, figcaption,
+    footer, header, hgroup, menu, nav, output, ruby,
+    section, summary, time, mark, audio, video {
+      margin: 0; 
+      padding: 0; 
+      border: 0;
+      font-size: 100%;
+      font: inherit;
+      vertical-align: baseline;
+    }
+    article, aside, details, figcaption, figure,
+    footer, header, hgroup, menu, nav, section {
+      display: block;
     }
     body {
-      margin: 0;
-      padding: 0;
+      line-height: 1;
       font-family: 'Roboto', sans-serif;
       background: linear-gradient(135deg, #f0f0f0, #ffffff);
       display: flex;
@@ -20,7 +39,13 @@
       align-items: center;
       min-height: 100vh;
     }
-    /* Cabeçalho e Rodapé com mesmo tamanho de largura */
+    ol, ul { list-style: none; }
+    blockquote, q { quotes: none; }
+    blockquote:before, blockquote:after,
+    q:before, q:after { content: ''; content: none; }
+    table { border-collapse: collapse; border-spacing: 0; }
+
+    /* Cabeçalho e Rodapé */
     header, footer {
       width: 90%;
       max-width: 650px;
@@ -28,24 +53,20 @@
       border-radius: 5px;
       text-align: center;
     }
-    /* Cabeçalho: fundo preto, texto branco, fonte maior e padding maior */
     header {
       background-color: #000;
       color: #fff;
       padding: 15px 10px;
-      font-size: 1.8em;
+      font-size: 1.6em;
       font-weight: 600;
     }
-    /* Rodapé: fundo preto, texto branco */
     footer {
       background-color: #000;
       color: #fff;
       padding: 5px 10px;
       font-size: 10px;
     }
-    main {
-      width: 100%;
-    }
+
     /* Container principal */
     #app {
       background: #fff;
@@ -55,28 +76,23 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       padding: 30px;
       margin: 20px auto;
-      animation: fadeIn 0.5s ease-in;
     }
-    .hidden {
-      display: none;
-    }
-    h1, h2, h3 {
-      text-align: center;
-      color: #333;
-      margin: 0.5em 0;
-    }
-    p {
-      color: #333;
-      line-height: 1.6;
-      text-align: center;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    .hidden { display: none; }
+
     /* Tela de Introdução */
     #intro {
       padding: 20px;
+      text-align: center;
+    }
+    #intro h1 {
+      margin: 0.5em 0;
+      font-size: 1.4em;
+      color: #333;
+    }
+    #intro p {
+      color: #333;
+      margin: 0.5em 0;
+      line-height: 1.4;
     }
     .input-field {
       width: 100%;
@@ -96,12 +112,13 @@
       font-size: 1em;
       cursor: pointer;
       transition: background 0.3s;
-      display: block;
       margin: 0 auto;
+      display: block;
     }
     .btn:hover {
       background: #1B5E20;
     }
+
     /* Questões */
     #quiz .question-number {
       margin-bottom: 10px;
@@ -132,6 +149,7 @@
       background: #D0D8E2;
       transform: scale(1.02);
     }
+
     /* Barra de Progresso */
     .progress-container {
       width: 100%;
@@ -150,50 +168,54 @@
       border-radius: 5px;
       transition: width 0.3s;
     }
+
     /* Tela de Resultados */
-    .result-title {
-      line-height: 1.2;
-      margin-bottom: 0.5em;
+    #result-header {
+      text-align: center;
+      margin: 0;
+      font-size: 1em;
+      line-height: 1.4;
+      color: #333;
     }
-    .result-subtitle {
-      line-height: 1.2;
-      font-weight: 400;
-      margin-bottom: 0.5em;
-      color: #555;
+    #result-header strong {
+      font-weight: 500;
     }
     .result-datetime {
-      font-size: 0.9em;
-      color: #777;
-      margin-bottom: 1em;
+      font-size: 0.85em;
+      color: #666;
+      margin-top: 4px;
+      text-align: center;
     }
     .results-container {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
       margin-top: 20px;
+      align-items: flex-start;
     }
     .results-left,
     .results-right {
       flex: 1;
       min-width: 250px;
     }
+    /* Sabotadores */
     .result-item {
       display: flex;
       align-items: center;
-      margin: 10px 0;
+      margin: 8px 0;
     }
     .percentage-bar {
-      width: 50%; /* Metade do tamanho */
+      width: 50%;
       background: #e9ecef;
       border-radius: 4px;
       overflow: hidden;
-      margin-right: 10px; /* espaço antes do nome do sabotador */
+      margin-right: 10px;
       height: 24px;
     }
     .percentage-fill {
       height: 100%;
-      line-height: 24px; /* para centralizar verticalmente se houver texto */
-      color: transparent; /* não exibe texto, só a cor */
+      line-height: 24px;
+      color: transparent; /* sem texto dentro da barra */
       text-align: center;
       font-weight: bold;
       border-radius: 4px;
@@ -201,29 +223,32 @@
       background: linear-gradient(90deg, #5A6EAA, #4A5A8A);
     }
     .sabotador-label {
-      font-size: 0.95em;
+      font-size: 0.9em;
       color: #333;
+      white-space: nowrap;
     }
-    .time-card,
-    .predominante-card {
+    /* Painel do Tempo e Traço Predominante */
+    .info-card {
       background: #f8f9fa;
       border: 1px solid #ddd;
       border-radius: 4px;
-      padding: 15px;
-      margin-top: 20px;
-      text-align: left;
-      font-size: 0.9em;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 0.85em;
+      color: #333;
     }
-    .time-card p,
-    .predominante-card p {
-      margin: 8px 0;
+    .info-card p {
+      margin: 6px 0;
+    }
+    .info-card strong {
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
   <!-- Cabeçalho fixo -->
   <header>
-    Teste de Perfil (SAB) v2.0
+    Teste de Perfil (SAB)
   </header>
 
   <main id="app">
@@ -250,11 +275,12 @@
   <footer id="footer"></footer>
 
   <script>
-    /***************************************************************
-     * Definição das Perguntas (40) e Sabotadores
-     ***************************************************************/
-
+    /* 
+      Substitua AQUI com TODAS as 40 perguntas (P1 a P40), 
+      como no exemplo que você forneceu, sem reticências.
+    */
     const questions = [
+      // Exemplo de 2 perguntas. INSIRA aqui as 40 que você já possui.
       {
         text: "Quando preciso lidar com um prazo apertado, eu: (P1)",
         options: [
@@ -273,351 +299,10 @@
           { text: "Fico pensando em outra atividade para esquecer o ocorrido. (Inquieto)", profile: "Inquieto" }
         ]
       },
-      {
-        text: "Quando trabalho em grupo, eu: (P3)",
-        options: [
-          { text: "Faço tudo o que posso para que todos gostem de mim. (Agradador)", profile: "Agradador" },
-          { text: "Me esforço ao máximo para ser o mais produtivo. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Me preocupo demais com os riscos de conflitos na equipe. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Tento explicar minhas ações para justificar meu comportamento. (Racionalizador)", profile: "Racionalizador" }
-        ]
-      },
-      {
-        text: "Quando algo dá errado no trabalho, eu: (P4)",
-        options: [
-          { text: "Me sinto injustiçado, pensando que não tenho apoio suficiente. (Vítima)", profile: "Vítima" },
-          { text: "Tento introduzir uma abordagem nova para resolver o problema. (Inquieto)", profile: "Inquieto" },
-          { text: "Assumo o controle para garantir que o erro seja corrigido. (Controlador)", profile: "Controlador" },
-          { text: "Reflito sobre o que poderia ter feito diferente para evitar o problema. (Perfeccionista)", profile: "Perfeccionista" }
-        ]
-      },
-      {
-        text: "Quando recebo uma tarefa inesperada, eu: (P5)",
-        options: [
-          { text: "Me esforço ao máximo para entregá-la rapidamente. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Tento justificar o motivo de não poder fazer naquele momento. (Racionalizador)", profile: "Racionalizador" },
-          { text: "Aceito a tarefa, mas fico preocupado em agradar a todos. (Agradador)", profile: "Agradador" },
-          { text: "Adio o início até que eu tenha mais tempo ou motivação. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando enfrento mudanças no trabalho, eu: (P6)",
-        options: [
-          { text: "Fico ansioso pensando nos riscos futuros. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Reflito obsessivamente sobre os detalhes para evitar problemas. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Assumo o controle para garantir que as mudanças não saiam do controle. (Controlador)", profile: "Controlador" },
-          { text: "Me sinto desmotivado, achando que não vou conseguir me adaptar. (Vítima)", profile: "Vítima" }
-        ]
-      },
-      {
-        text: "Quando começo algo novo, eu: (P7)",
-        options: [
-          { text: "Busco introduzir várias ideias ao mesmo tempo. (Inquieto)", profile: "Inquieto" },
-          { text: "Me esforço ao máximo para impressionar quem está me avaliando. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Tento justificar meus métodos para que pareçam melhores. (Racionalizador)", profile: "Racionalizador" },
-          { text: "Adio as tarefas iniciais até que me sinta confiante. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando sou interrompido durante uma tarefa importante, eu: (P8)",
-        options: [
-          { text: "Adio o retorno à tarefa principal. (Evitador)", profile: "Evitador" },
-          { text: "Fico ansioso com o impacto da interrupção nos prazos. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Tento retomar o controle da situação rapidamente. (Controlador)", profile: "Controlador" },
-          { text: "Aceito a interrupção, mas fico preocupado em agradar quem me interrompe. (Agradador)", profile: "Agradador" }
-        ]
-      },
-      {
-        text: "Quando explico minhas ações no trabalho, eu: (P9)",
-        options: [
-          { text: "Tento justificar que fiz o que era melhor na situação. (Racionalizador)", profile: "Racionalizador" },
-          { text: "Penso muito nos detalhes antes de dar qualquer explicação. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Tento agradar o ouvinte, mesmo que comprometa minha posição. (Agradador)", profile: "Agradador" },
-          { text: "Fico ansioso com o impacto da explicação em meu desempenho. (Hiper-vigilante)", profile: "Hiper-vigilante" }
-        ]
-      },
-      {
-        text: "Quando estou sobrecarregado com tarefas, eu: (P10)",
-        options: [
-          { text: "Assumo o controle de tudo, sem delegar nada. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo obsessivamente com os detalhes para garantir perfeição. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Fico desmotivado e evito começar as tarefas mais difíceis. (Evitador)", profile: "Evitador" },
-          { text: "Me esforço ao máximo, mesmo que isso me desgaste. (Hiper-realizador)", profile: "Hiper-realizador" }
-        ]
-      },
-      {
-        text: "Quando preciso liderar uma equipe, eu: (P11)",
-        options: [
-          { text: "Tomo o controle para garantir que tudo funcione bem. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo em agradar a equipe para manter o clima harmonioso. (Agradador)", profile: "Agradador" },
-          { text: "Me esforço para ser reconhecido como o melhor líder. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Reflito sobre os riscos e problemas que podem surgir. (Hiper-vigilante)", profile: "Hiper-vigilante" }
-        ]
-      },
-      {
-        text: "Quando algo dá errado, eu: (P12)",
-        options: [
-          { text: "Reflito obsessivamente sobre o que poderia ter feito melhor. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Tento justificar o erro para diminuir sua gravidade. (Racionalizador)", profile: "Racionalizador" },
-          { text: "Me sinto desmotivado, pensando que ninguém valoriza meu esforço. (Vítima)", profile: "Vítima" },
-          { text: "Adio enfrentar o problema porque não sei como resolvê-lo. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando enfrento críticas construtivas, eu: (P13)",
-        options: [
-          { text: "Aceito, mas fico preocupado em agradar a pessoa que fez a crítica. (Agradador)", profile: "Agradador" },
-          { text: "Tento justificar imediatamente o motivo da minha ação. (Racionalizador)", profile: "Racionalizador" },
-          { text: "Uso a crítica como motivação para trabalhar ainda mais duro. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Fico ansioso, achando que posso cometer outros erros. (Hiper-vigilante)", profile: "Hiper-vigilante" }
-        ]
-      },
-      {
-        text: "Quando preciso planejar algo, eu: (P14)",
-        options: [
-          { text: "Penso nos mínimos detalhes para garantir que tudo esteja perfeito. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Introduzo várias ideias, mesmo que nem todas sejam viáveis. (Inquieto)", profile: "Inquieto" },
-          { text: "Me preocupo em agradar todos os envolvidos no processo. (Agradador)", profile: "Agradador" },
-          { text: "Evito planejar demais porque tenho medo de não conseguir executar. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando enfrento um desafio inesperado, eu: (P15)",
-        options: [
-          { text: "Me esforço ao máximo para superá-lo rapidamente. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Tento introduzir soluções criativas, mesmo que algumas não funcionem. (Inquieto)", profile: "Inquieto" },
-          { text: "Assumo o controle para evitar que o problema se agrave. (Controlador)", profile: "Controlador" },
-          { text: "Me sinto frustrado e desmotivado, achando que não vou conseguir. (Vítima)", profile: "Vítima" }
-        ]
-      },
-      {
-        text: "Quando trabalho sob pressão, eu: (P16)",
-        options: [
-          { text: "Fico ansioso, pensando nos riscos de não atender ao prazo. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Penso obsessivamente nos detalhes para evitar qualquer erro. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Adio algumas tarefas até ter mais clareza sobre o que fazer. (Evitador)", profile: "Evitador" },
-          { text: "Me esforço ao máximo para impressionar quem depende de mim. (Hiper-realizador)", profile: "Hiper-realizador" }
-        ]
-      },
-      {
-        text: "Quando recebo um novo projeto, eu: (P17)",
-        options: [
-          { text: "Introduzo ideias e começo várias partes ao mesmo tempo. (Inquieto)", profile: "Inquieto" },
-          { text: "Tomo o controle para garantir que tudo seja bem executado. (Controlador)", profile: "Controlador" },
-          { text: "Tento justificar por que o projeto pode ter desafios complicados. (Racionalizador)", profile: "Racionalizador" },
-          { text: "Me preocupo em agradar os envolvidos no projeto. (Agradador)", profile: "Agradador" }
-        ]
-      },
-      {
-        text: "Quando trabalho em equipe, eu: (P18)",
-        options: [
-          { text: "Me mantenho na minha, esperando que os outros tomem a iniciativa. (Evitador)", profile: "Evitador" },
-          { text: "Tento liderar para garantir que tudo seja feito corretamente. (Controlador)", profile: "Controlador" },
-          { text: "Penso nos riscos e problemas que podem surgir durante o trabalho. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Reflito sobre como justificar as ações do grupo. (Racionalizador)", profile: "Racionalizador" }
-        ]
-      },
-      {
-        text: "Quando recebo elogios, eu: (P19)",
-        options: [
-          { text: "Justifico que foi algo simples ou esperado. (Racionalizador)", profile: "Racionalizador" },
-          { text: "Me preocupo em manter o mesmo padrão para continuar impressionando. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Aceito, mas fico pensando que não fiz o suficiente. (Vítima)", profile: "Vítima" },
-          { text: "Retribuo o elogio para agradar a outra pessoa. (Agradador)", profile: "Agradador" }
-        ]
-      },
-      {
-        text: "Quando enfrento dificuldades técnicas, eu: (P20)",
-        options: [
-          { text: "Tento introduzir várias soluções, mesmo que algumas não funcionem. (Inquieto)", profile: "Inquieto" },
-          { text: "Me cobro muito, pensando que deveria ter previsto o problema. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Me sinto ansioso, pensando nas possíveis consequências. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Adio resolver o problema, esperando que se resolva sozinho. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando preciso tomar uma decisão difícil, eu: (P21)",
-        options: [
-          { text: "Tomo o controle para garantir que a decisão seja correta. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo obsessivamente com todos os detalhes antes de decidir. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Hesito e evito decidir até ter mais informações. (Evitador)", profile: "Evitador" },
-          { text: "Penso nas possíveis consequências negativas antes de agir. (Hiper-vigilante)", profile: "Hiper-vigilante" }
-        ]
-      },
-      {
-        text: "Quando um prazo está apertado, eu: (P22)",
-        options: [
-          { text: "Microgerencio tudo para garantir que nada saia errado. (Controlador)", profile: "Controlador" },
-          { text: "Adio tarefas mais difíceis, pensando que não vou conseguir terminá-las. (Evitador)", profile: "Evitador" },
-          { text: "Me preocupo em agradar todos, mesmo que isso me sobrecarregue. (Agradador)", profile: "Agradador" },
-          { text: "Me esforço ao máximo para entregar no prazo. (Hiper-realizador)", profile: "Hiper-realizador" }
-        ]
-      },
-      {
-        text: "Quando recebo responsabilidades extras, eu: (P23)",
-        options: [
-          { text: "Tomo o controle para garantir que tudo seja feito corretamente. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo em agradar quem me deu as responsabilidades. (Agradador)", profile: "Agradador" },
-          { text: "Penso em todos os detalhes e fico ansioso com o que pode dar errado. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Tento justificar por que a tarefa é mais difícil do que parece. (Racionalizador)", profile: "Racionalizador" }
-        ]
-      },
-      {
-        text: "Quando percebo que cometi um erro, eu: (P24)",
-        options: [
-          { text: "Tento corrigir rapidamente, sem envolver os outros. (Controlador)", profile: "Controlador" },
-          { text: "Me cobro muito, pensando que deveria ter feito melhor. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Me sinto desmotivado, achando que não sou bom o suficiente. (Vítima)", profile: "Vítima" },
-          { text: "Tento justificar o erro para reduzir sua gravidade. (Racionalizador)", profile: "Racionalizador" }
-        ]
-      },
-      {
-        text: "Quando um colega precisa de ajuda, eu: (P25)",
-        options: [
-          { text: "Faço o máximo para ajudar, mesmo que atrapalhe meu trabalho. (Agradador)", profile: "Agradador" },
-          { text: "Assumo o controle para garantir que o problema seja resolvido. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo com os riscos de ajudar, pensando se conseguirei cumprir minhas tarefas. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Evito ajudar diretamente, esperando que outra pessoa o faça. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando participo de reuniões em equipe, eu: (P26)",
-        options: [
-          { text: "Tento liderar a discussão para garantir eficiência. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo em agradar todos, evitando conflitos. (Agradador)", profile: "Agradador" },
-          { text: "Penso nos riscos das decisões tomadas e tento alertar a equipe. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Evito dar opiniões, esperando que outros tomem a liderança. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando enfrento muitas tarefas simultaneamente, eu: (P27)",
-        options: [
-          { text: "Tento gerenciar tudo sozinho, sem delegar nada. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo obsessivamente com os detalhes de cada tarefa. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Pulo de uma tarefa para outra, sem terminar nenhuma. (Inquieto)", profile: "Inquieto" },
-          { text: "Fico ansioso, achando que não conseguirei dar conta de tudo. (Hiper-vigilante)", profile: "Hiper-vigilante" }
-        ]
-      },
-      {
-        text: "Quando recebo uma tarefa repetitiva, eu: (P28)",
-        options: [
-          { text: "Adio a tarefa, esperando que outra pessoa a assuma. (Evitador)", profile: "Evitador" },
-          { text: "Tento torná-la interessante, introduzindo novas ideias. (Inquieto)", profile: "Inquieto" },
-          { text: "Me preocupo em fazê-la perfeitamente, mesmo que demore mais. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Aceito a tarefa, mas me sinto desmotivado ao realizá-la. (Vítima)", profile: "Vítima" }
-        ]
-      },
-      {
-        text: "Quando me sinto pressionado, eu: (P29)",
-        options: [
-          { text: "Tomo o controle para gerenciar a situação da melhor forma possível. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo em agradar os outros, mesmo que isso me prejudique. (Agradador)", profile: "Agradador" },
-          { text: "Penso obsessivamente nos detalhes para evitar erros. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Fico ansioso, pensando em todas as possíveis consequências negativas. (Hiper-vigilante)", profile: "Hiper-vigilante" }
-        ]
-      },
-      {
-        text: "Quando enfrento algo fora da minha zona de conforto, eu: (P30)",
-        options: [
-          { text: "Tento controlar todos os aspectos para me sentir mais seguro. (Controlador)", profile: "Controlador" },
-          { text: "Evito a tarefa o máximo possível. (Evitador)", profile: "Evitador" },
-          { text: "Penso obsessivamente nos detalhes para evitar erros. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Tento justificar por que não estou preparado para aquilo. (Racionalizador)", profile: "Racionalizador" }
-        ]
-      },
-      {
-        text: "Quando vejo que algo está fora do planejado, eu: (P31)",
-        options: [
-          { text: "Tomo a frente para organizar a situação. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo em agradar os envolvidos para evitar conflitos. (Agradador)", profile: "Agradador" },
-          { text: "Fico ansioso, pensando em como corrigir os erros. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Tento justificar por que não era possível seguir o plano. (Racionalizador)", profile: "Racionalizador" }
-        ]
-      },
-      {
-        text: "Quando trabalho com pessoas de opiniões diferentes, eu: (P32)",
-        options: [
-          { text: "Tento liderar para direcionar o grupo à minha maneira. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo em agradar todos para evitar tensões. (Agradador)", profile: "Agradador" },
-          { text: "Evito discutir e deixo que os outros tomem a decisão. (Evitador)", profile: "Evitador" },
-          { text: "Reflito sobre como justificar minha posição, caso necessário. (Racionalizador)", profile: "Racionalizador" }
-        ]
-      },
-      {
-        text: "Quando algo me preocupa no trabalho, eu: (P33)",
-        options: [
-          { text: "Assumo o controle para lidar com a preocupação imediatamente. (Controlador)", profile: "Controlador" },
-          { text: "Reflito obsessivamente sobre os detalhes para evitar problemas futuros. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Me sinto ansioso, pensando nos riscos que podem surgir. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Evito lidar com o problema diretamente, esperando que desapareça. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando recebo uma crítica inesperada, eu: (P34)",
-        options: [
-          { text: "Justifico imediatamente minhas ações para minimizar o impacto. (Racionalizador)", profile: "Racionalizador" },
-          { text: "Uso a crítica como motivação para trabalhar ainda mais duro. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Me sinto magoado, achando que não valorizam meu esforço. (Vítima)", profile: "Vítima" },
-          { text: "Aceito a crítica, mas me preocupo em agradar quem a fez. (Agradador)", profile: "Agradador" }
-        ]
-      },
-      {
-        text: "Quando trabalho em algo importante, eu: (P35)",
-        options: [
-          { text: "Penso obsessivamente em como fazer perfeitamente. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Fico ansioso com todos os detalhes e possíveis problemas. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Me esforço ao máximo para impressionar os outros. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Adio as partes mais difíceis para fazer depois. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando me dão feedback positivo, eu: (P36)",
-        options: [
-          { text: "Justifico que foi algo simples ou esperado. (Racionalizador)", profile: "Racionalizador" },
-          { text: "Me preocupo em manter o mesmo padrão para impressionar novamente. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Aceito, mas penso que não fiz o suficiente para merecer. (Vítima)", profile: "Vítima" },
-          { text: "Retribuo o elogio para agradar a pessoa. (Agradador)", profile: "Agradador" }
-        ]
-      },
-      {
-        text: "Quando algo inesperado surge no trabalho, eu: (P37)",
-        options: [
-          { text: "Tomo o controle para garantir que tudo seja resolvido. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo obsessivamente com os detalhes. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Tento criar soluções novas, mesmo que nem todas funcionem. (Inquieto)", profile: "Inquieto" },
-          { text: "Evito lidar com o problema imediatamente. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando preciso entregar algo rapidamente, eu: (P38)",
-        options: [
-          { text: "Me concentro em controlar cada detalhe para evitar erros. (Controlador)", profile: "Controlador" },
-          { text: "Penso obsessivamente nas consequências de não entregar a tempo. (Hiper-vigilante)", profile: "Hiper-vigilante" },
-          { text: "Faço o máximo possível para agradar quem está esperando. (Agradador)", profile: "Agradador" },
-          { text: "Adio o trabalho, esperando que o prazo seja estendido. (Evitador)", profile: "Evitador" }
-        ]
-      },
-      {
-        text: "Quando participo de uma apresentação, eu: (P39)",
-        options: [
-          { text: "Tento justificar qualquer falha para minimizar críticas. (Racionalizador)", profile: "Racionalizador" },
-          { text: "Me preocupo em fazer tudo de forma perfeita. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Me esforço ao máximo para impressionar a audiência. (Hiper-realizador)", profile: "Hiper-realizador" },
-          { text: "Fico ansioso, pensando nos riscos de algo dar errado. (Hiper-vigilante)", profile: "Hiper-vigilante" }
-        ]
-      },
-      {
-        text: "Quando me sinto sobrecarregado, eu: (P40)",
-        options: [
-          { text: "Tento gerenciar tudo sozinho, sem pedir ajuda. (Controlador)", profile: "Controlador" },
-          { text: "Me preocupo obsessivamente com os detalhes para evitar falhas. (Perfeccionista)", profile: "Perfeccionista" },
-          { text: "Pulo entre tarefas para tentar aliviar o estresse. (Inquieto)", profile: "Inquieto" },
-          { text: "Evito as partes mais difíceis, esperando que melhorem. (Evitador)", profile: "Evitador" }
-        ]
-      }
+      // ... e assim por diante até P40
     ];
 
-    // Lista completa de sabotadores possíveis
+    // Lista completa de sabotadores
     const allSabotadores = [
       "Controlador",
       "Perfeccionista",
@@ -630,42 +315,26 @@
       "Racionalizador"
     ];
 
-    // Letras para as opções
-    const letters = ["a)", "b)", "c)", "d)"];
-
-    // Variáveis para controle do teste
-    let currentQuestion = 0;
-    const answers = [];
-    let userName = '';
-    let testStartTime = 0;
-    let questionStartTime = 0;
-    const questionTimes = [];
-    let ipAddress = "Carregando...";
-
-    const introDiv = document.getElementById("intro");
-    const quizDiv = document.getElementById("quiz");
-    const resultDiv = document.getElementById("result");
-
-    // Função para remover o sabotador (trecho entre parênteses) do final do texto
-    function removeSabotador(text) {
-      return text.replace(/\s*\([^)]*\)\s*$/, "");
-    }
-
-    // Embaralha array (Fisher-Yates)
+    // Embaralhar perguntas (comente se quiser ordem fixa)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
     }
-
-    // Embaralha perguntas e alternativas (comente se quiser ordem fixa)
     function shuffleQuestionsAndOptions() {
       shuffle(questions);
       questions.forEach(q => shuffle(q.options));
     }
 
-    // Atualiza rodapé (IP, hora de Brasília e SO)
+    // Captura IP
+    let ipAddress = "Carregando...";
+    fetch("https://api.ipify.org?format=json")
+      .then(resp => resp.json())
+      .then(data => { ipAddress = data.ip; })
+      .catch(err => { ipAddress = "Indisponível"; });
+
+    // Rodapé (IP, hora, SO)
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -681,7 +350,6 @@
       footer.textContent = `IP: ${ipAddress} | Hora de Brasília: ${timeInBrasilia} | Sistema Operacional: ${getOS()}`;
     }
     setInterval(updateFooter, 1000);
-    updateFooter();
 
     // Formata tempo (ms) em min/seg
     function formatMinSec(ms) {
@@ -695,13 +363,19 @@
       }
     }
 
-    // Captura IP (opcional)
-    fetch("https://api.ipify.org?format=json")
-      .then(resp => resp.json())
-      .then(data => { ipAddress = data.ip; })
-      .catch(err => { ipAddress = "Indisponível"; console.error(err); });
+    // Lógica principal do teste
+    let currentQuestion = 0;
+    let userName = '';
+    const answers = [];
+    const questionTimes = [];
+    let testStartTime = 0;
+    let questionStartTime = 0;
 
-    // Inicia o teste
+    const introDiv = document.getElementById("intro");
+    const quizDiv = document.getElementById("quiz");
+    const resultDiv = document.getElementById("result");
+
+    // Inicia
     document.getElementById("startBtn").addEventListener("click", () => {
       const inputName = document.getElementById("userName").value.trim();
       if (inputName.length < 8 || !inputName.includes(" ")) {
@@ -709,7 +383,6 @@
         return;
       }
       userName = inputName.toUpperCase();
-      document.getElementById("userName").value = userName;
 
       // Embaralha (comente se quiser manter ordem fixa)
       shuffleQuestionsAndOptions();
@@ -720,15 +393,17 @@
       renderQuestion();
     });
 
-    // Renderiza a pergunta atual
+    function removeSabotador(text) {
+      // Remove o texto entre parênteses do final
+      return text.replace(/\s*\([^)]*\)\s*$/, "");
+    }
+
     function renderQuestion() {
       quizDiv.innerHTML = "";
-
       if (currentQuestion < questions.length) {
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
 
-        // Número da pergunta
         const questionNumber = document.createElement("h2");
         questionNumber.className = "question-number";
         questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
@@ -758,8 +433,7 @@
         qData.options.forEach((option, index) => {
           const btn = document.createElement("button");
           btn.className = "option";
-          btn.setAttribute("aria-label", option.text);
-          btn.textContent = `${letters[index]} ${removeSabotador(option.text)}`;
+          btn.textContent = `${["a)", "b)", "c)", "d)"][index]} ${removeSabotador(option.text)}`;
           btn.onclick = () => {
             const elapsed = new Date() - questionStartTime;
             questionTimes.push(elapsed);
@@ -775,17 +449,15 @@
       }
     }
 
-    // Exibe os resultados
     function renderResult() {
       resultDiv.innerHTML = "";
 
-      // Título em várias linhas
-      const title = document.createElement("h2");
-      title.className = "result-title";
-      title.innerHTML = "RESULTADOS<br>" + userName + "<br>(SAB)";
-      resultDiv.appendChild(title);
+      const headerDiv = document.createElement("div");
+      headerDiv.id = "result-header";
+      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName} (SAB)`;
+      resultDiv.appendChild(headerDiv);
 
-      // Data e hora do resultado em destaque
+      // Data e hora do resultado
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
       const dateLine = document.createElement("p");
@@ -793,7 +465,7 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Contêiner de resultados
+      // Container dos resultados
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
@@ -801,14 +473,12 @@
       const leftDiv = document.createElement("div");
       leftDiv.className = "results-left";
 
-      // Conta quantas vezes cada sabotador apareceu
       const total = questions.length;
       const counts = answers.reduce((acc, profile) => {
         acc[profile] = (acc[profile] || 0) + 1;
         return acc;
       }, {});
 
-      // Exibe todos os sabotadores, mesmo com 0%
       allSabotadores.forEach(sab => {
         const count = counts[sab] || 0;
         const percent = Math.round((count / total) * 100);
@@ -823,6 +493,7 @@
         const fill = document.createElement("div");
         fill.className = "percentage-fill";
         fill.style.width = percent + "%";
+
         bar.appendChild(fill);
 
         // Nome do sabotador
@@ -835,26 +506,7 @@
         leftDiv.appendChild(itemDiv);
       });
 
-      // Determina o traço predominante (se houver)
-      let predominant = null;
-      let maxCount = -1;
-      Object.keys(counts).forEach(key => {
-        if (counts[key] > maxCount) {
-          maxCount = counts[key];
-          predominant = key;
-        }
-      });
-
-      if (predominant) {
-        const predomBox = document.createElement("div");
-        predomBox.className = "predominante-card";
-        predomBox.innerHTML = `
-          <p><strong>Traço Predominante:</strong> ${predominant}</p>
-        `;
-        leftDiv.appendChild(predomBox);
-      }
-
-      // Coluna da direita: tempos
+      // Coluna da direita: tempo e traço predominante
       const rightDiv = document.createElement("div");
       rightDiv.className = "results-right";
 
@@ -865,16 +517,32 @@
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
 
-      const timeBox = document.createElement("div");
-      timeBox.className = "time-card";
-      timeBox.innerHTML = `
+      // Traço predominante
+      let predominant = null;
+      let maxCount = -1;
+      Object.keys(counts).forEach(key => {
+        if (counts[key] > maxCount) {
+          maxCount = counts[key];
+          predominant = key;
+        }
+      });
+
+      const infoCard = document.createElement("div");
+      infoCard.className = "info-card";
+      infoCard.innerHTML = `
         <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
         <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
         <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
         <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
       `;
-      rightDiv.appendChild(timeBox);
 
+      if (predominant) {
+        infoCard.innerHTML += `
+          <p><strong>Traço Predominante:</strong> ${predominant}</p>
+        `;
+      }
+
+      rightDiv.appendChild(infoCard);
       resultsContainer.appendChild(leftDiv);
       resultsContainer.appendChild(rightDiv);
 

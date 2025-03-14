@@ -36,11 +36,11 @@ blockquote:before, blockquote:after,
 q:before, q:after { content: ''; content: none; }
 table { border-collapse: collapse; border-spacing: 0; }
 
-/* Cabeçalho e Rodapé */
+/* Cabeçalho e Rodapé (mesma largura do painel central) */
 header, footer {
   width: 90%;
   max-width: 650px;
-  margin: 10px auto;
+  margin: 20px auto; /* Unificado com #app */
   border-radius: 5px;
   text-align: center;
 }
@@ -66,9 +66,11 @@ footer {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 30px;
-  margin: 20px auto;
+  margin: 20px auto; /* mesma margem do header/footer */
 }
-.hidden { display: none; }
+.hidden { 
+  display: none; 
+}
 
 /* Tela de Introdução */
 #intro {
@@ -117,10 +119,15 @@ footer {
   font-weight: 500;
   color: #333;
 }
+/* Destaque para o texto da pergunta */
 #quiz .question-text {
   margin-bottom: 20px;
   text-align: left;
-  color: #333;
+  color: #222;
+  font-weight: bold;
+  background: #f3f3f3; /* cor diferente para destacar */
+  padding: 10px;
+  border-radius: 4px;
 }
 .option {
   display: block;
@@ -133,11 +140,14 @@ footer {
   border-radius: 4px;
   font-size: 1em;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
+  transition: background 0.3s, transform 0.2s, border 0.3s;
   text-align: left;
 }
 .option:hover {
-  background: #D0D8E2;
+  background: #FFA500; /* tom de laranja */
+  color: #000;         /* fonte preta */
+  font-weight: bold;   /* negrito */
+  border: 1px solid #000; /* borda preta */
   transform: scale(1.02);
 }
 
@@ -206,7 +216,7 @@ footer {
 .percentage-fill {
   height: 100%;
   line-height: 24px;
-  color: transparent; /* sem texto dentro da barra */
+  color: #fff; /* Exibe o texto (porcentagem) em branco */
   text-align: center;
   font-weight: bold;
   border-radius: 4px;

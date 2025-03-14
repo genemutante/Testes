@@ -1,4 +1,4 @@
-/* Garantindo box-sizing: border-box para todos os elementos */
+/* Garantindo box-sizing para alinhar perfeitamente header, footer e painel */
 *,
 *::before,
 *::after {
@@ -43,10 +43,7 @@ blockquote:before, blockquote:after,
 q:before, q:after { content: ''; content: none; }
 table { border-collapse: collapse; border-spacing: 0; }
 
-/* 
-   Header, Footer e #app
-   -> mesma largura, mesmo margin, mesma border-radius
-*/
+/* Header, Footer e #app: mesma largura, margin e borda */
 header, footer, #app {
   width: 90%;
   max-width: 650px;
@@ -54,14 +51,14 @@ header, footer, #app {
   border-radius: 8px;
 }
 
-/* Header */
+/* Cabeçalho */
 header {
   background-color: #000;
   color: #fff;
   padding: 15px 10px;
   font-size: 1.6em;
   font-weight: 600;
-  text-align: center; /* já está no reset, mas reforçamos */
+  text-align: center;
 }
 
 /* Rodapé */
@@ -76,7 +73,6 @@ footer {
 /* Painel principal (#app) */
 #app {
   background: #fff;
-  /* Já tem width, max-width, margin e border-radius acima */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 30px;
 }
@@ -131,7 +127,6 @@ footer {
   font-weight: 500;
   color: #333;
 }
-/* Destaque para o texto da pergunta */
 #quiz .question-text {
   margin-bottom: 20px;
   text-align: left;
@@ -225,6 +220,7 @@ footer {
   margin-right: 10px;
   height: 24px;
 }
+/* Cor escura para a barra, mantendo bom contraste com o texto branco */
 .percentage-fill {
   height: 100%;
   line-height: 24px;
@@ -232,9 +228,8 @@ footer {
   font-weight: bold;
   border-radius: 4px;
   transition: width 0.5s;
-  /* degrade azul-escuro */
-  background: linear-gradient(90deg, #357ABD, #235A8A);
-  color: #fff; /* texto sempre branco */
+  background: linear-gradient(90deg, #444444, #666666); /* degrade cinza-escuro */
+  color: #fff; /* texto branco, ótimo contraste */
 }
 .sabotador-label {
   font-size: 0.9em;

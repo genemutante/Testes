@@ -87,10 +87,14 @@ footer {
   border-radius: 4px;
   margin: 15px 0;
 }
-/* Campo de nome sempre em maiúsculas */
 #userName {
-  text-transform: uppercase;
+  text-transform: uppercase; /* Nome em maiúsculas */
 }
+/* Se quiser forçar o email em minúsculas enquanto digita */
+#userEmail {
+  text-transform: lowercase;
+}
+
 .btn {
   background: #2E7D32;
   color: #fff;

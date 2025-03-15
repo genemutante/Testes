@@ -26,8 +26,27 @@
           Leia cada pergunta e escolha a alternativa que mais representa como você age ou pensa em situações similares.
           Não há respostas certas ou erradas.
         </p>
-        <p>Por favor, insira seu nome para iniciar:</p>
-        <input type="text" id="userName" class="input-field" placeholder="Seu nome (Ex.: IVO DIAS)" />
+
+        <!-- Campo para nome -->
+        <p>Por favor, insira seu nome completo (nome e sobrenome):</p>
+        <input 
+          type="text" 
+          id="userName" 
+          class="input-field" 
+          placeholder="Seu nome (Ex.: IVO DIAS)" 
+          required
+        />
+
+        <!-- Campo para email -->
+        <p>Por favor, insira seu email:</p>
+        <input 
+          type="email" 
+          id="userEmail" 
+          class="input-field" 
+          placeholder="Seu email (Ex.: fulano@teste.com)" 
+          required
+        />
+
         <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
       </section>
 
@@ -41,7 +60,7 @@
     <!-- Rodapé fixo -->
     <footer id="footer"></footer>
 
-    <!-- Script interativo: Hidratação com client:load para garantir que o JS seja enviado ao cliente -->
+    <!-- Script interativo -->
     <script type="module" client:load>
       /* Lista completa de sabotadores */
       const allSabotadores = [
@@ -59,6 +78,7 @@
       // Variáveis de controle do teste
       let currentQuestion = 0;
       let userName = '';
+      let userEmail = '';
       const answers = [];
       const questionTimes = [];
       let testStartTime = 0;
@@ -71,12 +91,12 @@
 
       let questions = []; // Será carregado do arquivo questions.json
 
-      // Função para remover o trecho entre parênteses (indicador do sabotador)
+      // Remove o sabotador (trecho entre parênteses) do final do texto
       function removeSabotador(text) {
         return text.replace(/\s*\([^)]*\)\s*$/, "");
       }
 
-      // Embaralha um array (Fisher-Yates)
+      // Embaralha array (Fisher-Yates)
       function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
@@ -88,13 +108,13 @@
         questions.forEach(q => shuffle(q.options));
       }
 
-      // Captura IP (se disponível)
+      // Captura IP
       fetch("https://api.ipify.org?format=json")
         .then(resp => resp.json())
         .then(data => { ipAddress = data.ip; })
         .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
-      // Atualiza o rodapé com IP, hora de Brasília e SO
+      // Atualiza rodapé (IP, hora, SO)
       function getOS() {
         const platform = window.navigator.platform;
         const ua = window.navigator.userAgent;
@@ -111,7 +131,7 @@
       }
       setInterval(updateFooter, 1000);
 
-      // Formata tempo (ms) em minutos e segundos (ex.: "3 min. 45 seg.")
+      // Formata tempo em min:seg
       function formatMinSec(ms) {
         const totalSec = Math.floor(ms / 1000);
         const min = Math.floor(totalSec / 60);
@@ -119,7 +139,7 @@
         return min > 0 ? `${min} min. ${sec} seg.` : `${sec} seg.`;
       }
 
-      // Carrega as perguntas do arquivo questions.json
+      // Carrega perguntas
       fetch("/questions.json")
         .then(resp => resp.json())
         .then(data => {
@@ -127,16 +147,32 @@
         })
         .catch(err => console.error("Erro ao carregar questions.json:", err));
 
-      // Inicia o teste
+      // Botão Iniciar
       document.getElementById("startBtn").addEventListener("click", () => {
         const inputName = document.getElementById("userName").value.trim();
+        let inputEmail = document.getElementById("userEmail").value.trim();
+
+        // Converte email para minúsculas
+        inputEmail = inputEmail.toLowerCase();
+        // Sobrescreve no campo para ficar visual
+        document.getElementById("userEmail").value = inputEmail;
+
+        // Validação do nome
         if (inputName.length < 8 || !inputName.includes(" ")) {
           alert("Por favor, insira seu nome completo (nome e sobrenome) com no mínimo 8 caracteres.");
           return;
         }
-        userName = inputName.toUpperCase();
 
-        // Embaralha as perguntas; comente se quiser ordem fixa
+        // Validação de email (campo obrigatório e regex)
+        if (!validateEmail(inputEmail)) {
+          alert("Por favor, insira um email válido.");
+          return;
+        }
+
+        userName = inputName.toUpperCase();
+        userEmail = inputEmail;
+
+        // Embaralha perguntas
         shuffleQuestionsAndOptions();
 
         testStartTime = new Date();
@@ -144,6 +180,13 @@
         quizDiv.classList.remove("hidden");
         renderQuestion();
       });
+
+      // Função simples de validação de email
+      function validateEmail(email) {
+        // Regex básica
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email.toLowerCase());
+      }
 
       function renderQuestion() {
         quizDiv.innerHTML = "";
@@ -170,7 +213,7 @@
           progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
           progressBarBg.appendChild(progressBarFill);
 
-          // Texto da pergunta (sem indicador)
+          // Texto da pergunta
           const questionText = document.createElement("p");
           questionText.className = "question-text";
           questionText.textContent = removeSabotador(qData.text);
@@ -199,12 +242,13 @@
       function renderResult() {
         resultDiv.innerHTML = "";
 
-        // Título compactado e data/hora
+        // Cabeçalho
         const headerDiv = document.createElement("div");
         headerDiv.id = "result-header";
         headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName} (SAB)`;
         resultDiv.appendChild(headerDiv);
 
+        // Data/hora
         const now = new Date();
         const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
         const dateLine = document.createElement("p");
@@ -212,11 +256,11 @@
         dateLine.textContent = `Gerado em: ${resultDatetime}`;
         resultDiv.appendChild(dateLine);
 
-        // Container dos resultados (duas colunas)
+        // Container de resultados
         const resultsContainer = document.createElement("div");
         resultsContainer.className = "results-container";
 
-        // Coluna da esquerda: sabotadores
+        // Coluna esquerda
         const leftDiv = document.createElement("div");
         leftDiv.className = "results-left";
 
@@ -239,7 +283,6 @@
           const fill = document.createElement("div");
           fill.className = "percentage-fill";
           fill.style.width = percent + "%";
-          // Exibe a porcentagem na barra
           fill.textContent = percent + "%";
 
           bar.appendChild(fill);
@@ -253,7 +296,7 @@
           leftDiv.appendChild(itemDiv);
         });
 
-        // Coluna da direita: dados de tempo e traço predominante
+        // Coluna direita
         const rightDiv = document.createElement("div");
         rightDiv.className = "results-right";
 
@@ -288,44 +331,12 @@
         resultsContainer.appendChild(rightDiv);
         resultDiv.appendChild(resultsContainer);
 
-        // Cria um botão para enviar os resultados
-        const enviarBtn = document.createElement("button");
-        enviarBtn.textContent = "Enviar Resultados";
-        enviarBtn.className = "btn";
-        enviarBtn.onclick = enviarResultadoAutomatico;
-        resultDiv.appendChild(enviarBtn);
-
         resultDiv.classList.remove("hidden");
       }
 
-      // Função para enviar os dados automaticamente para a planilha via Google Apps Script
+      // (Opcional) Função de envio de resultados (se precisar)
       function enviarResultadoAutomatico() {
-        const dados = {
-          ip: ipAddress,              // Dados fixos para teste
-          nome: "TESTE USUARIO",
-          email: "teste@example.com",
-          nome_teste: "Teste de Perfil (SAB)",
-          versao_teste: "1.0",
-          resultado: JSON.stringify(["Controlador", "Perfeccionista"]), // Dados fixos de exemplo
-          data: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })
-        };
-
-        fetch("https://script.google.com/macros/s/AKfycbwchy3WFqNJ56Z413cxy1aNktqyWti4pe7YBAdqkO4/dev", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(dados)
-        })
-        .then(resp => resp.json())
-        .then(data => {
-          if (data.status === "success") {
-            alert("Dados enviados com sucesso!");
-          } else {
-            alert("Erro ao enviar dados: " + data.message);
-          }
-        })
-        .catch(err => alert("Erro na requisição: " + err));
+        // ...
       }
     </script>
   </body>

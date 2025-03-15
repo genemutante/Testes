@@ -23,13 +23,26 @@
         Leia cada pergunta e escolha a alternativa que mais representa como você age ou pensa em situações similares.
         Não há respostas certas ou erradas.
       </p>
-      <p>Por favor, insira seu nome para iniciar:</p>
+      <!-- Campo de Nome -->
+      <p>Por favor, insira seu nome completo (nome e sobrenome):</p>
       <input 
         type="text" 
         id="userName" 
         class="input-field" 
-        placeholder="Seu nome (Ex.: IVO DIAS)" 
+        placeholder="SEU NOME (EX.: IVO DIAS)"
+        required
       />
+
+      <!-- Campo de Email -->
+      <p>Por favor, insira seu email:</p>
+      <input 
+        type="email" 
+        id="userEmail" 
+        class="input-field" 
+        placeholder="SEU EMAIL (EX.: FULANO@TESTE.COM)"
+        required
+      />
+
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
 
@@ -61,6 +74,7 @@
     // Variáveis de controle do teste
     let currentQuestion = 0;
     let userName = '';
+    let userEmail = '';
     const answers = [];
     const questionTimes = [];
     let testStartTime = 0;
@@ -132,11 +146,26 @@
     // Botão Iniciar
     document.getElementById("startBtn").addEventListener("click", () => {
       const inputName = document.getElementById("userName").value.trim();
+      let inputEmail = document.getElementById("userEmail").value.trim();
+
+      // Converte email para minúsculas (opcional, pois já tem text-transform: lowercase no CSS)
+      inputEmail = inputEmail.toLowerCase();
+      document.getElementById("userEmail").value = inputEmail;
+
+      // Validação do nome
       if (inputName.length < 8 || !inputName.includes(" ")) {
         alert("Por favor, insira seu nome completo (nome e sobrenome) com no mínimo 8 caracteres.");
         return;
       }
+
+      // Validação de email
+      if (!validateEmail(inputEmail)) {
+        alert("Por favor, insira um email válido.");
+        return;
+      }
+
       userName = inputName.toUpperCase();
+      userEmail = inputEmail;
 
       // Embaralha perguntas
       shuffleQuestionsAndOptions();
@@ -146,6 +175,13 @@
       quizDiv.classList.remove("hidden");
       renderQuestion();
     });
+
+    // Função simples de validação de email
+    function validateEmail(email) {
+      // Regex básica
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email.toLowerCase());
+    }
 
     function renderQuestion() {
       quizDiv.innerHTML = "";

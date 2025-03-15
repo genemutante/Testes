@@ -1,5 +1,5 @@
 ---
-/* Nenhum frontmatter especial é necessário, a menos que você queira importar componentes */
+/* Nenhum frontmatter especial é necessário */
 ---
 <!DOCTYPE html>
 <html lang="pt">
@@ -239,7 +239,7 @@
           const fill = document.createElement("div");
           fill.className = "percentage-fill";
           fill.style.width = percent + "%";
-          // Adicione esta linha para exibir a porcentagem
+          // Exibe a porcentagem na barra
           fill.textContent = percent + "%";
 
           bar.appendChild(fill);
@@ -284,11 +284,44 @@
         `;
 
         rightDiv.appendChild(infoCard);
-
         resultsContainer.appendChild(leftDiv);
         resultsContainer.appendChild(rightDiv);
         resultDiv.appendChild(resultsContainer);
         resultDiv.classList.remove("hidden");
+
+        // Envia dados fixos para teste (substitua depois pelos dados reais do teste)
+        enviarResultadoAutomatico();
+      }
+
+      // Função para enviar os dados automaticamente para a planilha via Google Apps Script
+      function enviarResultadoAutomatico() {
+        const dados = {
+          ip: ipAddress,              // Dados fixos para teste
+          nome: "TESTE USUARIO",
+          email: "teste@example.com",
+          nome_teste: "Teste de Perfil (SAB)",
+          versao_teste: "1.0",
+          resultado: JSON.stringify(["Controlador", "Perfeccionista"]), // Dados fixos de exemplo
+          data: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })
+        };
+
+        // Substitua o URL abaixo pelo URL do seu aplicativo Web (Google Apps Script)
+        fetch("https://script.google.com/macros/s/SEU_SCRIPT_ID/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(dados)
+        })
+        .then(resp => resp.json())
+        .then(data => {
+          if (data.status === "success") {
+            console.log("Dados enviados com sucesso!");
+          } else {
+            console.error("Erro ao enviar dados:", data.message);
+          }
+        })
+        .catch(err => console.error("Erro na requisição:", err));
       }
     </script>
   </body>

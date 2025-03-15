@@ -86,11 +86,10 @@ footer {
   border: 1px solid #ccc;
   border-radius: 4px;
   margin: 15px 0;
-  /* Se quiser o campo de nome sempre em maiúsculas: */
-  /* text-transform: uppercase; */
 }
+/* Campo de nome sempre em maiúsculas */
 #userName {
-  text-transform: uppercase; /* Cada caractere digitado aparecerá em maiúsculas */
+  text-transform: uppercase;
 }
 .btn {
   background: #2E7D32;
@@ -140,13 +139,13 @@ footer {
 }
 .option:hover {
   background: #FFA500; /* tom de laranja */
-  color: #000;         /* fonte preta */
-  font-weight: bold;   /* negrito */
-  border: 1px solid #000; /* borda preta */
+  color: #000;
+  font-weight: bold;
+  border: 1px solid #000;
   transform: scale(1.02);
 }
 
-/* Barra de Progresso */
+/* Barra de Progresso (no questionário) */
 .progress-container {
   width: 100%;
   margin: 10px 0 20px;
@@ -162,7 +161,7 @@ footer {
   height: 100%;
   border-radius: 5px;
   transition: width 0.3s;
-  /* Laranja para a parte preenchida */
+  /* Degradê laranja para a parte preenchida */
   background: linear-gradient(90deg, #FFA500, #FF8C00);
 }
 
@@ -200,7 +199,7 @@ footer {
   align-items: center;
   margin: 8px 0;
 }
-/* Fundo da barra não preenchida */
+/* Fundo da barra não preenchida (resultados finais) */
 .percentage-bar {
   width: 50%;
   background: #444; 
@@ -209,7 +208,7 @@ footer {
   margin-right: 10px;
   height: 24px;
 }
-/* Parte preenchida (degradê laranja) */
+/* Parte preenchida (degradê laranja) nos resultados finais */
 .percentage-fill {
   height: 100%;
   line-height: 24px;
@@ -218,6 +217,7 @@ footer {
   border-radius: 4px;
   transition: width 0.5s;
   color: #fff;
+  background: linear-gradient(90deg, #FFA500, #FF8C00);
 }
 .sabotador-label {
   font-size: 0.9em;

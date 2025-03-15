@@ -1,4 +1,4 @@
-/* Exemplo de config para box-sizing e reset (opcional) */
+/* Garantindo box-sizing para alinhar perfeitamente header, footer e painel */
 *,
 *::before,
 *::after {
@@ -86,8 +86,15 @@ footer {
   border: 1px solid #ccc;
   border-radius: 4px;
   margin: 15px 0;
-  text-transform: uppercase;
+  /* para nome, por exemplo, uppercase: 
+     text-transform: uppercase; 
+     mas se não quiser, pode remover */
 }
+/* Campo de email sempre em minúsculas */
+.email-field {
+  text-transform: lowercase;
+}
+
 .btn {
   background: #2E7D32;
   color: #fff;
@@ -136,9 +143,9 @@ footer {
 }
 .option:hover {
   background: #FFA500; /* tom de laranja */
-  color: #000;         /* fonte preta */
-  font-weight: bold;   /* negrito */
-  border: 1px solid #000; /* borda preta */
+  color: #000;
+  font-weight: bold;
+  border: 1px solid #000;
   transform: scale(1.02);
 }
 
@@ -156,9 +163,10 @@ footer {
 }
 .progress-bar-fill {
   height: 100%;
-  background-color: #5A6EAA;
   border-radius: 5px;
   transition: width 0.3s;
+  /* Cor laranja para a parte preenchida */
+  background: linear-gradient(90deg, #FF9800, #FF5722); /* degrade laranja */
 }
 
 /* Tela de Resultados */
@@ -196,22 +204,14 @@ footer {
   align-items: center;
   margin: 8px 0;
 }
-/* 
-   .percentage-bar: a parte não preenchida (fundo) 
-   -> Ajustado para tom mais escuro 
-*/
 .percentage-bar {
   width: 50%;
-  background: #444; /* Fica escuro para destacar */
+  background: #444; /* fundo escuro */
   border-radius: 4px;
   overflow: hidden;
   margin-right: 10px;
   height: 24px;
 }
-/* 
-   .percentage-fill: a parte preenchida 
-   -> Mantém o degrade original (ou mude se quiser outro)
-*/
 .percentage-fill {
   height: 100%;
   line-height: 24px;
@@ -219,7 +219,6 @@ footer {
   font-weight: bold;
   border-radius: 4px;
   transition: width 0.5s;
-  background: linear-gradient(90deg, #5A6EAA, #4A5A8A); /* degrade original */
   color: #fff;
 }
 .sabotador-label {
@@ -227,7 +226,6 @@ footer {
   color: #333;
   white-space: nowrap;
 }
-/* Painel do Tempo e Traço Predominante */
 .info-card {
   background: #f8f9fa;
   border: 1px solid #ddd;

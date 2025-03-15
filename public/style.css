@@ -86,15 +86,12 @@ footer {
   border: 1px solid #ccc;
   border-radius: 4px;
   margin: 15px 0;
-  /* para nome, por exemplo, uppercase: 
-     text-transform: uppercase; 
-     mas se não quiser, pode remover */
+  /* Se quiser o campo de nome sempre em maiúsculas: */
+  /* text-transform: uppercase; */
 }
-/* Campo de email sempre em minúsculas */
-.email-field {
-  text-transform: lowercase;
+#userName {
+  text-transform: uppercase; /* Cada caractere digitado aparecerá em maiúsculas */
 }
-
 .btn {
   background: #2E7D32;
   color: #fff;
@@ -143,9 +140,9 @@ footer {
 }
 .option:hover {
   background: #FFA500; /* tom de laranja */
-  color: #000;
-  font-weight: bold;
-  border: 1px solid #000;
+  color: #000;         /* fonte preta */
+  font-weight: bold;   /* negrito */
+  border: 1px solid #000; /* borda preta */
   transform: scale(1.02);
 }
 
@@ -165,8 +162,8 @@ footer {
   height: 100%;
   border-radius: 5px;
   transition: width 0.3s;
-  /* Cor laranja para a parte preenchida */
-  background: linear-gradient(90deg, #FF9800, #FF5722); /* degrade laranja */
+  /* Laranja para a parte preenchida */
+  background: linear-gradient(90deg, #FFA500, #FF8C00);
 }
 
 /* Tela de Resultados */
@@ -198,20 +195,21 @@ footer {
   flex: 1;
   min-width: 250px;
 }
-/* Sabotadores */
 .result-item {
   display: flex;
   align-items: center;
   margin: 8px 0;
 }
+/* Fundo da barra não preenchida */
 .percentage-bar {
   width: 50%;
-  background: #444; /* fundo escuro */
+  background: #444; 
   border-radius: 4px;
   overflow: hidden;
   margin-right: 10px;
   height: 24px;
 }
+/* Parte preenchida (degradê laranja) */
 .percentage-fill {
   height: 100%;
   line-height: 24px;

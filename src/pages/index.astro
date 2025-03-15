@@ -282,15 +282,20 @@
           <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
           ${ predominant ? `<p><strong>Traço Predominante:</strong> ${predominant}</p>` : "" }
         `;
-
         rightDiv.appendChild(infoCard);
+
         resultsContainer.appendChild(leftDiv);
         resultsContainer.appendChild(rightDiv);
         resultDiv.appendChild(resultsContainer);
-        resultDiv.classList.remove("hidden");
 
-        // Envia dados fixos para teste (substitua depois pelos dados reais do teste)
-        enviarResultadoAutomatico();
+        // Cria um botão para enviar os resultados
+        const enviarBtn = document.createElement("button");
+        enviarBtn.textContent = "Enviar Resultados";
+        enviarBtn.className = "btn";
+        enviarBtn.onclick = enviarResultadoAutomatico;
+        resultDiv.appendChild(enviarBtn);
+
+        resultDiv.classList.remove("hidden");
       }
 
       // Função para enviar os dados automaticamente para a planilha via Google Apps Script
@@ -305,7 +310,6 @@
           data: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })
         };
 
-        // Substitua o URL abaixo pelo URL do seu aplicativo Web (Google Apps Script)
         fetch("https://script.google.com/macros/s/AKfycbw3Rq-JVXf0H_a6_bvpEbMe3ZBP2gMBjkr2O5ojazRKVQM1QP2DiUqnnF_8bOThgSbg/exec", {
           method: "POST",
           headers: {
@@ -316,12 +320,12 @@
         .then(resp => resp.json())
         .then(data => {
           if (data.status === "success") {
-            console.log("Dados enviados com sucesso!");
+            alert("Dados enviados com sucesso!");
           } else {
-            console.error("Erro ao enviar dados:", data.message);
+            alert("Erro ao enviar dados: " + data.message);
           }
         })
-        .catch(err => console.error("Erro na requisição:", err));
+        .catch(err => alert("Erro na requisição: " + err));
       }
     </script>
   </body>

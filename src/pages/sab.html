@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Teste de Perfil (SAB v1)</title>
+  <title>Teste de Perfil (SAB)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
@@ -27,7 +27,7 @@
 <body onload="carregarParametros()">
   <!-- Cabeçalho fixo -->
   <header>
-    Teste de Perfil (SAB v1)
+    Teste de Perfil (SAB)
   </header>
 
   <!-- Relógio (tempo decorrido) -->
@@ -69,7 +69,6 @@
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
       const emailParam = urlParams.get("email");
-
       if (nomeParam) {
         document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
         userName = nomeParam.toUpperCase();
@@ -101,7 +100,7 @@
     }
 
     /******************************************************
-     * 4) Função para remover a sigla (entre parênteses)
+     * 4) Função para remover a sigla (entre parênteses) do final do texto.
      ******************************************************/
     function removeIndicador(text) {
       return text.replace(/\s*\([^)]*\)\s*$/, "");
@@ -256,10 +255,9 @@
     }
 
     /******************************************************
-     * 15) Renderiza Resultado e para o timer
+     * 15) Renderiza Resultado e para o timer, ocultando botões
      ******************************************************/
     function renderResult() {
-      // Para o relógio
       clearInterval(timerInterval);
 
       resultDiv.innerHTML = "";
@@ -267,6 +265,14 @@
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (SAB)`;
       resultDiv.appendChild(headerDiv);
+
+      // Exibe o email abaixo do nome
+      if (userEmail) {
+        const emailLine = document.createElement("p");
+        emailLine.className = "result-email";
+        emailLine.textContent = userEmail;
+        resultDiv.appendChild(emailLine);
+      }
 
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
@@ -333,8 +339,20 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Oculta os botões da tela de resultado (não exibindo PDF e envio)
-      // Se desejar, você pode remover os botões ou simplesmente não criá-los.
+      // Botão para imprimir (atalho de impressão)
+      const printBtn = document.createElement("button");
+      printBtn.textContent = "Imprimir";
+      printBtn.className = "btn";
+      printBtn.onclick = () => window.print();
+      resultDiv.appendChild(printBtn);
+
+      // Botão para enviar ao AppSheet (fixo)
+      const sendBtn = document.createElement("button");
+      sendBtn.textContent = "Enviar ao AppSheet (fixo)";
+      sendBtn.className = "btn";
+      sendBtn.style.marginLeft = "10px";
+      sendBtn.onclick = enviarAoAppSheet;
+      resultDiv.appendChild(sendBtn);
 
       resultDiv.classList.remove("hidden");
     }

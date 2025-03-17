@@ -76,17 +76,17 @@
       <!-- 2) 8CANCOM2 (Canais de Comunicação) – Ativo -->
       <button id="canaisComBtn" class="btn" onclick="iniciarCanaisCom()">8CANCOM2</button>
       
-      <!-- 3) 7COMPHA03 (Competências e Habilidades) – Em Breve -->
-      <button class="btn btn-desabilitado" disabled>7COMPHA03</button>
+      <!-- 3) 7COMPHA03 (Competências e Habilidades) – Ativo -->
+      <button id="comphabBtn" class="btn" onclick="iniciarCompetencias()">7COMPHA03</button>
       
-      <!-- 4) 6ESTAUT4 (Autoestima) – Em Breve -->
-      <button class="btn btn-desabilitado" disabled>6ESTAUT4</button>
+      <!-- 4) 6ESTAUT4 (Autoestima) – Ativo -->
+      <button id="autoestBtn" class="btn" onclick="iniciarAutoestima()">6ESTAUT4</button>
       
-      <!-- 5) 5ATVPRE005 (Proatividade) – Em Breve -->
-      <button class="btn btn-desabilitado" disabled>5ATVPRE005</button>
+      <!-- 5) 5ATVPRE005 (Proatividade) – Ativo -->
+      <button id="proatBtn" class="btn" onclick="iniciarProatividade()">5ATVPRE005</button>
       
-      <!-- 6) 4QEMO002 (Quociente Emocional) – Em Breve -->
-      <button class="btn btn-desabilitado" disabled>4QEMO002</button>
+      <!-- 6) 4QEMO002 (Quociente Emocional) – Ativo -->
+      <button id="qeBtn" class="btn" onclick="iniciarQe()">4QEMO002</button>
       
       <!-- 7) 3SABCOM7 (Comportamentos Sabotadores) – Ativo -->
       <button id="sabotadoresBtn" class="btn" onclick="iniciarSabotadores()">3SABCOM7</button>
@@ -94,8 +94,8 @@
       <!-- 8) 2PERDSK08 (DISK) – Ativo -->
       <button id="discBtn" class="btn" onclick="iniciarDisc()">2PERDSK08</button>
       
-      <!-- 9) 1VECA0009 (VECA) – Em Breve -->
-      <button class="btn btn-desabilitado" disabled>1VECA0009</button>
+      <!-- 9) 1VECA0009 (VECA) – Ativo -->
+      <button id="vecaBtn" class="btn" onclick="iniciarVeca()">1VECA0009</button>
     </div>
   </main>
 
@@ -117,6 +117,30 @@
         btn.textContent = "8CANCOM2 ✔";
       }
     }
+    function checkComphabStatus() {
+      const btn = document.getElementById("comphabBtn");
+      if (localStorage.getItem("comphabDone") === "true") {
+        btn.textContent = "7COMPHA03 ✔";
+      }
+    }
+    function checkAutoestStatus() {
+      const btn = document.getElementById("autoestBtn");
+      if (localStorage.getItem("autoestDone") === "true") {
+        btn.textContent = "6ESTAUT4 ✔";
+      }
+    }
+    function checkProatStatus() {
+      const btn = document.getElementById("proatBtn");
+      if (localStorage.getItem("proatDone") === "true") {
+        btn.textContent = "5ATVPRE005 ✔";
+      }
+    }
+    function checkQeStatus() {
+      const btn = document.getElementById("qeBtn");
+      if (localStorage.getItem("qeTestDone") === "true") {
+        btn.textContent = "4QEMO002 ✔";
+      }
+    }
     function checkSabotadoresStatus() {
       const btn = document.getElementById("sabotadoresBtn");
       if (localStorage.getItem("sabTestDone") === "true") {
@@ -129,41 +153,49 @@
         btn.textContent = "2PERDSK08 ✔";
       }
     }
+    function checkVecaStatus() {
+      const btn = document.getElementById("vecaBtn");
+      if (localStorage.getItem("vecaTestDone") === "true") {
+        btn.textContent = "1VECA0009 ✔";
+      }
+    }
 
-    // Função para validar os campos e iniciar o teste de Cérebro Trino
+    // Função para validar os campos e redirecionar para o teste correspondente
+    function iniciarTeste(urlPage) {
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (!validarCampos(nameInput, emailInput)) return;
+      const url = `${urlPage}?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
+    }
+
+    // Funções para iniciar cada teste
     function iniciarCerebroTrino() {
-      const nameInput = document.getElementById("userName").value.trim();
-      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
-      if (!validarCampos(nameInput, emailInput)) return;
-      const url = `cerebro-trino.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
-      window.location.href = url;
+      iniciarTeste("cerebro-trino.html");
     }
-
-    // Função para iniciar o teste dos Canais de Comunicação
     function iniciarCanaisCom() {
-      const nameInput = document.getElementById("userName").value.trim();
-      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
-      if (!validarCampos(nameInput, emailInput)) return;
-      const url = `canaiscom.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
-      window.location.href = url;
+      iniciarTeste("canaiscom.html");
     }
-
-    // Função para iniciar o teste de Sabotadores
+    function iniciarCompetencias() {
+      iniciarTeste("comphab.html");
+    }
+    function iniciarAutoestima() {
+      iniciarTeste("autoestima.html");
+    }
+    function iniciarProatividade() {
+      iniciarTeste("proatividade.html");
+    }
+    function iniciarQe() {
+      iniciarTeste("qe.html");
+    }
     function iniciarSabotadores() {
-      const nameInput = document.getElementById("userName").value.trim();
-      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
-      if (!validarCampos(nameInput, emailInput)) return;
-      const url = `sab.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
-      window.location.href = url;
+      iniciarTeste("sab2.html");
     }
-
-    // Função para iniciar o teste DISK
     function iniciarDisc() {
-      const nameInput = document.getElementById("userName").value.trim();
-      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
-      if (!validarCampos(nameInput, emailInput)) return;
-      const url = `disc.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
-      window.location.href = url;
+      iniciarTeste("disc.html");
+    }
+    function iniciarVeca() {
+      iniciarTeste("veca.html");
     }
 
     // Função de validação de campos (nome e email)
@@ -189,8 +221,13 @@
     window.onload = function() {
       checkCerebroTrinoStatus();
       checkCanaisComStatus();
+      checkComphabStatus();
+      checkAutoestStatus();
+      checkProatStatus();
+      checkQeStatus();
       checkSabotadoresStatus();
       checkDiscStatus();
+      checkVecaStatus();
     }
   </script>
 </body>

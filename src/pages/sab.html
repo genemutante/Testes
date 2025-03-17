@@ -314,9 +314,11 @@
 
     function enviarAoAppSheet() {
       const appId = "108acbee-fe0e-47f2-95b5-bcc84";
-      const tableName = "Página1";
+      const tableName = encodeURIComponent("Página1");
+
       const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
       const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
+
       const bodyData = {
         Action: "Add",
         Properties: {

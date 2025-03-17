@@ -8,12 +8,30 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
   <!-- Link para o CSS externo -->
   <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* Regras adicionais para o relógio */
+    #timer {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #fff;
+      background-color: #1B5E20;
+      padding: 5px 10px;
+      border-radius: 4px;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+  </style>
 </head>
 <body>
   <!-- Cabeçalho fixo -->
   <header>
     Teste de Perfil (SAB)
   </header>
+
+  <!-- Relógio (tempo decorrido) -->
+  <div id="timer">00:00</div>
 
   <main id="app">
     <!-- Tela de Introdução -->
@@ -64,13 +82,33 @@
 
   <script>
     /******************************************************
-     * Função para formatar tempo em minutos e segundos
+     * Função para formatar tempo (minutos e segundos)
      ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
       const min = Math.floor(totalSec / 60);
       const sec = totalSec % 60;
-      return min > 0 ? `${min} min. ${sec} seg.` : `${sec} seg.`;
+      return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+    }
+
+    /******************************************************
+     * Função para atualizar o relógio (timer)
+     ******************************************************/
+    function updateTimer() {
+      if (testStartTime) {
+        const elapsed = new Date() - testStartTime;
+        document.getElementById("timer").textContent = formatMinSec(elapsed);
+      }
+    }
+    // Atualiza o timer a cada 1 segundo
+    setInterval(updateTimer, 1000);
+
+    /******************************************************
+     * Função para remover a sigla (entre parênteses) do final do texto.
+     * Essa função é usada apenas para exibir a afirmação ao participante.
+     ******************************************************/
+    function removeIndicador(text) {
+      return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
 
     /******************************************************
@@ -96,7 +134,7 @@
      * Arrays/Objetos carregados via fetch
      ******************************************************/
     let questions = [];      // assertions.json (lista de afirmações)
-    let interpretations = {}; // interpretacoes em { "CONTR-B": {...}, ... }
+    let interpretations = {}; // interpretações em { "CONTR-B": {...}, ... }
 
     /******************************************************
      * Captura IP
@@ -140,6 +178,7 @@
       .then(r => r.json())
       .then(data => {
         data.forEach(item => {
+          // Cada item já tem sigla no formato, ex: "CONTR-B", "PERFE-A", etc.
           interpretations[item.sigla] = item;
         });
       })
@@ -167,6 +206,7 @@
       userName = inputName.toUpperCase();
       userEmail = inputEmail;
 
+      // Inicia o teste e o timer
       testStartTime = new Date();
       introDiv.classList.add("hidden");
       quizDiv.classList.remove("hidden");
@@ -210,13 +250,13 @@
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
 
-        // Texto da pergunta (afirmação)
+        // Texto da pergunta (sem sigla, usando removeIndicador)
         const questionText = document.createElement("p");
         questionText.className = "question-text";
-        questionText.textContent = qData.text;
+        questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
 
-        // Cria 4 botões (escala Likert de 1 a 4)
+        // Criar 4 botões (escala Likert de 1 a 4)
         const scaleLabels = [
           "Discordo totalmente (1)",
           "Discordo parcialmente (2)",
@@ -271,17 +311,17 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Calcula soma de pontos por sigla
+      // Calcula a soma de pontos por sigla
       let scores = {};
       answers.forEach(resp => {
         if (!scores[resp.sigla]) scores[resp.sigla] = 0;
         scores[resp.sigla] += resp.value;
       });
 
-      // Pega todas as siglas únicas
+      // Pega todas as siglas únicas do JSON de afirmações
       const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
 
-      // Container dos resultados
+      // Container para os resultados
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
@@ -294,17 +334,14 @@
 
       siglasUnicas.forEach(sig => {
         const soma = scores[sig] || 0;
-        const nivel = somaParaNivel(soma); // "Baixo", "Médio", "Alto"
+        const nivel = somaParaNivel(soma);
         let suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
         let interpretKey = sig + "-" + suffix;
         let interpretObj = interpretations[interpretKey];
 
-        let perfilNome = interpretKey;
-        let textoInterpretacao = "Sem interpretação disponível.";
-        if (interpretObj) {
-          perfilNome = interpretObj.sabotador;
-          textoInterpretacao = interpretObj.textoParticipante;
-        }
+        // Garante que sempre exiba o nome completo do perfil (campo sabotador)
+        let perfilNome = interpretObj ? interpretObj.sabotador : sig;
+        let textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
 
         // Cria card do perfil com indicador (emoji) à direita
         const perfilDiv = document.createElement("div");

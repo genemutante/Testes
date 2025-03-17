@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>8CANCOM2</title> <!-- Código do teste no título -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
+  <!-- Link para o CSS externo (caso tenha) -->
+  <link rel="stylesheet" href="/style.css" />
+
+  <style>
+    /* Relógio no canto */
+    #timer {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #fff;
+      background-color: #1B5E20;
+      padding: 5px 10px;
+      border-radius: 4px;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+    /* Marca de teste já concluído */
+    #testDoneMark {
+      display: none;
+      color: green;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    /* Cartão do perfil composto */
+    .composite-card {
+      background: #f5f5f5;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+      text-align: center;
+    }
+    .composite-card h2 {
+      margin: 0;
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+    /* Cartão de cada canal (V, A, C) */
+    .perfil-result {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 15px;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .perfil-result .info {
+      flex: 1;
+      margin-right: 15px;
+    }
+    /* Círculo com a letra do canal (V, A, C) */
+    .canais-letter {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #333;
+    }
+  </style>
+</head>
+<body onload="carregarParametros(); checkIfDone();">
+  <!-- Cabeçalho fixo -->
+  <header>
+    8CANCOM2
+  </header>
+
+  <!-- Relógio (tempo decorrido) -->
+  <div id="timer">00:00</div>
+
+  <main id="app">
+    <!-- Marca de teste já concluído -->
+    <div id="testDoneMark">
+      Teste já concluído ✔
+    </div>
+
+    <!-- Tela de Introdução -->
+    <section id="intro">
+      <h1>Olá, <span id="nomeParticipante"></span>!</h1>
+      <p>
+        Leia cada afirmação e escolha a opção que mais representa como você geralmente aprende ou se comunica.
+        Não há respostas certas ou erradas.
+      </p>
+      <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
+    </section>
+
+    <!-- Tela do Questionário -->
+    <section id="quiz" class="hidden"></section>
+
+    <!-- Tela de Resultados -->
+    <section id="result" class="hidden"></section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <!-- Biblioteca html2pdf.js (caso queira gerar PDF) -->
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
+    integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  </script>
+
+  <script>
+    /******************************************************
+     * 1) Carrega parâmetros (nome e email) da URL
+     ******************************************************/
+    function carregarParametros() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const nomeParam = urlParams.get("name");
+      const emailParam = urlParams.get("email");
+      if (nomeParam) {
+        document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
+        userName = nomeParam.toUpperCase();
+      }
+      if (emailParam) {
+        userEmail = emailParam.toLowerCase();
+      }
+    }
+
+    /******************************************************
+     * 1.1) Verifica se o teste já foi feito e exibe a marca
+     ******************************************************/
+    function checkIfDone() {
+      if (localStorage.getItem("canaisComDone") === "true") {
+        document.getElementById("testDoneMark").style.display = "block";
+      }
+    }
+
+    /******************************************************
+     * 2) Formata tempo (min:seg)
+     ******************************************************/
+    function formatMinSec(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const min = Math.floor(totalSec / 60);
+      const sec = totalSec % 60;
+      return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+    }
+
+    /******************************************************
+     * 3) Atualiza o relógio (timer)
+     ******************************************************/
+    let timerInterval = setInterval(updateTimer, 1000);
+    function updateTimer() {
+      if (testStartTime) {
+        const elapsed = new Date() - testStartTime;
+        document.getElementById("timer").textContent = formatMinSec(elapsed);
+      }
+    }
+
+    /******************************************************
+     * 4) Remove indicadores do final do texto (se houver)
+     ******************************************************/
+    function removeIndicador(text) {
+      return text;
+    }
+
+    /******************************************************
+     * 5) Variáveis globais
+     ******************************************************/
+    let currentQuestion = 0;
+    let userName = '';
+    let userEmail = '';
+    const answers = []; // { sigla, value }
+    const questionTimes = [];
+    let testStartTime = 0;
+    let questionStartTime = 0;
+    let ipAddress = "Carregando...";
+
+    /******************************************************
+     * 6) Referências aos elementos
+     ******************************************************/
+    const introDiv = document.getElementById("intro");
+    const quizDiv = document.getElementById("quiz");
+    const resultDiv = document.getElementById("result");
+
+    /******************************************************
+     * 7) Arrays/Objetos via fetch
+     ******************************************************/
+    let questions = [];       // canaiscom_assertions.json
+    let interpretations = {}; // canaiscom_interpretations.json
+
+    /******************************************************
+     * 8) Captura IP
+     ******************************************************/
+    fetch("https://api.ipify.org?format=json")
+      .then(r => r.json())
+      .then(data => { ipAddress = data.ip; })
+      .catch(err => { ipAddress = "Indisponível"; console.error(err); });
+
+    /******************************************************
+     * 9) Atualiza rodapé (IP, hora, SO)
+     ******************************************************/
+    function getOS() {
+      const platform = window.navigator.platform;
+      const ua = window.navigator.userAgent;
+      if (/(Mac|iPhone|iPod|iPad)/i.test(platform)) return "iOS / Mac OS";
+      if (/Win/i.test(platform)) return "Windows";
+      if (/Android/i.test(ua)) return "Android";
+      if (/Linux/i.test(platform)) return "Linux";
+      return "Desconhecido";
+    }
+    function updateFooter() {
+      const footer = document.getElementById("footer");
+      const timeInBrasilia = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+      footer.textContent = `IP: ${ipAddress} | Hora de Brasília: ${timeInBrasilia} | SO: ${getOS()}`;
+    }
+    setInterval(updateFooter, 1000);
+
+    /******************************************************
+     * 10) Carrega JSON de afirmações
+     ******************************************************/
+    fetch("/canaiscom_assertions.json")
+      .then(r => r.json())
+      .then(data => { questions = data; })
+      .catch(err => console.error("Erro ao carregar canaiscom_assertions.json:", err));
+
+    /******************************************************
+     * 11) Carrega JSON de interpretações
+     ******************************************************/
+    fetch("/canaiscom_interpretations.json")
+      .then(r => r.json())
+      .then(data => {
+        data.forEach(item => {
+          interpretations[item.sigla] = item;
+        });
+      })
+      .catch(err => console.error("Erro ao carregar canaiscom_interpretations.json:", err));
+
+    /******************************************************
+     * 12) Inicia Teste
+     ******************************************************/
+    document.getElementById("startBtn").addEventListener("click", () => {
+      testStartTime = new Date();
+      introDiv.classList.add("hidden");
+      quizDiv.classList.remove("hidden");
+      renderQuestion();
+    });
+
+    /******************************************************
+     * 13) Renderiza a questão atual
+     ******************************************************/
+    function renderQuestion() {
+      quizDiv.innerHTML = "";
+      if (currentQuestion < questions.length) {
+        const qData = questions[currentQuestion];
+        questionStartTime = new Date();
+
+        const questionNumber = document.createElement("h2");
+        questionNumber.className = "question-number";
+        questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
+        quizDiv.appendChild(questionNumber);
+
+        const progressContainer = document.createElement("div");
+        progressContainer.className = "progress-container";
+        quizDiv.appendChild(progressContainer);
+
+        const progressBarBg = document.createElement("div");
+        progressBarBg.className = "progress-bar-bg";
+        progressContainer.appendChild(progressBarBg);
+
+        const progressBarFill = document.createElement("div");
+        progressBarFill.className = "progress-bar-fill";
+        progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+        progressBarBg.appendChild(progressBarFill);
+
+        const questionText = document.createElement("p");
+        questionText.className = "question-text";
+        questionText.textContent = removeIndicador(qData.text);
+        quizDiv.appendChild(questionText);
+
+        const scaleLabels = [
+          "Discordo totalmente (1)",
+          "Discordo parcialmente (2)",
+          "Concordo parcialmente (3)",
+          "Concordo totalmente (4)"
+        ];
+        scaleLabels.forEach((label, index) => {
+          const btn = document.createElement("button");
+          btn.className = "option";
+          btn.textContent = label;
+          btn.onclick = () => {
+            answers.push({ sigla: qData.sigla, value: index + 1 });
+            const elapsed = new Date() - questionStartTime;
+            questionTimes.push(elapsed);
+            currentQuestion++;
+            renderQuestion();
+          };
+          quizDiv.appendChild(btn);
+        });
+      } else {
+        quizDiv.classList.add("hidden");
+        renderResult();
+      }
+    }
+
+    /******************************************************
+     * 14) Converte soma (20..80) em "Baixa", "Moderada" ou "Alta"
+     ******************************************************/
+    function somaParaNivel(soma) {
+      if (soma >= 60) return "Alta";
+      if (soma >= 40) return "Moderada";
+      return "Baixa";
+    }
+
+    /******************************************************
+     * 15) Renderiza Resultado
+     ******************************************************/
+    function renderResult() {
+      clearInterval(timerInterval);
+      localStorage.setItem("canaisComDone", "true");
+
+      resultDiv.innerHTML = "";
+
+      // Cabeçalho
+      const headerDiv = document.createElement("div");
+      headerDiv.id = "result-header";
+      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (8CANCOM2)`;
+      resultDiv.appendChild(headerDiv);
+
+      // Exibe email se houver
+      if (userEmail) {
+        const emailLine = document.createElement("p");
+        emailLine.className = "result-email";
+        emailLine.textContent = userEmail;
+        resultDiv.appendChild(emailLine);
+      }
+
+      const now = new Date();
+      const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+      const dateLine = document.createElement("p");
+      dateLine.className = "result-datetime";
+      dateLine.textContent = `Gerado em: ${resultDatetime}`;
+      resultDiv.appendChild(dateLine);
+
+      // Soma de pontos (V, A, C)
+      let scores = { "V": 0, "A": 0, "C": 0 };
+      answers.forEach(resp => {
+        if (scores.hasOwnProperty(resp.sigla)) {
+          scores[resp.sigla] += resp.value;
+        }
+      });
+
+      // Ordena por pontuação
+      let compositeArray = [];
+      Object.keys(scores).forEach(key => {
+        compositeArray.push({ sigla: key, score: scores[key] });
+      });
+      compositeArray.sort((a, b) => b.score - a.score);
+
+      // Perfil composto
+      const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
+      const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
+
+      // Card do Perfil Composto
+      const compositeDiv = document.createElement("div");
+      compositeDiv.className = "composite-card";
+      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
+      resultDiv.appendChild(compositeDiv);
+
+      // Exibe V, A, C
+      const allProfiles = ["V", "A", "C"];
+      const resultsContainer = document.createElement("div");
+      resultsContainer.className = "results-container";
+
+      allProfiles.forEach(sig => {
+        const soma = scores[sig];
+
+        let nivel = "";
+        let interpretObj = null;
+        let perfilNome = "";
+        let textoInterpretacao = "";
+
+        if (soma > 0) {
+          nivel = somaParaNivel(soma);
+          const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderada" ? "M" : "B");
+          const interpretKey = sig + "-" + suffix;
+          interpretObj = interpretations[interpretKey];
+
+          if (interpretObj) {
+            perfilNome = interpretObj.perfil;
+            textoInterpretacao = interpretObj.textoParticipante;
+          } else {
+            perfilNome = sig;
+            textoInterpretacao = "Sem interpretação disponível.";
+          }
+        } else {
+          // Zero
+          switch(sig) {
+            case "V": perfilNome = "Visual"; break;
+            case "A": perfilNome = "Auditivo"; break;
+            case "C": perfilNome = "Cinestésico"; break;
+          }
+          textoInterpretacao = "Não houve pontuação neste perfil.";
+        }
+
+        // Monta card
+        const perfilDiv = document.createElement("div");
+        perfilDiv.className = "perfil-result";
+
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "info";
+
+        if (soma > 0) {
+          infoDiv.innerHTML = `
+            <h3>${perfilNome}</h3>
+            <p class="pontuacao">Pontuação: ${soma} (${nivel})</p>
+            <p class="texto-participante">${textoInterpretacao}</p>
+          `;
+        } else {
+          infoDiv.innerHTML = `
+            <h3>${perfilNome}</h3>
+            <p class="pontuacao">Pontuação: 0 (Nenhuma)</p>
+            <p class="texto-participante">${textoInterpretacao}</p>
+          `;
+        }
+
+        const letterDiv = document.createElement("div");
+        letterDiv.className = "canais-letter";
+        letterDiv.textContent = sig; // "V", "A", "C"
+
+        perfilDiv.appendChild(infoDiv);
+        perfilDiv.appendChild(letterDiv);
+        resultsContainer.appendChild(perfilDiv);
+      });
+
+      resultDiv.appendChild(resultsContainer);
+
+      // Estatísticas de tempo
+      const testTotalTime = new Date() - testStartTime;
+      const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
+      const fastestTime = Math.min(...questionTimes);
+      const slowestTime = Math.max(...questionTimes);
+      const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
+      const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
+
+      const infoCard = document.createElement("div");
+      infoCard.className = "info-card";
+      infoCard.innerHTML = `
+        <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
+        <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
+        <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
+        <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
+      `;
+      resultDiv.appendChild(infoCard);
+
+      // Botão Imprimir
+      const printBtn = document.createElement("button");
+      printBtn.textContent = "Imprimir";
+      printBtn.className = "btn";
+      printBtn.onclick = () => window.print();
+      resultDiv.appendChild(printBtn);
+
+      resultDiv.classList.remove("hidden");
+    }
+
+    /******************************************************
+     * 16) Gera PDF com html2pdf.js (opcional)
+     ******************************************************/
+    function gerarPDF() {
+      const elemento = document.getElementById("result");
+      const opcoes = {
+        margin: 0.5,
+        filename: 'resultado-8CANCOM2.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().from(elemento).set(opcoes).save();
+    }
+
+    /******************************************************
+     * 17) Exemplo de função para enviar ao AppSheet (não chamada)
+     ******************************************************/
+    function enviarAoAppSheet() {
+      const appId = "108acbee-fe0e-47f2-95b5-bcc84";
+      const tableName = "Página1";
+      const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
+      const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
+      const bodyData = {
+        Action: "Add",
+        Properties: {
+          Locale: "pt-BR",
+          Location: "0,0",
+          Timezone: "E. South America Standard Time"
+        },
+        Rows: [
+          {
+            "DateTime_Envio": new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
+            "IP": ipAddress,
+            "Nome": userName || "SEM_NOME",
+            "Email": userEmail || "SEM_EMAIL",
+            "Nome_Teste": "8CANCOM2",
+            "Versao_Teste": "1.0",
+            "Resultado": "Exemplo de resultado fixo"
+          }
+        ]
+      };
+
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "ApplicationAccessKey": accessKey
+        },
+        body: JSON.stringify(bodyData)
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        alert("Enviado ao AppSheet com sucesso!");
+      })
+      .catch(err => {
+        alert("Erro ao enviar ao AppSheet!");
+        console.error("Erro ao enviar ao AppSheet:", err);
+      });
+    }
+  </script>
+</body>
+</html>

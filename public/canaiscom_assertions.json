@@ -1,0 +1,242 @@
+[
+  {
+    "text": "Aprendo melhor vendo gráficos, tabelas ou imagens.",
+    "sigla": "V"
+  },
+  {
+    "text": "Prefiro ler informações ao invés de ouvi-las.",
+    "sigla": "V"
+  },
+  {
+    "text": "Organizo minhas ideias desenhando ou escrevendo.",
+    "sigla": "V"
+  },
+  {
+    "text": "Lembro facilmente de rostos e lugares.",
+    "sigla": "V"
+  },
+  {
+    "text": "Tenho facilidade em visualizar mentalmente as coisas.",
+    "sigla": "V"
+  },
+  {
+    "text": "Presto muita atenção nos detalhes visuais.",
+    "sigla": "V"
+  },
+  {
+    "text": "Gosto de apresentações organizadas e claras visualmente.",
+    "sigla": "V"
+  },
+  {
+    "text": "Prefiro instruções escritas ou diagramas.",
+    "sigla": "V"
+  },
+  {
+    "text": "Observo cuidadosamente antes de agir.",
+    "sigla": "V"
+  },
+  {
+    "text": "Gosto de ambientes visualmente organizados.",
+    "sigla": "V"
+  },
+  {
+    "text": "Me incomodo com desordem visual.",
+    "sigla": "V"
+  },
+  {
+    "text": "Costumo perceber rapidamente mudanças visuais no ambiente.",
+    "sigla": "V"
+  },
+  {
+    "text": "Tenho facilidade para reconhecer cores e formas.",
+    "sigla": "V"
+  },
+  {
+    "text": "Uso frequentemente imagens para explicar ideias.",
+    "sigla": "V"
+  },
+  {
+    "text": "Sou muito atento a sinais visuais.",
+    "sigla": "V"
+  },
+  {
+    "text": "Prefiro materiais educativos visuais, como vídeos ou slides.",
+    "sigla": "V"
+  },
+  {
+    "text": "Gosto de decoração e ambientes esteticamente agradáveis.",
+    "sigla": "V"
+  },
+  {
+    "text": "Me sinto desconfortável em ambientes visualmente confusos.",
+    "sigla": "V"
+  },
+  {
+    "text": "Lembro facilmente de informações se puder visualizá-las.",
+    "sigla": "V"
+  },
+  {
+    "text": "Costumo fazer anotações detalhadas.",
+    "sigla": "V"
+  },
+  {
+    "text": "Prefiro ouvir explicações do que lê-las.",
+    "sigla": "A"
+  },
+  {
+    "text": "Tenho facilidade em lembrar conversas.",
+    "sigla": "A"
+  },
+  {
+    "text": "Gosto de discutir ideias verbalmente.",
+    "sigla": "A"
+  },
+  {
+    "text": "Presto muita atenção ao tom de voz das pessoas.",
+    "sigla": "A"
+  },
+  {
+    "text": "Aprendo melhor ouvindo palestras ou explicações verbais.",
+    "sigla": "A"
+  },
+  {
+    "text": "Consigo seguir facilmente instruções faladas.",
+    "sigla": "A"
+  },
+  {
+    "text": "Me concentro melhor ouvindo música ou sons.",
+    "sigla": "A"
+  },
+  {
+    "text": "Tenho boa memória auditiva.",
+    "sigla": "A"
+  },
+  {
+    "text": "Costumo repetir informações verbalmente para memorizar.",
+    "sigla": "A"
+  },
+  {
+    "text": "Me sinto confortável em conversas longas.",
+    "sigla": "A"
+  },
+  {
+    "text": "Gosto de trocar ideias verbalmente.",
+    "sigla": "A"
+  },
+  {
+    "text": "Sou sensível a ruídos ou sons altos.",
+    "sigla": "A"
+  },
+  {
+    "text": "Costumo prestar atenção em sons do ambiente.",
+    "sigla": "A"
+  },
+  {
+    "text": "Prefiro ouvir audiobooks a ler livros.",
+    "sigla": "A"
+  },
+  {
+    "text": "Valorizo muito conversas claras e objetivas.",
+    "sigla": "A"
+  },
+  {
+    "text": "Me distraio facilmente com sons desagradáveis.",
+    "sigla": "A"
+  },
+  {
+    "text": "Sou bom ouvinte em situações sociais.",
+    "sigla": "A"
+  },
+  {
+    "text": "Gosto de podcasts e programas de rádio.",
+    "sigla": "A"
+  },
+  {
+    "text": "Percebo facilmente mudanças no tom de voz das pessoas.",
+    "sigla": "A"
+  },
+  {
+    "text": "Me incomoda quando não ouço claramente instruções ou explicações.",
+    "sigla": "A"
+  },
+  {
+    "text": "Aprendo melhor praticando diretamente.",
+    "sigla": "C"
+  },
+  {
+    "text": "Gosto de tocar ou manipular objetos enquanto aprendo.",
+    "sigla": "C"
+  },
+  {
+    "text": "Minhas decisões são frequentemente baseadas em sentimentos ou sensações.",
+    "sigla": "C"
+  },
+  {
+    "text": "Prefiro atividades que envolvam movimento.",
+    "sigla": "C"
+  },
+  {
+    "text": "Tenho facilidade em tarefas que exigem habilidades físicas.",
+    "sigla": "C"
+  },
+  {
+    "text": "Me sinto confortável com contato físico.",
+    "sigla": "C"
+  },
+  {
+    "text": "Gosto de experiências práticas e interativas.",
+    "sigla": "C"
+  },
+  {
+    "text": "Tenho dificuldade em ficar parado por muito tempo.",
+    "sigla": "C"
+  },
+  {
+    "text": "Uso gestos frequentemente enquanto falo.",
+    "sigla": "C"
+  },
+  {
+    "text": "Prefiro ambientes confortáveis e acolhedores.",
+    "sigla": "C"
+  },
+  {
+    "text": "Sou sensível à temperatura e texturas.",
+    "sigla": "C"
+  },
+  {
+    "text": "Valorizo conforto físico no meu espaço pessoal.",
+    "sigla": "C"
+  },
+  {
+    "text": "Gosto de aprender por tentativa e erro.",
+    "sigla": "C"
+  },
+  {
+    "text": "Tenho boa memória relacionada a experiências físicas.",
+    "sigla": "C"
+  },
+  {
+    "text": "Me sinto energizado por atividades físicas ou práticas.",
+    "sigla": "C"
+  },
+  {
+    "text": "Prefiro atividades que envolvem uso das mãos.",
+    "sigla": "C"
+  },
+  {
+    "text": "Tenho facilidade em perceber minhas sensações corporais.",
+    "sigla": "C"
+  },
+  {
+    "text": "Gosto de ambientes onde posso me movimentar livremente.",
+    "sigla": "C"
+  },
+  {
+    "text": "Minhas emoções frequentemente influenciam minhas ações.",
+    "sigla": "C"
+  },
+  {
+    "text": "Costumo preferir demonstrações práticas ao invés de explicações teóricas.",
+    "sigla": "C"
+  }
+]

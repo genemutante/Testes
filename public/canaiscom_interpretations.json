@@ -1,0 +1,65 @@
+[
+  {
+    "sigla": "V-A",
+    "perfil": "Visual",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa altamente visual, com forte preferência por gráficos, imagens e informações organizadas visualmente.",
+    "textoAvaliador": "Ideal para atividades que demandam clareza visual e atenção a detalhes gráficos."
+  },
+  {
+    "sigla": "V-M",
+    "perfil": "Visual",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa que utiliza elementos visuais com frequência e se adapta a outros canais quando necessário.",
+    "textoAvaliador": "Bom para funções que exigem apresentação moderada de informações visuais."
+  },
+  {
+    "sigla": "V-B",
+    "perfil": "Visual",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa com menor dependência do canal visual, podendo preferir outras formas de comunicação.",
+    "textoAvaliador": "Adequado para ambientes que não requerem forte ênfase em dados visuais."
+  },
+  {
+    "sigla": "A-A",
+    "perfil": "Auditivo",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa predominantemente auditiva, com forte capacidade de compreender e reter informações verbais.",
+    "textoAvaliador": "Excelente para funções que exigem comunicação verbal intensa e escuta ativa."
+  },
+  {
+    "sigla": "A-M",
+    "perfil": "Auditivo",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa que combina bem a comunicação auditiva com outros canais, mantendo boa adaptabilidade.",
+    "textoAvaliador": "Indicado para cargos com necessidades equilibradas de comunicação verbal."
+  },
+  {
+    "sigla": "A-B",
+    "perfil": "Auditivo",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa com menor preferência pela comunicação auditiva, podendo enfrentar desafios em memorizar apenas o que ouve.",
+    "textoAvaliador": "Ideal para contextos onde há maior dependência de instruções visuais ou práticas."
+  },
+  {
+    "sigla": "C-A",
+    "perfil": "Cinestésico",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa altamente cinestésica, que aprende melhor por meio de experiências diretas e interativas.",
+    "textoAvaliador": "Excelente para funções práticas e ambientes que exigem interação física constante."
+  },
+  {
+    "sigla": "C-M",
+    "perfil": "Cinestésico",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa que equilibra bem a aprendizagem prática com outras formas de comunicação.",
+    "textoAvaliador": "Adequado para ambientes que combinam atividades práticas e teóricas."
+  },
+  {
+    "sigla": "C-B",
+    "perfil": "Cinestésico",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa com menor preferência por experiências práticas diretas, possivelmente dependendo mais de canais visuais ou auditivos.",
+    "textoAvaliador": "Ideal para funções onde a interação física não é primordial."
+  }
+]

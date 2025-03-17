@@ -64,7 +64,7 @@
 
   <script>
     /******************************************************
-     * 1) Função para formatar tempo em minutos e segundos
+     * Função para formatar tempo em minutos e segundos
      ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
@@ -74,7 +74,7 @@
     }
 
     /******************************************************
-     * 2) Variáveis globais
+     * Variáveis globais
      ******************************************************/
     let currentQuestion = 0;
     let userName = '';
@@ -86,20 +86,20 @@
     let ipAddress = "Carregando...";
 
     /******************************************************
-     * 3) Referências aos elementos
+     * Referências aos elementos
      ******************************************************/
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
     /******************************************************
-     * 4) Arrays/Objetos que serão carregados via fetch
+     * Arrays/Objetos carregados via fetch
      ******************************************************/
     let questions = [];      // assertions.json (lista de afirmações)
     let interpretations = {}; // interpretacoes em { "CONTR-B": {...}, ... }
 
     /******************************************************
-     * 5) Captura IP
+     * Captura IP
      ******************************************************/
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
@@ -107,7 +107,7 @@
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
     /******************************************************
-     * 6) Atualiza rodapé (IP, hora, SO)
+     * Atualiza rodapé (IP, hora, SO)
      ******************************************************/
     function getOS() {
       const platform = window.navigator.platform;
@@ -126,31 +126,27 @@
     setInterval(updateFooter, 1000);
 
     /******************************************************
-     * 7) Carrega JSON de afirmações
+     * Carrega JSON de afirmações
      ******************************************************/
     fetch("/assertions.json")
       .then(r => r.json())
-      .then(data => {
-        questions = data;
-      })
+      .then(data => { questions = data; })
       .catch(err => console.error("Erro ao carregar assertions.json:", err));
 
     /******************************************************
-     * 8) Carrega JSON de interpretações
+     * Carrega JSON de interpretações
      ******************************************************/
     fetch("/interpretations.json")
       .then(r => r.json())
       .then(data => {
-        // Converte cada objeto do array em uma entrada do objeto 'interpretations'
         data.forEach(item => {
-          // Ex: "CONTR-B", "PERFE-A", etc.
           interpretations[item.sigla] = item;
         });
       })
       .catch(err => console.error("Erro ao carregar interpretations.json:", err));
 
     /******************************************************
-     * 9) Botão Iniciar
+     * Botão Iniciar
      ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       const inputName = document.getElementById("userName").value.trim();
@@ -177,20 +173,21 @@
       renderQuestion();
     });
 
-    // Validação simples de email
+    /******************************************************
+     * Função simples de validação de email
+     ******************************************************/
     function validateEmail(email) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email.toLowerCase());
     }
 
     /******************************************************
-     * 10) Renderiza a questão atual
+     * Renderiza a questão atual
      ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
 
       if (currentQuestion < questions.length) {
-        // Pega a questão atual
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
 
@@ -213,13 +210,13 @@
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
 
-        // Texto da pergunta (uma afirmação)
+        // Texto da pergunta (afirmação)
         const questionText = document.createElement("p");
         questionText.className = "question-text";
         questionText.textContent = qData.text;
         quizDiv.appendChild(questionText);
 
-        // Criar 4 botões (escala Likert de 1 a 4)
+        // Cria 4 botões (escala Likert de 1 a 4)
         const scaleLabels = [
           "Discordo totalmente (1)",
           "Discordo parcialmente (2)",
@@ -231,15 +228,9 @@
           btn.className = "option";
           btn.textContent = label;
           btn.onclick = () => {
-            // Salva a resposta
-            answers.push({
-              sigla: qData.sigla,
-              value: index + 1 // 1..4
-            });
+            answers.push({ sigla: qData.sigla, value: index + 1 });
             const elapsed = new Date() - questionStartTime;
             questionTimes.push(elapsed);
-
-            // Próxima pergunta
             currentQuestion++;
             renderQuestion();
           };
@@ -251,7 +242,9 @@
       }
     }
 
-    // Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
+    /******************************************************
+     * Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
+     ******************************************************/
     function somaParaNivel(soma) {
       if (soma >= 7) return "Alto";
       if (soma >= 5) return "Médio";
@@ -259,7 +252,7 @@
     }
 
     /******************************************************
-     * 11) Renderiza Resultado
+     * Renderiza Resultado
      ******************************************************/
     function renderResult() {
       resultDiv.innerHTML = "";
@@ -278,45 +271,51 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Soma de pontos por sigla
+      // Calcula soma de pontos por sigla
       let scores = {};
       answers.forEach(resp => {
         if (!scores[resp.sigla]) scores[resp.sigla] = 0;
         scores[resp.sigla] += resp.value;
       });
 
-      // Pega todas as siglas distintas do JSON
+      // Pega todas as siglas únicas
       const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
 
-      // Container p/ resultados
+      // Container dos resultados
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
+
+      // Função para retornar emoji com base no nível
+      function getEmoji(nivel) {
+        if (nivel === "Alto") return "🔴";
+        if (nivel === "Médio") return "🟡";
+        return "🟢";
+      }
 
       siglasUnicas.forEach(sig => {
         const soma = scores[sig] || 0;
         const nivel = somaParaNivel(soma); // "Baixo", "Médio", "Alto"
-
-        // Monta a chave: ex: "CONTR-B", "PERFE-A", ...
         let suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
         let interpretKey = sig + "-" + suffix;
         let interpretObj = interpretations[interpretKey];
 
-        // Nome do perfil e texto do participante
-        let sabotadorNome = interpretKey; // fallback
-        let textoParticipante = "Sem interpretação disponível.";
-
+        let perfilNome = interpretKey;
+        let textoInterpretacao = "Sem interpretação disponível.";
         if (interpretObj) {
-          sabotadorNome = interpretObj.sabotador; // ex.: "Controlador"
-          textoParticipante = interpretObj.textoParticipante; // ex.: "A pessoa..."
+          perfilNome = interpretObj.sabotador;
+          textoInterpretacao = interpretObj.textoParticipante;
         }
 
-        // Monta o card do perfil
+        // Cria card do perfil com indicador (emoji) à direita
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
         perfilDiv.innerHTML = `
-          <h3>${sabotadorNome}</h3>
-          <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel})</p>
-          <p class="texto-participante">${textoParticipante}</p>
+          <div class="info">
+            <h3>${perfilNome}</h3>
+            <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel})</p>
+            <p class="texto-participante">${textoInterpretacao}</p>
+          </div>
+          <div class="indicador">${getEmoji(nivel)}</div>
         `;
         resultsContainer.appendChild(perfilDiv);
       });
@@ -331,7 +330,6 @@
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
 
-      // Card de estatísticas
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `
@@ -353,7 +351,7 @@
     }
 
     /******************************************************
-     * 12) Gera PDF com html2pdf.js
+     * Gera PDF com html2pdf.js
      ******************************************************/
     function gerarPDF() {
       const elemento = document.getElementById("result");

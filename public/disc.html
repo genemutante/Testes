@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teste de Perfil (DISC)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
+  <!-- Link para o CSS externo -->
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* Regras adicionais para o relógio */
+    #timer {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #fff;
+      background-color: #1B5E20;
+      padding: 5px 10px;
+      border-radius: 4px;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body onload="carregarParametros(); checkIfDone();">
+  <!-- Cabeçalho fixo -->
+  <header>
+    Teste de Perfil (DISC)
+  </header>
+
+  <!-- Relógio (tempo decorrido) -->
+  <div id="timer">00:00</div>
+
+  <main id="app">
+    <!-- Se desejar, você pode incluir uma marca se o teste já foi feito (via localStorage) -->
+    <div id="testDoneMark" style="display:none; color:green; font-weight:bold; margin-bottom:10px;">
+      Teste já concluído ✔
+    </div>
+    
+    <!-- Tela de Introdução -->
+    <section id="intro">
+      <h1>Olá, <span id="nomeParticipante"></span>!</h1>
+      <p>
+        Abaixo estão afirmações sobre como você costuma agir ou se sentir. Escolha a opção que mais combina com você hoje,
+        sem se preocupar com respostas certas ou erradas.
+      </p>
+      <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
+    </section>
+
+    <!-- Tela do Questionário -->
+    <section id="quiz" class="hidden"></section>
+
+    <!-- Tela de Resultados -->
+    <section id="result" class="hidden"></section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <!-- Biblioteca html2pdf.js para gerar PDF, se desejado -->
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
+    integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  </script>
+
+  <script>
+    /******************************************************
+     * 1) Carrega parâmetros (nome e email) da URL
+     ******************************************************/
+    function carregarParametros() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const nomeParam = urlParams.get("name");
+      const emailParam = urlParams.get("email");
+      if (nomeParam) {
+        document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
+        userName = nomeParam.toUpperCase();
+      }
+      if (emailParam) {
+        userEmail = emailParam.toLowerCase();
+      }
+    }
+
+    /******************************************************
+     * 1.1) Verifica se o teste DISC já foi feito e exibe a marca
+     ******************************************************/
+    function checkIfDone() {
+      if (localStorage.getItem("discTestDone") === "true") {
+        document.getElementById("testDoneMark").style.display = "block";
+      }
+    }
+
+    /******************************************************
+     * 2) Função para formatar tempo (minutos e segundos)
+     ******************************************************/
+    function formatMinSec(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const min = Math.floor(totalSec / 60);
+      const sec = totalSec % 60;
+      return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+    }
+
+    /******************************************************
+     * 3) Função para atualizar o relógio (timer)
+     ******************************************************/
+    let timerInterval = setInterval(updateTimer, 1000);
+    function updateTimer() {
+      if (testStartTime) {
+        const elapsed = new Date() - testStartTime;
+        document.getElementById("timer").textContent = formatMinSec(elapsed);
+      }
+    }
+
+    /******************************************************
+     * 4) Função para remover indicadores (se houver) do final do texto.
+     ******************************************************/
+    function removeIndicador(text) {
+      return text.replace(/\s*\([^)]*\)\s*$/, "");
+    }
+
+    /******************************************************
+     * 5) Variáveis globais
+     ******************************************************/
+    let currentQuestion = 0;
+    let userName = '';
+    let userEmail = '';
+    const answers = [];  // array de { sigla, value }
+    const questionTimes = [];
+    let testStartTime = 0;
+    let questionStartTime = 0;
+    let ipAddress = "Carregando...";
+
+    /******************************************************
+     * 6) Referências aos elementos
+     ******************************************************/
+    const introDiv = document.getElementById("intro");
+    const quizDiv = document.getElementById("quiz");
+    const resultDiv = document.getElementById("result");
+
+    /******************************************************
+     * 7) Arrays/Objetos carregados via fetch
+     ******************************************************/
+    let questions = [];      // disc_assertions.json (lista de afirmações)
+    let interpretations = {}; // disc_interpretations.json (interpretações)
+
+    /******************************************************
+     * 8) Captura IP
+     ******************************************************/
+    fetch("https://api.ipify.org?format=json")
+      .then(resp => resp.json())
+      .then(data => { ipAddress = data.ip; })
+      .catch(err => { ipAddress = "Indisponível"; console.error(err); });
+
+    /******************************************************
+     * 9) Atualiza rodapé (IP, hora, SO)
+     ******************************************************/
+    function getOS() {
+      const platform = window.navigator.platform;
+      const ua = window.navigator.userAgent;
+      if (/(Mac|iPhone|iPod|iPad)/i.test(platform)) return "iOS / Mac OS";
+      if (/Win/i.test(platform)) return "Windows";
+      if (/Android/i.test(ua)) return "Android";
+      if (/Linux/i.test(platform)) return "Linux";
+      return "Desconhecido";
+    }
+    function updateFooter() {
+      const footer = document.getElementById("footer");
+      const timeInBrasilia = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+      footer.textContent = `IP: ${ipAddress} | Hora de Brasília: ${timeInBrasilia} | SO: ${getOS()}`;
+    }
+    setInterval(updateFooter, 1000);
+
+    /******************************************************
+     * 10) Carrega JSON de afirmações DISC
+     ******************************************************/
+    fetch("/disc_assertions.json")
+      .then(r => r.json())
+      .then(data => { questions = data; })
+      .catch(err => console.error("Erro ao carregar disc_assertions.json:", err));
+
+    /******************************************************
+     * 11) Carrega JSON de interpretações DISC
+     ******************************************************/
+    fetch("/disc_interpretations.json")
+      .then(r => r.json())
+      .then(data => {
+        data.forEach(item => {
+          interpretations[item.sigla] = item;
+        });
+      })
+      .catch(err => console.error("Erro ao carregar disc_interpretations.json:", err));
+
+    /******************************************************
+     * 12) Inicia Teste
+     ******************************************************/
+    document.getElementById("startBtn").addEventListener("click", () => {
+      testStartTime = new Date();
+      introDiv.classList.add("hidden");
+      quizDiv.classList.remove("hidden");
+      renderQuestion();
+    });
+
+    /******************************************************
+     * 13) Renderiza a questão atual
+     ******************************************************/
+    function renderQuestion() {
+      quizDiv.innerHTML = "";
+      if (currentQuestion < questions.length) {
+        const qData = questions[currentQuestion];
+        questionStartTime = new Date();
+
+        const questionNumber = document.createElement("h2");
+        questionNumber.className = "question-number";
+        questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
+        quizDiv.appendChild(questionNumber);
+
+        const progressContainer = document.createElement("div");
+        progressContainer.className = "progress-container";
+        quizDiv.appendChild(progressContainer);
+
+        const progressBarBg = document.createElement("div");
+        progressBarBg.className = "progress-bar-bg";
+        progressContainer.appendChild(progressBarBg);
+
+        const progressBarFill = document.createElement("div");
+        progressBarFill.className = "progress-bar-fill";
+        progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+        progressBarBg.appendChild(progressBarFill);
+
+        const questionText = document.createElement("p");
+        questionText.className = "question-text";
+        questionText.textContent = removeIndicador(qData.text);
+        quizDiv.appendChild(questionText);
+
+        const scaleLabels = [
+          "Discordo totalmente (1)",
+          "Discordo parcialmente (2)",
+          "Concordo parcialmente (3)",
+          "Concordo totalmente (4)"
+        ];
+        scaleLabels.forEach((label, index) => {
+          const btn = document.createElement("button");
+          btn.className = "option";
+          btn.textContent = label;
+          btn.onclick = () => {
+            answers.push({ sigla: qData.sigla, value: index + 1 });
+            const elapsed = new Date() - questionStartTime;
+            questionTimes.push(elapsed);
+            currentQuestion++;
+            renderQuestion();
+          };
+          quizDiv.appendChild(btn);
+        });
+      } else {
+        quizDiv.classList.add("hidden");
+        renderResult();
+      }
+    }
+
+    /******************************************************
+     * 14) Converte soma em "Baixo", "Moderado" ou "Alto" para o DISC
+     * Cada perfil tem 10 afirmações: pontuação mínima 10, máxima 40.
+     ******************************************************/
+    function somaParaNivel(soma) {
+      if (soma >= 30) return "Alto";
+      if (soma >= 20) return "Moderado";
+      return "Baixo";
+    }
+
+    /******************************************************
+     * 15) Renderiza Resultado, para o timer e salva no localStorage,
+     * calcula e exibe o perfil composto (ordenação decrescente das pontuações).
+     ******************************************************/
+    function renderResult() {
+      clearInterval(timerInterval);
+      localStorage.setItem("discTestDone", "true");
+
+      resultDiv.innerHTML = "";
+      const headerDiv = document.createElement("div");
+      headerDiv.id = "result-header";
+      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (DISC)`;
+      resultDiv.appendChild(headerDiv);
+
+      // Exibe email abaixo do nome (opcional)
+      if (userEmail) {
+        const emailLine = document.createElement("p");
+        emailLine.className = "result-email";
+        emailLine.textContent = userEmail;
+        resultDiv.appendChild(emailLine);
+      }
+
+      const now = new Date();
+      const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+      const dateLine = document.createElement("p");
+      dateLine.className = "result-datetime";
+      dateLine.textContent = `Gerado em: ${resultDatetime}`;
+      resultDiv.appendChild(dateLine);
+
+      // Calcula a soma de pontos para cada dimensão (E, C, P, A)
+      let scores = { "E": 0, "C": 0, "P": 0, "A": 0 };
+      answers.forEach(resp => {
+        if (scores.hasOwnProperty(resp.sigla)) {
+          scores[resp.sigla] += resp.value;
+        }
+      });
+
+      // Calcula o perfil composto: ordena as dimensões por pontuação (decrescente) e ignora as que tiveram 0
+      let compositeArray = [];
+      Object.keys(scores).forEach(key => {
+        if (scores[key] > 0) {
+          compositeArray.push({ sigla: key, score: scores[key] });
+        }
+      });
+      compositeArray.sort((a, b) => b.score - a.score);
+      const compositeProfile = compositeArray.map(item => item.sigla).join("");
+
+      // Exibe o perfil composto
+      const compositeDiv = document.createElement("div");
+      compositeDiv.className = "composite-profile";
+      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile}</h2>`;
+      resultDiv.appendChild(compositeDiv);
+
+      // Exibe os detalhes de cada dimensão
+      const siglasUnicas = Object.keys(scores);
+      const resultsContainer = document.createElement("div");
+      resultsContainer.className = "results-container";
+
+      function getEmoji(nivel) {
+        if (nivel === "Alto") return "🔴";
+        if (nivel === "Moderado") return "🟡";
+        return "🟢";
+      }
+
+      siglasUnicas.forEach(sig => {
+        const soma = scores[sig];
+        const nivel = somaParaNivel(soma);
+        let suffix = (nivel === "Alto") ? "A" : (nivel === "Moderado" ? "M" : "B");
+        let interpretKey = sig + "-" + suffix;
+        let interpretObj = interpretations[interpretKey];
+
+        let perfilNome = interpretObj ? interpretObj.perfil : sig;
+        let textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
+
+        const perfilDiv = document.createElement("div");
+        perfilDiv.className = "perfil-result";
+        perfilDiv.innerHTML = `
+          <div class="info">
+            <h3>${perfilNome}</h3>
+            <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel})</p>
+            <p class="texto-participante">${textoInterpretacao}</p>
+          </div>
+          <div class="indicador">${getEmoji(nivel)}</div>
+        `;
+        resultsContainer.appendChild(perfilDiv);
+      });
+
+      resultDiv.appendChild(resultsContainer);
+
+      // Estatísticas de tempo
+      const testTotalTime = new Date() - testStartTime;
+      const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
+      const fastestTime = Math.min(...questionTimes);
+      const slowestTime = Math.max(...questionTimes);
+      const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
+      const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
+
+      const infoCard = document.createElement("div");
+      infoCard.className = "info-card";
+      infoCard.innerHTML = `
+        <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
+        <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
+        <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
+        <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
+      `;
+      resultDiv.appendChild(infoCard);
+
+      // Botão para imprimir
+      const printBtn = document.createElement("button");
+      printBtn.textContent = "Imprimir";
+      printBtn.className = "btn";
+      printBtn.onclick = () => window.print();
+      resultDiv.appendChild(printBtn);
+
+      resultDiv.classList.remove("hidden");
+    }
+
+    /******************************************************
+     * 16) Gera PDF com html2pdf.js (opcional)
+     ******************************************************/
+    function gerarPDF() {
+      const elemento = document.getElementById("result");
+      const opcoes = {
+        margin: 0.5,
+        filename: 'resultado-teste.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().from(elemento).set(opcoes).save();
+    }
+
+    /******************************************************
+     * 17) Função para enviar dados fixos ao AppSheet (não chamada)
+     ******************************************************/
+    function enviarAoAppSheet() {
+      const appId = "108acbee-fe0e-47f2-95b5-bcc84";
+      const tableName = "Página1";
+      const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
+      const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
+      const bodyData = {
+        Action: "Add",
+        Properties: {
+          Locale: "pt-BR",
+          Location: "0,0",
+          Timezone: "E. South America Standard Time"
+        },
+        Rows: [
+          {
+            "DateTime_Envio": new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
+            "IP": ipAddress,
+            "Nome": userName || "SEM_NOME",
+            "Email": userEmail || "SEM_EMAIL",
+            "Nome_Teste": "DISC",
+            "Versao_Teste": "1.0",
+            "Resultado": "Exemplo de resultado fixo"
+          }
+        ]
+      };
+
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "ApplicationAccessKey": accessKey
+        },
+        body: JSON.stringify(bodyData)
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        alert("Enviado ao AppSheet com sucesso!");
+      })
+      .catch(err => {
+        alert("Erro ao enviar ao AppSheet!");
+        console.error("Erro ao enviar ao AppSheet:", err);
+      });
+    }
+  </script>
+</body>
+</html>

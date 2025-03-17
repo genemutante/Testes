@@ -63,7 +63,9 @@
   </script>
 
   <script>
-    // 1) Função de formatação de tempo (minutos e segundos)
+    /******************************************************
+     * 1) Função para formatar tempo em minutos e segundos
+     ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
       const min = Math.floor(totalSec / 60);
@@ -71,7 +73,9 @@
       return min > 0 ? `${min} min. ${sec} seg.` : `${sec} seg.`;
     }
 
-    // 2) Variáveis globais
+    /******************************************************
+     * 2) Variáveis globais
+     ******************************************************/
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
@@ -81,22 +85,30 @@
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
 
-    // 3) Referências aos elementos
+    /******************************************************
+     * 3) Referências aos elementos
+     ******************************************************/
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
-    // 4) Arrays/Objetos que serão carregados via fetch
+    /******************************************************
+     * 4) Arrays/Objetos que serão carregados via fetch
+     ******************************************************/
     let questions = [];      // assertions.json (lista de afirmações)
     let interpretations = {}; // interpretacoes em { "CONTR-B": {...}, ... }
 
-    // 5) Captura IP
+    /******************************************************
+     * 5) Captura IP
+     ******************************************************/
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
-    // 6) Atualiza rodapé (IP, hora, SO)
+    /******************************************************
+     * 6) Atualiza rodapé (IP, hora, SO)
+     ******************************************************/
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -113,7 +125,9 @@
     }
     setInterval(updateFooter, 1000);
 
-    // 7) Carrega JSON de afirmações
+    /******************************************************
+     * 7) Carrega JSON de afirmações
+     ******************************************************/
     fetch("/assertions.json")
       .then(r => r.json())
       .then(data => {
@@ -121,7 +135,9 @@
       })
       .catch(err => console.error("Erro ao carregar assertions.json:", err));
 
-    // 8) Carrega JSON de interpretações
+    /******************************************************
+     * 8) Carrega JSON de interpretações
+     ******************************************************/
     fetch("/interpretations.json")
       .then(r => r.json())
       .then(data => {
@@ -133,7 +149,9 @@
       })
       .catch(err => console.error("Erro ao carregar interpretations.json:", err));
 
-    // 9) Botão Iniciar
+    /******************************************************
+     * 9) Botão Iniciar
+     ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       const inputName = document.getElementById("userName").value.trim();
       let inputEmail = document.getElementById("userEmail").value.trim().toLowerCase();
@@ -159,13 +177,15 @@
       renderQuestion();
     });
 
-    // 10) Validação simples de email
+    // Validação simples de email
     function validateEmail(email) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email.toLowerCase());
     }
 
-    // 11) Renderiza a questão atual
+    /******************************************************
+     * 10) Renderiza a questão atual
+     ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
 
@@ -231,14 +251,16 @@
       }
     }
 
-    // 12) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
+    // Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
     function somaParaNivel(soma) {
       if (soma >= 7) return "Alto";
       if (soma >= 5) return "Médio";
       return "Baixo";
     }
 
-    // 13) Renderiza Resultado
+    /******************************************************
+     * 11) Renderiza Resultado
+     ******************************************************/
     function renderResult() {
       resultDiv.innerHTML = "";
 
@@ -279,23 +301,22 @@
         let interpretKey = sig + "-" + suffix;
         let interpretObj = interpretations[interpretKey];
 
-        let sabotadorNome = interpretKey;
-        let textoParticipante = "Interpretação: Sem interpretação.";
-        let textoAvaliador = "Interpretação (Avaliador): Sem interpretação.";
+        // Nome do perfil e texto do participante
+        let sabotadorNome = interpretKey; // fallback
+        let textoParticipante = "Sem interpretação disponível.";
 
         if (interpretObj) {
-          sabotadorNome = interpretObj.sabotador;
-          textoParticipante = interpretObj.textoParticipante;
-          textoAvaliador = interpretObj.textoAvaliador;
+          sabotadorNome = interpretObj.sabotador; // ex.: "Controlador"
+          textoParticipante = interpretObj.textoParticipante; // ex.: "A pessoa..."
         }
 
+        // Monta o card do perfil
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
         perfilDiv.innerHTML = `
           <h3>${sabotadorNome}</h3>
-          <p><strong>Pontuação:</strong> ${soma} (${nivel})</p>
-          <p><strong>Interpretação (Participante):</strong> ${textoParticipante}</p>
-          <p><strong>Interpretação (Avaliador):</strong> ${textoAvaliador}</p>
+          <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel})</p>
+          <p class="texto-participante">${textoParticipante}</p>
         `;
         resultsContainer.appendChild(perfilDiv);
       });
@@ -310,6 +331,7 @@
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
 
+      // Card de estatísticas
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `
@@ -330,7 +352,9 @@
       resultDiv.classList.remove("hidden");
     }
 
-    // 14) Gera PDF com html2pdf.js
+    /******************************************************
+     * 12) Gera PDF com html2pdf.js
+     ******************************************************/
     function gerarPDF() {
       const elemento = document.getElementById("result");
       const opcoes = {

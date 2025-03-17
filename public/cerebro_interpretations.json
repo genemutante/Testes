@@ -1,0 +1,65 @@
+[
+  {
+    "sigla": "R-B",
+    "perfil": "Reptiliano (Instintivo)",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa pouco impulsiva, prefere planejamento cuidadoso e reflexão antes de agir, evitando riscos desnecessários.",
+    "textoAvaliador": "Ideal para funções que exigem análise e planejamento detalhado, com baixo risco em situações que demandem cautela."
+  },
+  {
+    "sigla": "R-M",
+    "perfil": "Reptiliano (Instintivo)",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa que equilibra bem impulsividade e reflexão, sendo capaz de reagir rapidamente quando necessário, mantendo certa prudência.",
+    "textoAvaliador": "Adequada para contextos com demandas moderadas de decisão rápida e análise situacional equilibrada."
+  },
+  {
+    "sigla": "R-A",
+    "perfil": "Reptiliano (Instintivo)",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa altamente instintiva e impulsiva, reage rapidamente, priorizando segurança imediata e conforto.",
+    "textoAvaliador": "Excelente em situações dinâmicas ou emergenciais; atenção recomendada para controlar decisões impulsivas em ambientes complexos."
+  },
+  {
+    "sigla": "E-B",
+    "perfil": "Límbico (Emocional)",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa pouco influenciada pelas emoções, priorizando lógica ou instinto em decisões, com menor sensibilidade emocional.",
+    "textoAvaliador": "Boa para funções técnicas ou analíticas com pouca necessidade de interações interpessoais profundas."
+  },
+  {
+    "sigla": "E-M",
+    "perfil": "Límbico (Emocional)",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa emocionalmente equilibrada, capaz de manter empatia e boa comunicação interpessoal, sem exageros emocionais.",
+    "textoAvaliador": "Adequada para cargos com necessidade moderada de relacionamento interpessoal equilibrado."
+  },
+  {
+    "sigla": "E-A",
+    "perfil": "Límbico (Emocional)",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa altamente empática, emocional e sensível ao ambiente emocional ao redor, priorizando relacionamentos interpessoais fortes.",
+    "textoAvaliador": "Excelente para funções com comunicação e interação constantes; monitorar decisões excessivamente emocionais."
+  },
+  {
+    "sigla": "N-B",
+    "perfil": "Neocórtex (Racional)",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa com pouca tendência a análises detalhadas, preferindo agir com base em emoções ou intuições rápidas.",
+    "textoAvaliador": "Boa em ambientes dinâmicos e menos analíticos, podendo precisar de apoio adicional em atividades que exijam planejamento detalhado."
+  },
+  {
+    "sigla": "N-M",
+    "perfil": "Neocórtex (Racional)",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa racional e organizada, que mantém um equilíbrio saudável entre planejamento lógico e flexibilidade operacional.",
+    "textoAvaliador": "Indicada para funções variadas que exigem bom planejamento e agilidade equilibrada."
+  },
+  {
+    "sigla": "N-A",
+    "perfil": "Neocórtex (Racional)",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa extremamente racional, lógica e analítica, priorizando planejamento detalhado e decisões cuidadosamente fundamentadas.",
+    "textoAvaliador": "Ideal para funções que exigem alta precisão analítica, planejamento estratégico e controle rigoroso; cuidado com a pouca flexibilidade frente a mudanças rápidas."
+  }
+]

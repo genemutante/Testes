@@ -1,0 +1,244 @@
+[
+  {
+    "text": "Costumo tomar decisões rápidas, guiado pela intuição.",
+    "sigla": "R"
+  },
+  {
+    "text": "Frequentemente ajo por impulso.",
+    "sigla": "R"
+  },
+  {
+    "text": "Me sinto desconfortável em situações incertas ou perigosas.",
+    "sigla": "R"
+  },
+  {
+    "text": "Tenho reações imediatas em situações de risco.",
+    "sigla": "R"
+  },
+  {
+    "text": "Prefiro ambientes que me proporcionam segurança física e emocional.",
+    "sigla": "R"
+  },
+  {
+    "text": "Costumo reagir rapidamente sem pensar muito em consequências.",
+    "sigla": "R"
+  },
+  {
+    "text": "Sinto necessidade constante de garantir meu conforto.",
+    "sigla": "R"
+  },
+  {
+    "text": "Minhas ações costumam ser guiadas pela necessidade de sobrevivência.",
+    "sigla": "R"
+  },
+  {
+    "text": "Sou muito cauteloso em situações que considero perigosas.",
+    "sigla": "R"
+  },
+  {
+    "text": "Busco evitar situações desconfortáveis sempre que possível.",
+    "sigla": "R"
+  },
+  {
+    "text": "Sinto-me seguro ao seguir rotinas previsíveis.",
+    "sigla": "R"
+  },
+  {
+    "text": "Costumo evitar mudanças bruscas ou perigosas.",
+    "sigla": "R"
+  },
+  {
+    "text": "Gosto de atividades que garantem segurança e estabilidade.",
+    "sigla": "R"
+  },
+  {
+    "text": "Frequentemente ajo rapidamente para resolver problemas imediatos.",
+    "sigla": "R"
+  },
+  {
+    "text": "Busco a simplicidade e praticidade em minhas decisões.",
+    "sigla": "R"
+  },
+  {
+    "text": "Minha primeira reação é geralmente instintiva.",
+    "sigla": "R"
+  },
+  {
+    "text": "Evito riscos sempre que possível.",
+    "sigla": "R"
+  },
+  {
+    "text": "Reajo de forma imediata a ameaças ou situações difíceis.",
+    "sigla": "R"
+  },
+  {
+    "text": "Sou muito sensível a situações que considero inseguras.",
+    "sigla": "R"
+  },
+  {
+    "text": "Prefiro segurança imediata a benefícios futuros incertos.",
+    "sigla": "R"
+  },
+
+  {
+    "text": "Me preocupo profundamente com o que os outros sentem.",
+    "sigla": "E"
+  },
+  {
+    "text": "Crio laços emocionais fortes rapidamente.",
+    "sigla": "E"
+  },
+  {
+    "text": "Minhas decisões são frequentemente influenciadas por meus sentimentos.",
+    "sigla": "E"
+  },
+  {
+    "text": "Tenho facilidade para expressar minhas emoções.",
+    "sigla": "E"
+  },
+  {
+    "text": "Busco a harmonia emocional nos meus relacionamentos.",
+    "sigla": "E"
+  },
+  {
+    "text": "Sou sensível aos sentimentos das pessoas ao meu redor.",
+    "sigla": "E"
+  },
+  {
+    "text": "Me preocupo bastante com a opinião dos outros.",
+    "sigla": "E"
+  },
+  {
+    "text": "A felicidade das pessoas próximas é muito importante para mim.",
+    "sigla": "E"
+  },
+  {
+    "text": "Prefiro ambientes acolhedores e emocionalmente seguros.",
+    "sigla": "E"
+  },
+  {
+    "text": "Minhas emoções influenciam fortemente minhas decisões diárias.",
+    "sigla": "E"
+  },
+  {
+    "text": "Valorizo profundamente relacionamentos interpessoais.",
+    "sigla": "E"
+  },
+  {
+    "text": "Costumo ser empático e compreensivo.",
+    "sigla": "E"
+  },
+  {
+    "text": "Evito conflitos por valorizar o bem-estar emocional.",
+    "sigla": "E"
+  },
+  {
+    "text": "Sinto-me afetado emocionalmente com facilidade.",
+    "sigla": "E"
+  },
+  {
+    "text": "Busco constante aprovação emocional das pessoas próximas.",
+    "sigla": "E"
+  },
+  {
+    "text": "Tenho dificuldades em tomar decisões quando afetam outras pessoas emocionalmente.",
+    "sigla": "E"
+  },
+  {
+    "text": "Prefiro relações duradouras e emocionalmente profundas.",
+    "sigla": "E"
+  },
+  {
+    "text": "Sou facilmente influenciado pelo ambiente emocional ao meu redor.",
+    "sigla": "E"
+  },
+  {
+    "text": "Considero sentimentos mais importantes que a lógica.",
+    "sigla": "E"
+  },
+  {
+    "text": "Costumo me apegar emocionalmente com facilidade.",
+    "sigla": "E"
+  },
+
+  {
+    "text": "Planejo minhas ações detalhadamente antes de agir.",
+    "sigla": "N"
+  },
+  {
+    "text": "Gosto de analisar situações antes de decidir algo importante.",
+    "sigla": "N"
+  },
+  {
+    "text": "Prefiro a lógica e o planejamento às emoções.",
+    "sigla": "N"
+  },
+  {
+    "text": "Tomo decisões baseado em fatos e dados concretos.",
+    "sigla": "N"
+  },
+  {
+    "text": "Sou bastante analítico e racional nas minhas escolhas.",
+    "sigla": "N"
+  },
+  {
+    "text": "Valorizo muito a organização e planejamento.",
+    "sigla": "N"
+  },
+  {
+    "text": "Costumo pensar bastante antes de agir.",
+    "sigla": "N"
+  },
+  {
+    "text": "Busco entender detalhadamente todas as opções antes de decidir.",
+    "sigla": "N"
+  },
+  {
+    "text": "Minhas ações são geralmente precedidas de análise lógica.",
+    "sigla": "N"
+  },
+  {
+    "text": "Me sinto confortável em ambientes organizados e bem estruturados.",
+    "sigla": "N"
+  },
+  {
+    "text": "Valorizo a precisão e exatidão nas decisões que tomo.",
+    "sigla": "N"
+  },
+  {
+    "text": "Tenho dificuldade em agir sem um plano prévio.",
+    "sigla": "N"
+  },
+  {
+    "text": "Prefiro refletir profundamente sobre questões complexas antes de decidir.",
+    "sigla": "N"
+  },
+  {
+    "text": "Tenho hábito de planejar minhas ações com antecedência.",
+    "sigla": "N"
+  },
+  {
+    "text": "Minhas decisões são predominantemente racionais.",
+    "sigla": "N"
+  },
+  {
+    "text": "Gosto de ter clareza absoluta sobre as consequências antes de agir.",
+    "sigla": "N"
+  },
+  {
+    "text": "Evito decisões impulsivas ou baseadas apenas em emoções.",
+    "sigla": "N"
+  },
+  {
+    "text": "Gosto de estruturar minha rotina com antecedência.",
+    "sigla": "N"
+  },
+  {
+    "text": "Sou extremamente detalhista em minhas decisões.",
+    "sigla": "N"
+  },
+  {
+    "text": "Busco frequentemente informações antes de fazer qualquer escolha.",
+    "sigla": "N"
+  }
+]

@@ -1,0 +1,162 @@
+[
+  {
+    "text": "Faço questão de ser notado pelas coisas que realizo. (ATEN)",
+    "sigla": "ATEN"
+  },
+  {
+    "text": "Gosto muito de ser o centro das atenções. (ATEN)",
+    "sigla": "ATEN"
+  },
+  {
+    "text": "Desisto facilmente quando as coisas ficam difíceis ou desinteressantes. (BCOMP)",
+    "sigla": "BCOMP"
+  },
+  {
+    "text": "Tenho dificuldade em terminar o que começo. (BCOMP)",
+    "sigla": "BCOMP"
+  },
+  {
+    "text": "Me sinto desconfortável quando não controlo uma situação. (CONTR)",
+    "sigla": "CONTR"
+  },
+  {
+    "text": "Prefiro fazer as coisas sozinho para garantir que sejam feitas corretamente. (CONTR)",
+    "sigla": "CONTR"
+  },
+  {
+    "text": "Estou sempre alerta para possíveis problemas futuros. (DESCO)",
+    "sigla": "DESCO"
+  },
+  {
+    "text": "Frequentemente desconfio das intenções das pessoas. (DESCO)",
+    "sigla": "DESCO"
+  },
+  {
+    "text": "Evito criar vínculos emocionais muito profundos. (DISTA)",
+    "sigla": "DISTA"
+  },
+  {
+    "text": "Prefiro não demonstrar meus sentimentos às pessoas. (DISTA)",
+    "sigla": "DISTA"
+  },
+  {
+    "text": "Adio frequentemente atividades que não gosto. (ESQUI)",
+    "sigla": "ESQUI"
+  },
+  {
+    "text": "Costumo adiar tarefas desagradáveis. (ESQUI)",
+    "sigla": "ESQUI"
+  },
+  {
+    "text": "Confio muito nas minhas primeiras impressões sobre pessoas ou situações. (ECONF)",
+    "sigla": "ECONF"
+  },
+  {
+    "text": "Sinto que quase sempre estou certo nas discussões. (ECONF)",
+    "sigla": "ECONF"
+  },
+  {
+    "text": "Me preocupo muito com a opinião dos outros sobre mim. (EPRACEIT)",
+    "sigla": "EPRACEIT"
+  },
+  {
+    "text": "Sinto forte necessidade de agradar as pessoas. (EPRACEIT)",
+    "sigla": "EPRACEIT"
+  },
+  {
+    "text": "Prefiro ser lógico do que emocional ao lidar com problemas. (HRACI)",
+    "sigla": "HRACI"
+  },
+  {
+    "text": "Quase sempre ignoro meus sentimentos quando tomo decisões. (HRACI)",
+    "sigla": "HRACI"
+  },
+  {
+    "text": "Nunca me sinto plenamente satisfeito com minhas conquistas. (HREAL)",
+    "sigla": "HREAL"
+  },
+  {
+    "text": "Sinto constante necessidade de me superar. (HREAL)",
+    "sigla": "HREAL"
+  },
+  {
+    "text": "Costumo imaginar cenários negativos com frequência. (HVIGI)",
+    "sigla": "HVIGI"
+  },
+  {
+    "text": "Fico preocupado constantemente com coisas que ainda não aconteceram. (HVIGI)",
+    "sigla": "HVIGI"
+  },
+  {
+    "text": "Me canso facilmente de atividades rotineiras. (INQUI)",
+    "sigla": "INQUI"
+  },
+  {
+    "text": "Sinto grande necessidade de mudanças e novidades constantes. (INQUI)",
+    "sigla": "INQUI"
+  },
+  {
+    "text": "Meu humor costuma mudar rapidamente. (INSTEMO)",
+    "sigla": "INSTEMO"
+  },
+  {
+    "text": "Tenho dificuldade para manter o equilíbrio emocional em situações estressantes. (INSTEMO)",
+    "sigla": "INSTEMO"
+  },
+  {
+    "text": "Me critico duramente por erros que cometo. (JUIZ)",
+    "sigla": "JUIZ"
+  },
+  {
+    "text": "Tenho tendência a julgar as pessoas rapidamente. (JUIZ)",
+    "sigla": "JUIZ"
+  },
+  {
+    "text": "Me incomodo profundamente com pequenos erros ou falhas. (PERFE)",
+    "sigla": "PERFE"
+  },
+  {
+    "text": "Pequenos erros ou imperfeições costumam me incomodar muito. (PERFE)",
+    "sigla": "PERFE"
+  },
+  {
+    "text": "Costumo me sentir bem ajudando outras pessoas. (PREST)",
+    "sigla": "PREST"
+  },
+  {
+    "text": "Gosto de ser útil para as pessoas próximas. (PREST)",
+    "sigla": "PREST"
+  },
+  {
+    "text": "Costumo me sobrecarregar ajudando os outros. (PRES-EX)",
+    "sigla": "PRES-EX"
+  },
+  {
+    "text": "Tenho dificuldade em dizer não quando me pedem algo. (PRES-EX)",
+    "sigla": "PRES-EX"
+  },
+  {
+    "text": "Mesmo discordando, evito demonstrar isso diretamente. (RESPASS)",
+    "sigla": "RESPASS"
+  },
+  {
+    "text": "Prefiro concordar superficialmente do que gerar conflitos. (RESPASS)",
+    "sigla": "RESPASS"
+  },
+  {
+    "text": "Costumo sentir pena de mim mesmo com frequência. (VIT)",
+    "sigla": "VIT"
+  },
+  {
+    "text": "Me sinto injustiçado facilmente nas situações do dia a dia. (VIT)",
+    "sigla": "VIT"
+  },
+  {
+    "text": "É comum que emoções fortes dominem minhas ações rapidamente. (VOLEMO)",
+    "sigla": "VOLEMO"
+  },
+  {
+    "text": "Pequenas coisas facilmente me irritam ou me deixam triste. (VOLEMO)",
+    "sigla": "VOLEMO"
+  }
+]

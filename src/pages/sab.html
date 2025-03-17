@@ -62,9 +62,6 @@
   </script>
 
   <script>
-    /******************************************************
-     * 1) Carrega parâmetros (nome e email) da URL
-     ******************************************************/
     function carregarParametros() {
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
@@ -78,9 +75,6 @@
       }
     }
 
-    /******************************************************
-     * 2) Função para formatar tempo (minutos e segundos)
-     ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
       const min = Math.floor(totalSec / 60);
@@ -88,58 +82,39 @@
       return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
     }
 
-    /******************************************************
-     * 3) Função para atualizar o relógio (timer)
-     ******************************************************/
     function updateTimer() {
       if (testStartTime) {
         const elapsed = new Date() - testStartTime;
         document.getElementById("timer").textContent = formatMinSec(elapsed);
       }
     }
-    // Armazena o ID do interval para poder parar o timer depois
-    const timerInterval = setInterval(updateTimer, 1000);
+    setInterval(updateTimer, 1000);
 
-    /******************************************************
-     * 4) Função para remover a sigla (entre parênteses)
-     ******************************************************/
     function removeIndicador(text) {
       return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
 
-    /******************************************************
-     * 5) Variáveis globais
-     ******************************************************/
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = []; // array de { sigla, value }
+    const answers = [];
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
-    let questions = [];
-    let interpretations = {};
-    let scoresGlobal = {};
 
-    /******************************************************
-     * 6) Referências aos elementos
-     ******************************************************/
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
-    /******************************************************
-     * 7) Captura IP
-     ******************************************************/
+    let questions = [];
+    let interpretations = {};
+
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
-    /******************************************************
-     * 8) Atualiza rodapé (IP, hora, SO)
-     ******************************************************/
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -156,17 +131,11 @@
     }
     setInterval(updateFooter, 1000);
 
-    /******************************************************
-     * 9) Carrega JSON de afirmações
-     ******************************************************/
     fetch("/assertions.json")
       .then(r => r.json())
       .then(data => { questions = data; })
       .catch(err => console.error("Erro ao carregar assertions.json:", err));
 
-    /******************************************************
-     * 10) Carrega JSON de interpretações
-     ******************************************************/
     fetch("/interpretations.json")
       .then(r => r.json())
       .then(data => {
@@ -176,9 +145,6 @@
       })
       .catch(err => console.error("Erro ao carregar interpretations.json:", err));
 
-    /******************************************************
-     * 11) Inicia Teste
-     ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
       introDiv.classList.add("hidden");
@@ -186,32 +152,35 @@
       renderQuestion();
     });
 
-    /******************************************************
-     * 12) Renderiza a questão atual
-     ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
       if (currentQuestion < questions.length) {
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
+
         const questionNumber = document.createElement("h2");
         questionNumber.className = "question-number";
         questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
         quizDiv.appendChild(questionNumber);
+
         const progressContainer = document.createElement("div");
         progressContainer.className = "progress-container";
         quizDiv.appendChild(progressContainer);
+
         const progressBarBg = document.createElement("div");
         progressBarBg.className = "progress-bar-bg";
         progressContainer.appendChild(progressBarBg);
+
         const progressBarFill = document.createElement("div");
         progressBarFill.className = "progress-bar-fill";
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
+
         const questionText = document.createElement("p");
         questionText.className = "question-text";
         questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
+
         const scaleLabels = [
           "Discordo totalmente (1)",
           "Discordo parcialmente (2)",
@@ -237,53 +206,52 @@
       }
     }
 
-    /******************************************************
-     * 13) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
-     ******************************************************/
     function somaParaNivel(soma) {
       if (soma >= 7) return "Alto";
       if (soma >= 5) return "Médio";
       return "Baixo";
     }
 
-    /******************************************************
-     * 14) Renderiza Resultado e para o timer
-     ******************************************************/
     function renderResult() {
-      clearInterval(timerInterval); // Para o relógio
       resultDiv.innerHTML = "";
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (SAB)`;
       resultDiv.appendChild(headerDiv);
+
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
       const dateLine = document.createElement("p");
       dateLine.className = "result-datetime";
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
+
       let scores = {};
       answers.forEach(resp => {
         if (!scores[resp.sigla]) scores[resp.sigla] = 0;
         scores[resp.sigla] += resp.value;
       });
-      scoresGlobal = scores;
+
       const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
+
       function getEmoji(nivel) {
         if (nivel === "Alto") return "🔴";
         if (nivel === "Médio") return "🟡";
         return "🟢";
       }
+
       siglasUnicas.forEach(sig => {
         const soma = scores[sig] || 0;
         const nivel = somaParaNivel(soma);
         let suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
         let interpretKey = sig + "-" + suffix;
         let interpretObj = interpretations[interpretKey];
+
         let perfilNome = interpretObj ? interpretObj.sabotador : sig;
         let textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
+
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
         perfilDiv.innerHTML = `
@@ -296,13 +264,16 @@
         `;
         resultsContainer.appendChild(perfilDiv);
       });
+
       resultDiv.appendChild(resultsContainer);
+
       const testTotalTime = new Date() - testStartTime;
       const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
       const fastestTime = Math.min(...questionTimes);
       const slowestTime = Math.max(...questionTimes);
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
+
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `
@@ -312,29 +283,23 @@
         <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
       `;
       resultDiv.appendChild(infoCard);
+
       const pdfBtn = document.createElement("button");
       pdfBtn.textContent = "Gerar PDF";
       pdfBtn.className = "btn";
       pdfBtn.onclick = gerarPDF;
       resultDiv.appendChild(pdfBtn);
-      const showStringBtn = document.createElement("button");
-      showStringBtn.textContent = "Obter String p/ WhatsApp";
-      showStringBtn.className = "btn";
-      showStringBtn.style.marginLeft = "10px";
-      showStringBtn.onclick = exibirStringResultado;
-      resultDiv.appendChild(showStringBtn);
-      const emailBtn = document.createElement("button");
-      emailBtn.textContent = "Enviar por Email";
-      emailBtn.className = "btn";
-      emailBtn.style.marginLeft = "10px";
-      emailBtn.onclick = enviarPorEmail;
-      resultDiv.appendChild(emailBtn);
+
+      const sendBtn = document.createElement("button");
+      sendBtn.textContent = "Enviar ao AppSheet (fixo)";
+      sendBtn.className = "btn";
+      sendBtn.style.marginLeft = "10px";
+      sendBtn.onclick = enviarAoAppSheet;
+      resultDiv.appendChild(sendBtn);
+
       resultDiv.classList.remove("hidden");
     }
 
-    /******************************************************
-     * 15) Gera PDF com html2pdf.js
-     ******************************************************/
     function gerarPDF() {
       const elemento = document.getElementById("result");
       const opcoes = {
@@ -347,46 +312,47 @@
       html2pdf().from(elemento).set(opcoes).save();
     }
 
-    /******************************************************
-     * 16) Exibir String p/ WhatsApp
-     ******************************************************/
-    function exibirStringResultado() {
-      const dateTimeEnvio = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-      const ip = ipAddress || "0.0.0.0";
-      const nome = userName || "SEM_NOME";
-      const email = userEmail || "SEM_EMAIL";
-      const nomeTeste = "SAB101";
-      const versaoTeste = "v1";
-      const siglas = Object.keys(scoresGlobal);
-      const resultado = siglas.join("@");
-      const finalString = `${dateTimeEnvio};${ip};${nome};${email};${nomeTeste};${versaoTeste};${resultado}`;
-      alert("Copie e envie no WhatsApp:\n\n" + finalString);
-    }
+    function enviarAoAppSheet() {
+      const appId = "108acbee-fe0e-47f2-95b5-bcc84";
+      const tableName = "Página1";
+      const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
+      const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
+      const bodyData = {
+        Action: "Add",
+        Properties: {
+          Locale: "pt-BR",
+          Location: "0,0",
+          Timezone: "E. South America Standard Time"
+        },
+        Rows: [
+          {
+            "DateTime_Envio": new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
+            "IP": ipAddress,
+            "Nome": userName || "SEM_NOME",
+            "Email": userEmail || "SEM_EMAIL",
+            "Nome_Teste": "SAB",
+            "Versao_Teste": "1.0",
+            "Resultado": "Controlador Alto (fixo)"
+          }
+        ]
+      };
 
-    /******************************************************
-     * 17) Enviar por Email via mailto:
-     ******************************************************/
-    function enviarPorEmail() {
-      const dateTimeEnvio = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-      const ip = ipAddress || "0.0.0.0";
-      const nome = userName || "SEM_NOME";
-      const email = userEmail || "SEM_EMAIL";
-      const nomeTeste = "SAB101";
-      const versaoTeste = "v1";
-      const siglas = Object.keys(scoresGlobal);
-      const resultado = siglas.join("@");
-      const finalString = 
-        "DateTime_Envio: " + dateTimeEnvio + "\n" +
-        "IP: " + ip + "\n" +
-        "Nome: " + nome + "\n" +
-        "Email: " + email + "\n" +
-        "Nome_Teste: " + nomeTeste + "\n" +
-        "Versao_Teste: " + versaoTeste + "\n" +
-        "Resultado: " + resultado + "\n";
-      const subject = "Resultado do Teste SAB";
-      const body = encodeURIComponent(finalString);
-      const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
-      window.location.href = mailtoLink;
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "ApplicationAccessKey": accessKey
+        },
+        body: JSON.stringify(bodyData)
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        alert("Enviado ao AppSheet com sucesso!");
+      })
+      .catch(err => {
+        alert("Erro ao enviar ao AppSheet!");
+        console.error("Erro ao enviar ao AppSheet:", err);
+      });
     }
   </script>
 </body>

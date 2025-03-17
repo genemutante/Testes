@@ -36,6 +36,7 @@
   <main id="app">
     <!-- Tela de Introdução -->
     <section id="intro">
+      <!-- Exibe o nome do participante já vindo via URL -->
       <h1>Bem-vindo(a), <span id="nomeParticipante"></span>!</h1>
       <p>
         Leia cada pergunta e escolha a alternativa que mais representa como você age ou pensa em situações similares.
@@ -62,10 +63,14 @@
   </script>
 
   <script>
+    /******************************************************
+     * 1) Carrega parâmetros (nome e email) da URL
+     ******************************************************/
     function carregarParametros() {
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
       const emailParam = urlParams.get("email");
+
       if (nomeParam) {
         document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
         userName = nomeParam.toUpperCase();
@@ -75,6 +80,9 @@
       }
     }
 
+    /******************************************************
+     * 2) Função para formatar tempo (minutos e segundos)
+     ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
       const min = Math.floor(totalSec / 60);
@@ -82,6 +90,9 @@
       return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
     }
 
+    /******************************************************
+     * 3) Função para atualizar o relógio (timer)
+     ******************************************************/
     function updateTimer() {
       if (testStartTime) {
         const elapsed = new Date() - testStartTime;
@@ -90,10 +101,17 @@
     }
     setInterval(updateTimer, 1000);
 
+    /******************************************************
+     * 4) Função para remover a sigla (entre parênteses) do final do texto.
+     * Essa função garante que o participante não veja o perfil na afirmação.
+     ******************************************************/
     function removeIndicador(text) {
       return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
 
+    /******************************************************
+     * 5) Variáveis globais
+     ******************************************************/
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
@@ -103,18 +121,30 @@
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
 
+    /******************************************************
+     * 6) Referências aos elementos
+     ******************************************************/
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
-    let questions = [];
-    let interpretations = {};
+    /******************************************************
+     * 7) Arrays/Objetos carregados via fetch
+     ******************************************************/
+    let questions = [];      // assertions.json (lista de afirmações)
+    let interpretations = {}; // interpretações em { "CONTR-B": {...}, ... }
 
+    /******************************************************
+     * 8) Captura IP
+     ******************************************************/
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
+    /******************************************************
+     * 9) Atualiza rodapé (IP, hora, SO)
+     ******************************************************/
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -131,11 +161,17 @@
     }
     setInterval(updateFooter, 1000);
 
+    /******************************************************
+     * 10) Carrega JSON de afirmações
+     ******************************************************/
     fetch("/assertions.json")
       .then(r => r.json())
       .then(data => { questions = data; })
       .catch(err => console.error("Erro ao carregar assertions.json:", err));
 
+    /******************************************************
+     * 11) Carrega JSON de interpretações
+     ******************************************************/
     fetch("/interpretations.json")
       .then(r => r.json())
       .then(data => {
@@ -145,6 +181,9 @@
       })
       .catch(err => console.error("Erro ao carregar interpretations.json:", err));
 
+    /******************************************************
+     * 12) Inicia Teste (sem validação de nome/email)
+     ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
       introDiv.classList.add("hidden");
@@ -152,6 +191,9 @@
       renderQuestion();
     });
 
+    /******************************************************
+     * 13) Renderiza a questão atual
+     ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
       if (currentQuestion < questions.length) {
@@ -206,14 +248,21 @@
       }
     }
 
+    /******************************************************
+     * 14) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
+     ******************************************************/
     function somaParaNivel(soma) {
       if (soma >= 7) return "Alto";
       if (soma >= 5) return "Médio";
       return "Baixo";
     }
 
+    /******************************************************
+     * 15) Renderiza Resultado
+     ******************************************************/
     function renderResult() {
       resultDiv.innerHTML = "";
+
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (SAB)`;
@@ -300,6 +349,9 @@
       resultDiv.classList.remove("hidden");
     }
 
+    /******************************************************
+     * 16) Gera PDF com html2pdf.js
+     ******************************************************/
     function gerarPDF() {
       const elemento = document.getElementById("result");
       const opcoes = {
@@ -312,6 +364,9 @@
       html2pdf().from(elemento).set(opcoes).save();
     }
 
+    /******************************************************
+     * 17) Envia dados fixos ao AppSheet
+     ******************************************************/
     function enviarAoAppSheet() {
       const appId = "108acbee-fe0e-47f2-95b5-bcc84";
       const tableName = "Página1";

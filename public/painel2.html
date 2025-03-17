@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Página Inicial - Testes de Perfil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .input-field {
+      width: 300px;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .btn {
+      padding: 10px 20px;
+      background: #2E7D32;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    .btn:hover {
+      background: #1B5E20;
+    }
+    .btn-desabilitado {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Portal de Testes de Perfil v1</h2>
+  </header>
+
+  <main>
+    <h1>Bem-vindo ao Portal de Testes</h1>
+    <p>Por favor, insira seu nome e último sobrenome:</p>
+    <input 
+      type="text" 
+      id="userName" 
+      class="input-field" 
+      placeholder="SEU NOME (EX.: IVO DIAS)"
+      required
+      style="text-transform: uppercase;"
+    />
+    <p>Por favor, insira seu email:</p>
+    <input 
+      type="email" 
+      id="userEmail" 
+      class="input-field" 
+      placeholder="seu email (ex.: fulano@teste.com)"
+      required
+      style="text-transform: lowercase;"
+    />
+
+    <div style="margin-top: 20px;">
+      <button id="sabotadoresBtn" class="btn" onclick="iniciarSabotadores()">Teste de Sabotadores</button>
+      <button class="btn btn-desabilitado" disabled>Teste DISC (Em Breve)</button>
+      <button class="btn btn-desabilitado" disabled>Teste Quociente Emocional (Em Breve)</button>
+    </div>
+  </main>
+
+  <footer style="margin-top:20px;font-size:10px;color:#666;">
+    © 2025 - Portal de Testes de Perfil
+  </footer>
+
+  <script>
+    // Verifica se o teste já foi concluído e atualiza o botão
+    function checkTestStatus() {
+      const btn = document.getElementById("sabotadoresBtn");
+      if (localStorage.getItem("sabTestDone") === "true") {
+        btn.textContent = "Teste de Sabotadores ✔";
+        // Se preferir impedir reteste, descomente a linha abaixo:
+        // btn.disabled = true;
+      }
+    }
+
+    // Função para validar e iniciar o teste
+    function iniciarSabotadores() {
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+
+      if (nameInput.length < 8 || !nameInput.includes(" ")) {
+        alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
+        return;
+      }
+      if (!validateEmail(emailInput)) {
+        alert("Por favor, insira um email válido.");
+        return;
+      }
+
+      // Monta a URL com os parâmetros e redireciona
+      const url = `sab2.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
+    }
+
+    // Validação simples de email
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email.toLowerCase());
+    }
+
+    // Verifica o status assim que a página carrega
+    window.onload = function() {
+      checkTestStatus();
+    }
+  </script>
+</body>
+</html>

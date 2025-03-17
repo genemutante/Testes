@@ -8,8 +8,9 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
   <!-- Link para o CSS externo -->
   <link rel="stylesheet" href="/style.css" />
+
   <style>
-    /* Regras adicionais para o relógio */
+    /* Relógio no canto */
     #timer {
       font-size: 1.2em;
       font-weight: bold;
@@ -21,6 +22,49 @@
       top: 10px;
       right: 10px;
       z-index: 1000;
+    }
+    /* Card grande para o perfil composto */
+    .composite-card {
+      background: #f5f5f5;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+      text-align: center;
+    }
+    .composite-card h2 {
+      margin: 0;
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+    /* Cartão de cada dimensão */
+    .perfil-result {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 15px;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    /* Container com as infos de texto */
+    .perfil-result .info {
+      flex: 1;
+      margin-right: 15px;
+    }
+    /* Círculo com a letra do perfil */
+    .disc-letter {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #333;
     }
   </style>
 </head>
@@ -34,7 +78,7 @@
   <div id="timer">00:00</div>
 
   <main id="app">
-    <!-- Se desejar, você pode incluir uma marca se o teste já foi feito (via localStorage) -->
+    <!-- Se desejar, exibe a marca de teste já concluído -->
     <div id="testDoneMark" style="display:none; color:green; font-weight:bold; margin-bottom:10px;">
       Teste já concluído ✔
     </div>
@@ -58,7 +102,7 @@
 
   <footer id="footer"></footer>
 
-  <!-- Biblioteca html2pdf.js para gerar PDF, se desejado -->
+  <!-- Biblioteca html2pdf.js (caso queira gerar PDF) -->
   <script 
     src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
     integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
@@ -114,10 +158,10 @@
     }
 
     /******************************************************
-     * 4) Função para remover indicadores (se houver) do final do texto.
+     * 4) Remove indicadores (se houver) do final do texto
      ******************************************************/
     function removeIndicador(text) {
-      return text.replace(/\s*\([^)]*\)\s*$/, "");
+      return text; // Aqui não removemos nada, pois você optou por não usar (Sigla) no text
     }
 
     /******************************************************
@@ -142,8 +186,8 @@
     /******************************************************
      * 7) Arrays/Objetos carregados via fetch
      ******************************************************/
-    let questions = [];      // disc_assertions.json (lista de afirmações)
-    let interpretations = {}; // disc_interpretations.json (interpretações)
+    let questions = [];      // disc_assertions.json
+    let interpretations = {}; // disc_interpretations.json
 
     /******************************************************
      * 8) Captura IP
@@ -173,7 +217,7 @@
     setInterval(updateFooter, 1000);
 
     /******************************************************
-     * 10) Carrega JSON de afirmações DISC
+     * 10) Carrega JSON de afirmações
      ******************************************************/
     fetch("/disc_assertions.json")
       .then(r => r.json())
@@ -181,7 +225,7 @@
       .catch(err => console.error("Erro ao carregar disc_assertions.json:", err));
 
     /******************************************************
-     * 11) Carrega JSON de interpretações DISC
+     * 11) Carrega JSON de interpretações
      ******************************************************/
     fetch("/disc_interpretations.json")
       .then(r => r.json())
@@ -260,18 +304,18 @@
     }
 
     /******************************************************
-     * 14) Converte soma em "Baixo", "Moderado" ou "Alto" para o DISC
-     * Cada perfil tem 10 afirmações: pontuação mínima 10, máxima 40.
+     * 14) Converte soma em "Baixo", "Moderado" ou "Alto"
      ******************************************************/
     function somaParaNivel(soma) {
+      // Cada perfil tem 10 afirmações, pontuação mínima 10 e máxima 40
       if (soma >= 30) return "Alto";
       if (soma >= 20) return "Moderado";
       return "Baixo";
     }
 
     /******************************************************
-     * 15) Renderiza Resultado, para o timer e salva no localStorage,
-     * calcula e exibe o perfil composto (ordenação decrescente das pontuações).
+     * 15) Renderiza Resultado, gera card do perfil composto e 
+     *     exibe cada dimensão com um círculo contendo a letra
      ******************************************************/
     function renderResult() {
       clearInterval(timerInterval);
@@ -283,7 +327,7 @@
       headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (DISC)`;
       resultDiv.appendChild(headerDiv);
 
-      // Exibe email abaixo do nome (opcional)
+      // Exibe email abaixo do nome
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
@@ -306,7 +350,7 @@
         }
       });
 
-      // Calcula o perfil composto: ordena as dimensões por pontuação (decrescente) e ignora as que tiveram 0
+      // Ordena as dimensões por pontuação decrescente e gera o perfil composto
       let compositeArray = [];
       Object.keys(scores).forEach(key => {
         if (scores[key] > 0) {
@@ -316,43 +360,52 @@
       compositeArray.sort((a, b) => b.score - a.score);
       const compositeProfile = compositeArray.map(item => item.sigla).join("");
 
-      // Exibe o perfil composto
+      // Card do Perfil Composto
       const compositeDiv = document.createElement("div");
-      compositeDiv.className = "composite-profile";
-      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile}</h2>`;
+      compositeDiv.className = "composite-card";
+      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
 
-      // Exibe os detalhes de cada dimensão
-      const siglasUnicas = Object.keys(scores);
+      // Exibe cada dimensão (Executor, Comunicador, Planejador, Analítico)
+      const siglasUnicas = ["E", "C", "P", "A"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
-      function getEmoji(nivel) {
-        if (nivel === "Alto") return "🔴";
-        if (nivel === "Moderado") return "🟡";
-        return "🟢";
-      }
-
       siglasUnicas.forEach(sig => {
         const soma = scores[sig];
+        if (soma === 0) {
+          // Se não houve pontuação para a dimensão (ex: não respondeu?), pode pular
+          return;
+        }
         const nivel = somaParaNivel(soma);
-        let suffix = (nivel === "Alto") ? "A" : (nivel === "Moderado" ? "M" : "B");
-        let interpretKey = sig + "-" + suffix;
-        let interpretObj = interpretations[interpretKey];
+        const suffix = (nivel === "Alto") ? "A" : (nivel === "Moderado" ? "M" : "B");
+        const interpretKey = sig + "-" + suffix;
+        const interpretObj = interpretations[interpretKey];
 
+        // Nome do perfil e texto de interpretação
         let perfilNome = interpretObj ? interpretObj.perfil : sig;
         let textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
 
+        // Card da dimensão
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
-        perfilDiv.innerHTML = `
-          <div class="info">
-            <h3>${perfilNome}</h3>
-            <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel})</p>
-            <p class="texto-participante">${textoInterpretacao}</p>
-          </div>
-          <div class="indicador">${getEmoji(nivel)}</div>
+
+        // Bloco de texto
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "info";
+        infoDiv.innerHTML = `
+          <h3>${perfilNome}</h3>
+          <p class="pontuacao">Pontuação: ${soma} (${nivel})</p>
+          <p class="texto-participante">${textoInterpretacao}</p>
         `;
+
+        // Círculo com a letra do perfil
+        const letterDiv = document.createElement("div");
+        letterDiv.className = "disc-letter";
+        letterDiv.textContent = sig; // ex: "E", "C", "P", "A"
+
+        perfilDiv.appendChild(infoDiv);
+        perfilDiv.appendChild(letterDiv);
         resultsContainer.appendChild(perfilDiv);
       });
 
@@ -376,7 +429,7 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão para imprimir
+      // Botão Imprimir
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";
@@ -402,7 +455,7 @@
     }
 
     /******************************************************
-     * 17) Função para enviar dados fixos ao AppSheet (não chamada)
+     * 17) Exemplo de função para enviar ao AppSheet (não chamada)
      ******************************************************/
     function enviarAoAppSheet() {
       const appId = "108acbee-fe0e-47f2-95b5-bcc84";

@@ -4,33 +4,8 @@
   <meta charset="UTF-8" />
   <title>Página Inicial - Testes de Perfil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <!-- Seu CSS principal -->
   <link rel="stylesheet" href="/style.css" />
-  <style>
-    /* Estilos adicionais para a página inicial */
-    #intro {
-      text-align: center;
-      margin-top: 50px;
-    }
-    #intro h1 {
-      margin-bottom: 20px;
-      font-size: 1.8em;
-      color: #333;
-    }
-    .testes-container {
-      margin-top: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      align-items: center;
-    }
-    .btn-desabilitado {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-  </style>
 </head>
 <body>
   <header>
@@ -59,13 +34,10 @@
     />
 
     <div class="testes-container">
-      <!-- Teste de Sabotadores: Habilitado -->
+      <!-- Teste de Sabotadores -->
       <button class="btn" onclick="iniciarSabotadores()">Teste de Sabotadores</button>
-
-      <!-- Futuramente, você pode adicionar outros testes (desabilitados, por ex.) -->
       <button class="btn btn-desabilitado" disabled>Teste DISC (Em Breve)</button>
       <button class="btn btn-desabilitado" disabled>Teste Quociente Emocional (Em Breve)</button>
-      <!-- etc... -->
     </div>
   </main>
 
@@ -74,38 +46,31 @@
   </footer>
 
   <script>
-    // Simples validação
-    function validateFormFields() {
+    // Função para validar e iniciar o teste
+    function iniciarSabotadores() {
+      // Captura valores
       const nameInput = document.getElementById("userName").value.trim();
       const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+
+      // Validação
       if (nameInput.length < 8 || !nameInput.includes(" ")) {
         alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
-        return false;
+        return;
       }
       if (!validateEmail(emailInput)) {
         alert("Por favor, insira um email válido.");
-        return false;
+        return;
       }
-      return true;
+
+      // Monta URL
+      const url = `sab.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      // Redireciona
+      window.location.href = url;
     }
 
-    // Regex básica para email
     function validateEmail(email) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email.toLowerCase());
-    }
-
-    // Botão "Teste de Sabotadores"
-    function iniciarSabotadores() {
-      if (!validateFormFields()) return;
-
-      // Pega os valores
-      const name = document.getElementById("userName").value.trim();
-      const email = document.getElementById("userEmail").value.trim().toLowerCase();
-
-      // Redireciona para sab.html, passando name e email via query params
-      const url = `sab.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
-      window.location.href = url;
     }
   </script>
 </body>

@@ -119,6 +119,10 @@
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
 
+    let questions = [];
+    let interpretations = {};
+    let scoresGlobal = {};
+
     /******************************************************
      * 6) Referências aos elementos
      ******************************************************/
@@ -127,13 +131,7 @@
     const resultDiv = document.getElementById("result");
 
     /******************************************************
-     * 7) Arrays/Objetos carregados via fetch
-     ******************************************************/
-    let questions = [];
-    let interpretations = {};
-
-    /******************************************************
-     * 8) Captura IP
+     * 7) Captura IP
      ******************************************************/
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
@@ -141,7 +139,7 @@
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
     /******************************************************
-     * 9) Atualiza rodapé (IP, hora, SO)
+     * 8) Atualiza rodapé (IP, hora, SO)
      ******************************************************/
     function getOS() {
       const platform = window.navigator.platform;
@@ -160,7 +158,7 @@
     setInterval(updateFooter, 1000);
 
     /******************************************************
-     * 10) Carrega JSON de afirmações
+     * 9) Carrega JSON de afirmações
      ******************************************************/
     fetch("/assertions.json")
       .then(r => r.json())
@@ -168,7 +166,7 @@
       .catch(err => console.error("Erro ao carregar assertions.json:", err));
 
     /******************************************************
-     * 11) Carrega JSON de interpretações
+     * 10) Carrega JSON de interpretações
      ******************************************************/
     fetch("/interpretations.json")
       .then(r => r.json())
@@ -180,7 +178,7 @@
       .catch(err => console.error("Erro ao carregar interpretations.json:", err));
 
     /******************************************************
-     * 12) Inicia Teste
+     * 11) Inicia Teste
      ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
@@ -190,7 +188,7 @@
     });
 
     /******************************************************
-     * 13) Renderiza a questão atual
+     * 12) Renderiza a questão atual
      ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
@@ -248,7 +246,7 @@
     }
 
     /******************************************************
-     * 14) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
+     * 13) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
      ******************************************************/
     function somaParaNivel(soma) {
       if (soma >= 7) return "Alto";
@@ -257,10 +255,8 @@
     }
 
     /******************************************************
-     * 15) Renderiza Resultado
+     * 14) Renderiza Resultado
      ******************************************************/
-    let scoresGlobal = {}; // para armazenar e usar na string final
-
     function renderResult() {
       resultDiv.innerHTML = "";
 
@@ -276,14 +272,12 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Soma de pontos
       let scores = {};
       answers.forEach(resp => {
         if (!scores[resp.sigla]) scores[resp.sigla] = 0;
         scores[resp.sigla] += resp.value;
       });
-      // guarda globalmente
-      scoresGlobal = scores;
+      scoresGlobal = scores; // guardar global
 
       const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
       const resultsContainer = document.createElement("div");
@@ -320,7 +314,6 @@
 
       resultDiv.appendChild(resultsContainer);
 
-      // Tempo total
       const testTotalTime = new Date() - testStartTime;
       const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
       const fastestTime = Math.min(...questionTimes);
@@ -345,7 +338,7 @@
       pdfBtn.onclick = gerarPDF;
       resultDiv.appendChild(pdfBtn);
 
-      // Botão para exibir string final (para WhatsApp)
+      // Botão para exibir string final
       const showStringBtn = document.createElement("button");
       showStringBtn.textContent = "Obter String p/ WhatsApp";
       showStringBtn.className = "btn";
@@ -357,7 +350,7 @@
     }
 
     /******************************************************
-     * 16) Gera PDF com html2pdf.js
+     * 15) Gera PDF com html2pdf.js
      ******************************************************/
     function gerarPDF() {
       const elemento = document.getElementById("result");
@@ -372,45 +365,23 @@
     }
 
     /******************************************************
-     * 17) Exibir String p/ WhatsApp
+     * 16) Exibir String p/ WhatsApp
      ******************************************************/
     function exibirStringResultado() {
-      // Montamos a string final com 7 campos:
-      // 1) DateTime_Envio
-      // 2) IP
-      // 3) Nome
-      // 4) Email
-      // 5) Nome_Teste
-      // 6) Versao_Teste
-      // 7) Resultado (siglas unidas por "@")
-
-      // 1) Data/hora
       const dateTimeEnvio = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-
-      // 2) IP
       const ip = ipAddress || "0.0.0.0";
-
-      // 3) Nome
       const nome = userName || "SEM_NOME";
-
-      // 4) Email
       const email = userEmail || "SEM_EMAIL";
-
-      // 5) Nome_Teste
       const nomeTeste = "SAB101";
-
-      // 6) Versao_Teste
       const versaoTeste = "v1";
 
-      // 7) Resultado: pegar as siglas que constam em scoresGlobal
-      //   Exemplo: se scoresGlobal = { "CONTR": 6, "PERFE": 5 }, resultado = "CONTR@PERFE"
+      // Constrói a string de siglas
       const siglas = Object.keys(scoresGlobal); 
       const resultado = siglas.join("@");
 
       // Monta a string final
       const finalString = `${dateTimeEnvio};${ip};${nome};${email};${nomeTeste};${versaoTeste};${resultado}`;
 
-      // Exibe em alert (para copiar e colar no WhatsApp)
       alert("Copie e envie no WhatsApp:\n\n" + finalString);
     }
   </script>

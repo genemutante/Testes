@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Página Inicial - Testes de Perfil</title>
+  <title>Portal de Testes de Perfil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
@@ -62,9 +62,24 @@
     />
 
     <div style="margin-top: 20px;">
-      <button id="sabotadoresBtn" class="btn" onclick="iniciarSabotadores()">Teste de Sabotadores</button>
-      <button id="discBtn" class="btn" onclick="iniciarDisc()">Teste DISC</button>
-      <button class="btn btn-desabilitado" disabled>Teste Quociente Emocional (Em Breve)</button>
+      <!-- 1) Cérebro Trino (Ativo) -->
+      <button id="cerebroTrinoBtn" class="btn" onclick="iniciarCerebroTrino()">Cérebro Trino</button>
+      <!-- 2) Canais de Comunicação (Em Breve) -->
+      <button class="btn btn-desabilitado" disabled>Canais de Comunicação</button>
+      <!-- 3) Competencias e Habilidades (Em Breve) -->
+      <button class="btn btn-desabilitado" disabled>Competências e Habilidades</button>
+      <!-- 4) Autoestima (Em Breve) -->
+      <button class="btn btn-desabilitado" disabled>Autoestima</button>
+      <!-- 5) Proatividade (Em Breve) -->
+      <button class="btn btn-desabilitado" disabled>Proatividade</button>
+      <!-- 6) Quociente Emocional (Em Breve) -->
+      <button class="btn btn-desabilitado" disabled>Quociente Emocional</button>
+      <!-- 7) Comportamentos Sabotadores (Ativo) -->
+      <button id="sabotadoresBtn" class="btn" onclick="iniciarSabotadores()">Comportamentos Sabotadores</button>
+      <!-- 8) DISK (Ativo) -->
+      <button id="discBtn" class="btn" onclick="iniciarDisc()">DISK</button>
+      <!-- 9) VECA (Em Breve) -->
+      <button class="btn btn-desabilitado" disabled>VECA</button>
     </div>
   </main>
 
@@ -73,52 +88,68 @@
   </footer>
 
   <script>
-    // Verifica se o teste de Sabotadores já foi concluído e atualiza o botão
-    function checkTestStatus() {
-      const btn = document.getElementById("sabotadoresBtn");
-      if (localStorage.getItem("sabTestDone") === "true") {
-        btn.textContent = "Teste de Sabotadores ✔";
+    // Verifica se Cérebro Trino já foi concluído e atualiza o botão
+    function checkCerebroTrinoStatus() {
+      const btn = document.getElementById("cerebroTrinoBtn");
+      if (localStorage.getItem("cerebroTrinoDone") === "true") {
+        btn.textContent = "Cérebro Trino ✔";
       }
     }
 
-    // Verifica se o teste DISC já foi concluído e atualiza o botão
+    // Verifica se Sabotadores já foi concluído e atualiza o botão
+    function checkSabotadoresStatus() {
+      const btn = document.getElementById("sabotadoresBtn");
+      if (localStorage.getItem("sabTestDone") === "true") {
+        btn.textContent = "Comportamentos Sabotadores ✔";
+      }
+    }
+
+    // Verifica se DISK já foi concluído e atualiza o botão
     function checkDiscStatus() {
       const btn = document.getElementById("discBtn");
       if (localStorage.getItem("discTestDone") === "true") {
-        btn.textContent = "Teste DISC ✔";
+        btn.textContent = "DISK ✔";
       }
     }
 
-    // Função para validar e iniciar o Teste de Sabotadores
+    // Iniciar Cérebro Trino
+    function iniciarCerebroTrino() {
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (!validarCampos(nameInput, emailInput)) return;
+      const url = `cerebro-trino.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
+    }
+
+    // Iniciar Sabotadores
     function iniciarSabotadores() {
       const nameInput = document.getElementById("userName").value.trim();
       const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
-      if (nameInput.length < 8 || !nameInput.includes(" ")) {
-        alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
-        return;
-      }
-      if (!validateEmail(emailInput)) {
-        alert("Por favor, insira um email válido.");
-        return;
-      }
+      if (!validarCampos(nameInput, emailInput)) return;
       const url = `sab.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
       window.location.href = url;
     }
 
-    // Função para validar e iniciar o Teste DISC
+    // Iniciar DISK
     function iniciarDisc() {
       const nameInput = document.getElementById("userName").value.trim();
       const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (!validarCampos(nameInput, emailInput)) return;
+      const url = `disc.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
+    }
+
+    // Validação de campos
+    function validarCampos(nameInput, emailInput) {
       if (nameInput.length < 8 || !nameInput.includes(" ")) {
         alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
-        return;
+        return false;
       }
       if (!validateEmail(emailInput)) {
         alert("Por favor, insira um email válido.");
-        return;
+        return false;
       }
-      const url = `disc.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
-      window.location.href = url;
+      return true;
     }
 
     // Validação simples de email
@@ -127,9 +158,10 @@
       return re.test(email.toLowerCase());
     }
 
-    // Verifica o status assim que a página carrega
+    // Ao carregar a página, verifica status de cada teste
     window.onload = function() {
-      checkTestStatus();
+      checkCerebroTrinoStatus();
+      checkSabotadoresStatus();
       checkDiscStatus();
     }
   </script>

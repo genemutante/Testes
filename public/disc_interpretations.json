@@ -1,83 +1,83 @@
 [
   {
-    "sigla": "E-A",
+    "sigla": "D-A",
     "perfil": "Executor",
     "nivel": "Alto",
     "textoParticipante": "Pessoa decisiva e assertiva, adequada para situações de alta pressão e cargos de liderança.",
     "textoAvaliador": "Ideal para posições que exigem decisões rápidas e gestão sob pressão. Atenção a possíveis conflitos interpessoais."
   },
   {
-    "sigla": "E-M",
+    "sigla": "D-M",
     "perfil": "Executor",
     "nivel": "Moderado",
     "textoParticipante": "Pessoa com boa iniciativa e equilíbrio entre assertividade e colaboração.",
     "textoAvaliador": "Adequada para cargos que demandam liderança pontual, sem a necessidade de decisões imediatas constantes."
   },
   {
-    "sigla": "E-B",
+    "sigla": "D-B",
     "perfil": "Executor",
     "nivel": "Baixo",
     "textoParticipante": "Pessoa que prefere a colaboração e evita confrontos diretos, com menor demanda por decisões assertivas.",
     "textoAvaliador": "Indicado para ambientes colaborativos, mas pode ter dificuldade em posições que exigem liderança intensa."
   },
   {
-    "sigla": "C-A",
+    "sigla": "I-A",
     "perfil": "Comunicador",
     "nivel": "Alto",
     "textoParticipante": "Pessoa altamente comunicativa, entusiasmada e sociável, que se destaca em interações constantes.",
     "textoAvaliador": "Excelente para cargos que exigem relacionamento interpessoal e comunicação ativa."
   },
   {
-    "sigla": "C-M",
+    "sigla": "I-M",
     "perfil": "Comunicador",
     "nivel": "Moderado",
     "textoParticipante": "Pessoa equilibrada entre comunicação e foco em tarefas individuais.",
     "textoAvaliador": "Ideal para funções que requerem uma interação social moderada e boa comunicação."
   },
   {
-    "sigla": "C-B",
+    "sigla": "I-B",
     "perfil": "Comunicador",
     "nivel": "Baixo",
     "textoParticipante": "Pessoa mais reservada, que prefere interações pontuais.",
     "textoAvaliador": "Adequada para funções que exigem menos contato social direto."
   },
   {
-    "sigla": "P-A",
+    "sigla": "S-A",
     "perfil": "Planejador",
     "nivel": "Alto",
     "textoParticipante": "Pessoa paciente, organizada e confiável, excelente para ambientes estáveis e planejados.",
     "textoAvaliador": "Ideal para funções que exigem consistência e estabilidade, mas pode resistir a mudanças rápidas."
   },
   {
-    "sigla": "P-M",
+    "sigla": "S-M",
     "perfil": "Planejador",
     "nivel": "Moderado",
     "textoParticipante": "Pessoa que mantém equilíbrio emocional e se adapta bem a mudanças moderadas.",
     "textoAvaliador": "Adequada para funções com estabilidade, mas que demandam alguma flexibilidade."
   },
   {
-    "sigla": "P-B",
+    "sigla": "S-B",
     "perfil": "Planejador",
     "nivel": "Baixo",
     "textoParticipante": "Pessoa confortável em ambientes dinâmicos, com menor tendência a se manter em rotinas muito estáveis.",
     "textoAvaliador": "Indicado para ambientes que não exigem muita rigidez ou planejamento detalhado."
   },
   {
-    "sigla": "A-A",
+    "sigla": "C-A",
     "perfil": "Analítico",
     "nivel": "Alto",
     "textoParticipante": "Pessoa altamente organizada e detalhista, ideal para tarefas que exigem precisão absoluta.",
     "textoAvaliador": "Perfeita para funções que requerem alta exatidão, mas pode ser excessivamente crítica ou lenta em ambientes dinâmicos."
   },
   {
-    "sigla": "A-M",
+    "sigla": "C-M",
     "perfil": "Analítico",
     "nivel": "Moderado",
     "textoParticipante": "Pessoa detalhista e organizada, com boa capacidade de adaptação frente a imprevistos.",
     "textoAvaliador": "Ideal para funções que exigem equilíbrio entre análise detalhada e agilidade."
   },
   {
-    "sigla": "A-B",
+    "sigla": "C-B",
     "perfil": "Analítico",
     "nivel": "Baixo",
     "textoParticipante": "Pessoa pragmática e ágil, que prefere menos burocracia e maior dinamismo nas atividades.",

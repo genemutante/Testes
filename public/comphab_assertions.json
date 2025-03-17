@@ -1,0 +1,162 @@
+[
+  {
+    "text": "Consigo expressar minhas ideias claramente às pessoas.",
+    "sigla": "C"
+  },
+  {
+    "text": "Tenho facilidade para iniciar conversas em diferentes situações.",
+    "sigla": "C"
+  },
+  {
+    "text": "Gosto de explicar ideias de forma que todos entendam facilmente.",
+    "sigla": "C"
+  },
+  {
+    "text": "Costumo entender bem o que as pessoas querem dizer.",
+    "sigla": "C"
+  },
+  {
+    "text": "Presto atenção ao modo como me comunico para garantir clareza.",
+    "sigla": "C"
+  },
+  {
+    "text": "Me sinto confortável conversando mesmo com pessoas que não conheço.",
+    "sigla": "C"
+  },
+  {
+    "text": "Faço perguntas sempre que tenho dúvidas sobre algo.",
+    "sigla": "C"
+  },
+  {
+    "text": "Me sinto à vontade apresentando minhas ideias para grupos maiores.",
+    "sigla": "C"
+  },
+  {
+    "text": "Prefiro trabalhar em equipe do que sozinho.",
+    "sigla": "T"
+  },
+  {
+    "text": "Colaboro bem com os outros mesmo em situações difíceis.",
+    "sigla": "T"
+  },
+  {
+    "text": "Escuto e respeito opiniões diferentes das minhas.",
+    "sigla": "T"
+  },
+  {
+    "text": "Consigo resolver conflitos interpessoais com facilidade.",
+    "sigla": "T"
+  },
+  {
+    "text": "Tenho facilidade em criar confiança nos grupos que participo.",
+    "sigla": "T"
+  },
+  {
+    "text": "Sinto-me confortável ao contribuir para o sucesso coletivo.",
+    "sigla": "T"
+  },
+  {
+    "text": "Valorizo bastante o esforço em equipe.",
+    "sigla": "T"
+  },
+  {
+    "text": "Consigo trabalhar bem com pessoas de estilos diferentes do meu.",
+    "sigla": "T"
+  },
+  {
+    "text": "Tenho facilidade em me adaptar a novas situações.",
+    "sigla": "A"
+  },
+  {
+    "text": "Lido bem com mudanças rápidas em minha rotina.",
+    "sigla": "A"
+  },
+  {
+    "text": "Aceito mudanças mesmo que não estejam dentro das minhas expectativas.",
+    "sigla": "A"
+  },
+  {
+    "text": "Sou flexível ao lidar com imprevistos.",
+    "sigla": "A"
+  },
+  {
+    "text": "Me adapto facilmente a ambientes novos.",
+    "sigla": "A"
+  },
+  {
+    "text": "Encaro positivamente novos desafios ou situações inesperadas.",
+    "sigla": "A"
+  },
+  {
+    "text": "Consigo ajustar meus planos rapidamente quando necessário.",
+    "sigla": "A"
+  },
+  {
+    "text": "Estou aberto a aprender novas formas de fazer as coisas.",
+    "sigla": "A"
+  },
+  {
+    "text": "Identifico facilmente problemas antes que eles se tornem grandes.",
+    "sigla": "P"
+  },
+  {
+    "text": "Encontro soluções práticas rapidamente para os problemas que surgem.",
+    "sigla": "P"
+  },
+  {
+    "text": "Me sinto motivado quando tenho que resolver situações complexas.",
+    "sigla": "P"
+  },
+  {
+    "text": "Avalio cuidadosamente alternativas antes de resolver um problema.",
+    "sigla": "P"
+  },
+  {
+    "text": "Tenho facilidade em lidar com desafios difíceis.",
+    "sigla": "P"
+  },
+  {
+    "text": "Busco soluções criativas quando algo não sai como esperado.",
+    "sigla": "P"
+  },
+  {
+    "text": "Costumo resolver problemas com eficiência, mesmo sob pressão.",
+    "sigla": "P"
+  },
+  {
+    "text": "Sinto satisfação pessoal ao solucionar problemas difíceis.",
+    "sigla": "P"
+  },
+  {
+    "text": "Gosto de planejar detalhadamente minhas tarefas.",
+    "sigla": "O"
+  },
+  {
+    "text": "Sou organizado em minhas atividades diárias.",
+    "sigla": "O"
+  },
+  {
+    "text": "Costumo definir claramente minhas prioridades antes de agir.",
+    "sigla": "O"
+  },
+  {
+    "text": "Valorizo a pontualidade e a organização.",
+    "sigla": "O"
+  },
+  {
+    "text": "Planejo antecipadamente minhas tarefas e compromissos.",
+    "sigla": "O"
+  },
+  {
+    "text": "Evito improvisar em situações importantes.",
+    "sigla": "O"
+  },
+  {
+    "text": "Tenho facilidade em manter minhas coisas organizadas.",
+    "sigla": "O"
+  },
+  {
+    "text": "Prefiro ter um plano bem definido antes de iniciar qualquer tarefa.",
+    "sigla": "O"
+  }
+]

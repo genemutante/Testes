@@ -1,0 +1,107 @@
+[
+  {
+    "sigla": "C-A",
+    "perfil": "Comunicação",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa altamente comunicativa e expressiva, que consegue transmitir suas ideias com clareza e eficácia.",
+    "textoAvaliador": "Excelente para funções que exigem comunicação constante e eficaz."
+  },
+  {
+    "sigla": "C-M",
+    "perfil": "Comunicação",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa que possui boa capacidade de comunicação, adaptando-se bem às diferentes situações.",
+    "textoAvaliador": "Adequado para posições com demandas moderadas de comunicação."
+  },
+  {
+    "sigla": "C-B",
+    "perfil": "Comunicação",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que encontra dificuldades em expressar suas ideias ou prefere interações limitadas.",
+    "textoAvaliador": "Evitar posições que exigem alta demanda de comunicação constante."
+  },
+  {
+    "sigla": "T-A",
+    "perfil": "Trabalho em Equipe",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa que trabalha muito bem em equipe, colaborando e integrando-se com facilidade.",
+    "textoAvaliador": "Ideal para ambientes que valorizam cooperação contínua e resolução conjunta de problemas."
+  },
+  {
+    "sigla": "T-M",
+    "perfil": "Trabalho em Equipe",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa que colabora em equipe, embora também valorize momentos individuais.",
+    "textoAvaliador": "Adequado para funções que equilibram trabalho em grupo e autonomia."
+  },
+  {
+    "sigla": "T-B",
+    "perfil": "Trabalho em Equipe",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que prefere trabalhar sozinha e pode ter dificuldades em colaborar em grupo.",
+    "textoAvaliador": "Indicada para funções que não demandam forte interação em equipe."
+  },
+  {
+    "sigla": "A-A",
+    "perfil": "Adaptabilidade",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa altamente adaptável, que lida com mudanças e imprevistos com facilidade.",
+    "textoAvaliador": "Ótimo perfil para ambientes dinâmicos com constantes mudanças."
+  },
+  {
+    "sigla": "A-M",
+    "perfil": "Adaptabilidade",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa com boa adaptabilidade, equilibrando estabilidade e flexibilidade.",
+    "textoAvaliador": "Adequado para funções que exigem alguma adaptabilidade sem mudanças excessivas."
+  },
+  {
+    "sigla": "A-B",
+    "perfil": "Adaptabilidade",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que prefere ambientes estáveis e pode ter dificuldade em lidar com mudanças.",
+    "textoAvaliador": "Melhor para funções que demandam estabilidade e previsibilidade."
+  },
+  {
+    "sigla": "P-A",
+    "perfil": "Resolução de Problemas",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa extremamente eficaz na identificação e resolução de problemas complexos, com criatividade.",
+    "textoAvaliador": "Ideal para funções que exigem soluções rápidas e inovadoras."
+  },
+  {
+    "sigla": "P-M",
+    "perfil": "Resolução de Problemas",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa que resolve problemas do dia a dia de forma satisfatória, com alguma necessidade de apoio em desafios maiores.",
+    "textoAvaliador": "Boa para funções que exigem resolução de problemas de intensidade moderada."
+  },
+  {
+    "sigla": "P-B",
+    "perfil": "Resolução de Problemas",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que pode enfrentar dificuldades em identificar e resolver problemas de forma autônoma.",
+    "textoAvaliador": "Indicado para funções com menor exigência de resolução ativa de problemas."
+  },
+  {
+    "sigla": "O-A",
+    "perfil": "Organização e Planejamento",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa extremamente organizada e planejadora, com alto controle sobre suas atividades.",
+    "textoAvaliador": "Excelente para funções que demandam planejamento rigoroso e organização detalhada."
+  },
+  {
+    "sigla": "O-M",
+    "perfil": "Organização e Planejamento",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa razoavelmente organizada, equilibrando planejamento e flexibilidade.",
+    "textoAvaliador": "Adequado para funções que requerem uma combinação de estrutura e adaptabilidade."
+  },
+  {
+    "sigla": "O-B",
+    "perfil": "Organização e Planejamento",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa com tendência a improvisar e menor organização em suas atividades.",
+    "textoAvaliador": "Evitar cargos que exigem alto nível de organização ou planejamento detalhado constante."
+  }
+]

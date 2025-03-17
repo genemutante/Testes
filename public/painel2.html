@@ -2,532 +2,203 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>7COMPHA03</title> <!-- Código do teste -->
+  <title>Portal de Testes de Perfil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <!-- Link para o CSS externo -->
-  <link rel="stylesheet" href="/style.css" />
-
   <style>
-    /* Relógio no canto */
-    #timer {
-      font-size: 1.2em;
-      font-weight: bold;
-      color: #fff;
-      background-color: #1B5E20;
-      padding: 5px 10px;
-      border-radius: 4px;
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
     }
-    /* Marca de teste já concluído */
-    #testDoneMark {
-      display: none;
-      color: green;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    /* Card do Perfil Composto */
-    .composite-card {
-      background: #f5f5f5;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      padding: 15px;
-      margin: 15px 0;
-      text-align: center;
-    }
-    .composite-card h2 {
-      margin: 0;
-      font-size: 1.4em;
-      font-weight: bold;
-    }
-    /* Card de cada competência */
-    .perfil-result {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 15px;
+    .input-field {
+      width: 300px;
+      padding: 10px;
       margin: 10px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
-    .perfil-result .info {
-      flex: 1;
-      margin-right: 15px;
+    .btn {
+      padding: 10px 20px;
+      background: #2E7D32;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin: 10px 0;
     }
-    /* Círculo com a letra da competência */
-    .comphab-letter {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.2em;
-      color: #333;
+    .btn:hover {
+      background: #1B5E20;
+    }
+    .btn-desabilitado {
+      padding: 10px 20px;
+      background: #aaa;
+      color: #fff;
+      border: none;
+      cursor: not-allowed;
+      margin: 10px 0;
     }
   </style>
 </head>
-<body onload="carregarParametros(); checkIfDone();">
-  <!-- Cabeçalho fixo -->
+<body>
   <header>
-    7COMPHA03
+    <h2>Portal de Testes de Perfil v2</h2>
   </header>
 
-  <!-- Relógio (tempo decorrido) -->
-  <div id="timer">00:00</div>
+  <main>
+    <h1>Bem-vindo(a) ao Portal de Testes</h1>
+    <p>Por favor, insira seu nome e último sobrenome:</p>
+    <input 
+      type="text" 
+      id="userName" 
+      class="input-field" 
+      placeholder="SEU NOME (EX.: IVO DIAS)"
+      required
+      style="text-transform: uppercase;"
+    />
+    <p>Por favor, insira seu email:</p>
+    <input 
+      type="email" 
+      id="userEmail" 
+      class="input-field" 
+      placeholder="seu email (ex.: fulano@teste.com)"
+      required
+      style="text-transform: lowercase;"
+    />
 
-  <main id="app">
-    <!-- Marca de teste já concluído -->
-    <div id="testDoneMark">
-      Teste já concluído ✔
+    <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+      <!-- 1) 9CERTRIO1 (Cérebro Trino) – Ativo -->
+      <button id="cerebroTrinoBtn" class="btn" onclick="iniciarCerebroTrino()">9CERTRIO1</button>
+      
+      <!-- 2) 8CANCOM2 (Canais de Comunicação) – Ativo -->
+      <button id="canaisComBtn" class="btn" onclick="iniciarCanaisCom()">8CANCOM2</button>
+      
+      <!-- 3) 7COMPHA03 (Competências e Habilidades) – Habilitado -->
+      <button id="comphabBtn" class="btn" onclick="iniciarComphab()">7COMPHA03</button>
+      
+      <!-- 4) 6ESTAUT4 (Autoestima) – Em Breve -->
+      <button class="btn btn-desabilitado" disabled>6ESTAUT4</button>
+      
+      <!-- 5) 5ATVPRE005 (Proatividade) – Em Breve -->
+      <button class="btn btn-desabilitado" disabled>5ATVPRE005</button>
+      
+      <!-- 6) 4QEMO002 (Quociente Emocional) – Em Breve -->
+      <button class="btn btn-desabilitado" disabled>4QEMO002</button>
+      
+      <!-- 7) 3SABCOM7 (Comportamentos Sabotadores) – Ativo -->
+      <button id="sabotadoresBtn" class="btn" onclick="iniciarSabotadores()">3SABCOM7</button>
+      
+      <!-- 8) 2PERDSK08 (DISK) – Ativo -->
+      <button id="discBtn" class="btn" onclick="iniciarDisc()">2PERDSK08</button>
+      
+      <!-- 9) 1VECA0009 (VECA) – Em Breve -->
+      <button class="btn btn-desabilitado" disabled>1VECA0009</button>
     </div>
-    
-    <!-- Tela de Introdução -->
-    <section id="intro">
-      <h1>Olá, <span id="nomeParticipante"></span>!</h1>
-      <p>
-        Leia atentamente as afirmações abaixo e escolha a opção que mais se aproxima da maneira como você geralmente age ou se sente. Não existem respostas certas ou erradas.
-      </p>
-      <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
-    </section>
-
-    <!-- Tela do Questionário -->
-    <section id="quiz" class="hidden"></section>
-
-    <!-- Tela de Resultados -->
-    <section id="result" class="hidden"></section>
   </main>
 
-  <footer id="footer"></footer>
-
-  <!-- Biblioteca html2pdf.js (opcional para gerar PDF) -->
-  <script 
-    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
-    integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer">
-  </script>
+  <footer style="margin-top:20px;font-size:10px;color:#666;">
+    © 2025 - Portal de Testes de Perfil
+  </footer>
 
   <script>
-    /******************************************************
-     * 1) Carrega parâmetros (nome e email) da URL
-     ******************************************************/
-    function carregarParametros() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const nomeParam = urlParams.get("name");
-      const emailParam = urlParams.get("email");
-      if (nomeParam) {
-        document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
-        userName = nomeParam.toUpperCase();
-      }
-      if (emailParam) {
-        userEmail = emailParam.toLowerCase();
+    // Funções de checagem para atualizar os botões com a marca de teste concluído
+    function checkCerebroTrinoStatus() {
+      const btn = document.getElementById("cerebroTrinoBtn");
+      if (localStorage.getItem("cerebroTrinoDone") === "true") {
+        btn.textContent = "9CERTRIO1 ✔";
       }
     }
-
-    /******************************************************
-     * 1.1) Verifica se o teste já foi feito e exibe a marca
-     ******************************************************/
-    function checkIfDone() {
+    function checkCanaisComStatus() {
+      const btn = document.getElementById("canaisComBtn");
+      if (localStorage.getItem("canaisComDone") === "true") {
+        btn.textContent = "8CANCOM2 ✔";
+      }
+    }
+    function checkComphabStatus() {
+      const btn = document.getElementById("comphabBtn");
       if (localStorage.getItem("comphabDone") === "true") {
-        document.getElementById("testDoneMark").style.display = "block";
+        btn.textContent = "7COMPHA03 ✔";
+      }
+    }
+    function checkSabotadoresStatus() {
+      const btn = document.getElementById("sabotadoresBtn");
+      if (localStorage.getItem("sabTestDone") === "true") {
+        btn.textContent = "3SABCOM7 ✔";
+      }
+    }
+    function checkDiscStatus() {
+      const btn = document.getElementById("discBtn");
+      if (localStorage.getItem("discTestDone") === "true") {
+        btn.textContent = "2PERDSK08 ✔";
       }
     }
 
-    /******************************************************
-     * 2) Formata tempo (minutos e segundos)
-     ******************************************************/
-    function formatMinSec(ms) {
-      const totalSec = Math.floor(ms / 1000);
-      const min = Math.floor(totalSec / 60);
-      const sec = totalSec % 60;
-      return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+    // Função para validar os campos e iniciar o teste de Cérebro Trino
+    function iniciarCerebroTrino() {
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (!validarCampos(nameInput, emailInput)) return;
+      const url = `cerebro-trino.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
     }
 
-    /******************************************************
-     * 3) Atualiza o relógio (timer)
-     ******************************************************/
-    let timerInterval = setInterval(updateTimer, 1000);
-    function updateTimer() {
-      if (testStartTime) {
-        const elapsed = new Date() - testStartTime;
-        document.getElementById("timer").textContent = formatMinSec(elapsed);
+    // Função para iniciar o teste dos Canais de Comunicação
+    function iniciarCanaisCom() {
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (!validarCampos(nameInput, emailInput)) return;
+      const url = `canaiscom.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
+    }
+
+    // Função para iniciar o teste de Competências e Habilidades
+    function iniciarComphab() {
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (!validarCampos(nameInput, emailInput)) return;
+      const url = `comphab.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
+    }
+
+    // Função para iniciar o teste de Sabotadores
+    function iniciarSabotadores() {
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (!validarCampos(nameInput, emailInput)) return;
+      const url = `sab.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
+    }
+
+    // Função para iniciar o teste DISK
+    function iniciarDisc() {
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (!validarCampos(nameInput, emailInput)) return;
+      const url = `disc.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
+    }
+
+    // Função de validação de campos (nome e email)
+    function validarCampos(nameInput, emailInput) {
+      if (nameInput.length < 8 || !nameInput.includes(" ")) {
+        alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
+        return false;
       }
-    }
-
-    /******************************************************
-     * 4) Função para remover indicadores do final do texto (se houver)
-     ******************************************************/
-    function removeIndicador(text) {
-      return text;
-    }
-
-    /******************************************************
-     * 5) Variáveis globais
-     ******************************************************/
-    let currentQuestion = 0;
-    let userName = '';
-    let userEmail = '';
-    const answers = [];  // Cada resposta é um objeto { sigla, value }
-    const questionTimes = [];
-    let testStartTime = 0;
-    let questionStartTime = 0;
-    let ipAddress = "Carregando...";
-
-    /******************************************************
-     * 6) Referências aos elementos
-     ******************************************************/
-    const introDiv = document.getElementById("intro");
-    const quizDiv = document.getElementById("quiz");
-    const resultDiv = document.getElementById("result");
-
-    /******************************************************
-     * 7) Arrays/Objetos via fetch
-     ******************************************************/
-    let questions = [];       // Carregado de comphab_assertions.json
-    let interpretations = {}; // Carregado de comphab_interpretations.json
-
-    /******************************************************
-     * 8) Captura IP
-     ******************************************************/
-    fetch("https://api.ipify.org?format=json")
-      .then(resp => resp.json())
-      .then(data => { ipAddress = data.ip; })
-      .catch(err => { ipAddress = "Indisponível"; console.error(err); });
-
-    /******************************************************
-     * 9) Atualiza rodapé (IP, hora, SO)
-     ******************************************************/
-    function getOS() {
-      const platform = window.navigator.platform;
-      const ua = window.navigator.userAgent;
-      if (/(Mac|iPhone|iPod|iPad)/i.test(platform)) return "iOS / Mac OS";
-      if (/Win/i.test(platform)) return "Windows";
-      if (/Android/i.test(ua)) return "Android";
-      if (/Linux/i.test(platform)) return "Linux";
-      return "Desconhecido";
-    }
-    function updateFooter() {
-      const footer = document.getElementById("footer");
-      const timeInBrasilia = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-      footer.textContent = `IP: ${ipAddress} | Hora de Brasília: ${timeInBrasilia} | SO: ${getOS()}`;
-    }
-    setInterval(updateFooter, 1000);
-
-    /******************************************************
-     * 10) Carrega JSON de afirmações
-     ******************************************************/
-    fetch("/comphab_assertions.json")
-      .then(resp => resp.json())
-      .then(data => { questions = data; })
-      .catch(err => console.error("Erro ao carregar comphab_assertions.json:", err));
-
-    /******************************************************
-     * 11) Carrega JSON de interpretações
-     ******************************************************/
-    fetch("/comphab_interpretations.json")
-      .then(resp => resp.json())
-      .then(data => {
-        data.forEach(item => {
-          interpretations[item.sigla] = item;
-        });
-      })
-      .catch(err => console.error("Erro ao carregar comphab_interpretations.json:", err));
-
-    /******************************************************
-     * 12) Inicia o Teste (sem validação extra, pois os dados já vêm válidos)
-     ******************************************************/
-    document.getElementById("startBtn").addEventListener("click", () => {
-      testStartTime = new Date();
-      introDiv.classList.add("hidden");
-      quizDiv.classList.remove("hidden");
-      renderQuestion();
-    });
-
-    /******************************************************
-     * 13) Renderiza a questão atual
-     ******************************************************/
-    function renderQuestion() {
-      quizDiv.innerHTML = "";
-      if (currentQuestion < questions.length) {
-        const qData = questions[currentQuestion];
-        questionStartTime = new Date();
-
-        const questionNumber = document.createElement("h2");
-        questionNumber.className = "question-number";
-        questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
-        quizDiv.appendChild(questionNumber);
-
-        const progressContainer = document.createElement("div");
-        progressContainer.className = "progress-container";
-        quizDiv.appendChild(progressContainer);
-
-        const progressBarBg = document.createElement("div");
-        progressBarBg.className = "progress-bar-bg";
-        progressContainer.appendChild(progressBarBg);
-
-        const progressBarFill = document.createElement("div");
-        progressBarFill.className = "progress-bar-fill";
-        progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
-        progressBarBg.appendChild(progressBarFill);
-
-        const questionText = document.createElement("p");
-        questionText.className = "question-text";
-        questionText.textContent = removeIndicador(qData.text);
-        quizDiv.appendChild(questionText);
-
-        const scaleLabels = [
-          "Discordo totalmente (1)",
-          "Discordo parcialmente (2)",
-          "Concordo parcialmente (3)",
-          "Concordo totalmente (4)"
-        ];
-        scaleLabels.forEach((label, index) => {
-          const btn = document.createElement("button");
-          btn.className = "option";
-          btn.textContent = label;
-          btn.onclick = () => {
-            answers.push({ sigla: qData.sigla, value: index + 1 });
-            const elapsed = new Date() - questionStartTime;
-            questionTimes.push(elapsed);
-            currentQuestion++;
-            renderQuestion();
-          };
-          quizDiv.appendChild(btn);
-        });
-      } else {
-        quizDiv.classList.add("hidden");
-        renderResult();
+      if (!validateEmail(emailInput)) {
+        alert("Por favor, insira um email válido.");
+        return false;
       }
+      return true;
     }
 
-    /******************************************************
-     * 14) Converte soma (8..32) em "Baixa", "Moderada" ou "Alta"
-     ******************************************************/
-    function somaParaNivel(soma) {
-      if (soma >= 26) return "Alta";
-      if (soma >= 17) return "Moderada";
-      return "Baixa";
+    // Validação simples de email
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email.toLowerCase());
     }
 
-    /******************************************************
-     * 15) Renderiza o Resultado
-     ******************************************************/
-    function renderResult() {
-      clearInterval(timerInterval);
-      localStorage.setItem("comphabDone", "true");
-
-      resultDiv.innerHTML = "";
-
-      // Cabeçalho do resultado
-      const headerDiv = document.createElement("div");
-      headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (7COMPHA03)`;
-      resultDiv.appendChild(headerDiv);
-
-      // Exibe email abaixo do nome (se houver)
-      if (userEmail) {
-        const emailLine = document.createElement("p");
-        emailLine.className = "result-email";
-        emailLine.textContent = userEmail;
-        resultDiv.appendChild(emailLine);
-      }
-
-      // Data/hora
-      const now = new Date();
-      const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-      const dateLine = document.createElement("p");
-      dateLine.className = "result-datetime";
-      dateLine.textContent = `Gerado em: ${resultDatetime}`;
-      resultDiv.appendChild(dateLine);
-
-      // Calcula soma de pontos por competência (C, T, A, P, O)
-      let scores = { "C": 0, "T": 0, "A": 0, "P": 0, "O": 0 };
-      answers.forEach(resp => {
-        if (scores.hasOwnProperty(resp.sigla)) {
-          scores[resp.sigla] += resp.value;
-        }
-      });
-
-      // Cria array e ordena por pontuação decrescente
-      let compositeArray = [];
-      Object.keys(scores).forEach(key => {
-        compositeArray.push({ sigla: key, score: scores[key] });
-      });
-      compositeArray.sort((a, b) => b.score - a.score);
-
-      // Perfil composto (só os que pontuaram > 0)
-      const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
-      const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
-
-      // Card do Perfil Composto
-      const compositeDiv = document.createElement("div");
-      compositeDiv.className = "composite-card";
-      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
-      resultDiv.appendChild(compositeDiv);
-
-      // Exibe os 5 perfis (C, T, A, P, O)
-      const allProfiles = ["C", "T", "A", "P", "O"];
-      const resultsContainer = document.createElement("div");
-      resultsContainer.className = "results-container";
-
-      allProfiles.forEach(sig => {
-        const soma = scores[sig] || 0;
-        let nivel = "";
-        let interpretObj = null;
-        let perfilNome = "";
-        let textoInterpretacao = "";
-
-        if (soma > 0) {
-          nivel = somaParaNivel(soma);
-          const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderada" ? "M" : "B");
-          const interpretKey = sig + "-" + suffix;
-          interpretObj = interpretations[interpretKey];
-
-          if (interpretObj) {
-            perfilNome = interpretObj.perfil;
-            textoInterpretacao = interpretObj.textoParticipante;
-          } else {
-            perfilNome = sig;
-            textoInterpretacao = "Sem interpretação disponível.";
-          }
-        } else {
-          // Se não pontuou, exibe o nome completo da competência
-          switch(sig) {
-            case "C": perfilNome = "Comunicação"; break;
-            case "T": perfilNome = "Trabalho em Equipe"; break;
-            case "A": perfilNome = "Adaptabilidade"; break;
-            case "P": perfilNome = "Resolução de Problemas"; break;
-            case "O": perfilNome = "Organização e Planejamento"; break;
-          }
-          textoInterpretacao = "Não houve pontuação neste perfil.";
-        }
-
-        // Cria card para cada competência
-        const perfilDiv = document.createElement("div");
-        perfilDiv.className = "perfil-result";
-
-        const infoDiv = document.createElement("div");
-        infoDiv.className = "info";
-        if (soma > 0) {
-          infoDiv.innerHTML = `
-            <h3>${perfilNome}</h3>
-            <p class="pontuacao">Pontuação: ${soma} (${nivel})</p>
-            <p class="texto-participante">${textoInterpretacao}</p>
-          `;
-        } else {
-          infoDiv.innerHTML = `
-            <h3>${perfilNome}</h3>
-            <p class="pontuacao">Pontuação: 0 (Nenhuma)</p>
-            <p class="texto-participante">${textoInterpretacao}</p>
-          `;
-        }
-
-        const letterDiv = document.createElement("div");
-        letterDiv.className = "comphab-letter";
-        letterDiv.textContent = sig;
-
-        perfilDiv.appendChild(infoDiv);
-        perfilDiv.appendChild(letterDiv);
-        resultsContainer.appendChild(perfilDiv);
-      });
-
-      resultDiv.appendChild(resultsContainer);
-
-      // Estatísticas de tempo
-      const testTotalTime = new Date() - testStartTime;
-      const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
-      const fastestTime = Math.min(...questionTimes);
-      const slowestTime = Math.max(...questionTimes);
-      const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
-      const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
-
-      const infoCard = document.createElement("div");
-      infoCard.className = "info-card";
-      infoCard.innerHTML = `
-        <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
-        <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
-        <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
-        <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
-      `;
-      resultDiv.appendChild(infoCard);
-
-      // Botão Imprimir
-      const printBtn = document.createElement("button");
-      printBtn.textContent = "Imprimir";
-      printBtn.className = "btn";
-      printBtn.onclick = () => window.print();
-      resultDiv.appendChild(printBtn);
-
-      resultDiv.classList.remove("hidden");
-    }
-
-    /******************************************************
-     * 16) Gera PDF com html2pdf.js (opcional)
-     ******************************************************/
-    function gerarPDF() {
-      const elemento = document.getElementById("result");
-      const opcoes = {
-        margin: 0.5,
-        filename: 'resultado-7COMPHA03.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      html2pdf().from(elemento).set(opcoes).save();
-    }
-
-    /******************************************************
-     * 17) Exemplo de função para envio ao AppSheet (não chamada)
-     ******************************************************/
-    function enviarAoAppSheet() {
-      const appId = "108acbee-fe0e-47f2-95b5-bcc84";
-      const tableName = "Página1";
-      const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
-      const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
-      const bodyData = {
-        Action: "Add",
-        Properties: {
-          Locale: "pt-BR",
-          Location: "0,0",
-          Timezone: "E. South America Standard Time"
-        },
-        Rows: [
-          {
-            "DateTime_Envio": new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
-            "IP": ipAddress,
-            "Nome": userName || "SEM_NOME",
-            "Email": userEmail || "SEM_EMAIL",
-            "Nome_Teste": "7COMPHA03",
-            "Versao_Teste": "1.0",
-            "Resultado": "Exemplo de resultado fixo"
-          }
-        ]
-      };
-
-      fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "ApplicationAccessKey": accessKey
-        },
-        body: JSON.stringify(bodyData)
-      })
-      .then(resp => resp.json())
-      .then(data => {
-        alert("Enviado ao AppSheet com sucesso!");
-      })
-      .catch(err => {
-        alert("Erro ao enviar ao AppSheet!");
-        console.error("Erro ao enviar ao AppSheet:", err);
-      });
+    // Ao carregar a página, verifica o status de cada teste
+    window.onload = function() {
+      checkCerebroTrinoStatus();
+      checkCanaisComStatus();
+      checkComphabStatus();
+      checkSabotadoresStatus();
+      checkDiscStatus();
     }
   </script>
 </body>

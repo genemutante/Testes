@@ -79,16 +79,16 @@
     const resultDiv = document.getElementById("result");
 
     // Arrays/Objetos que serão carregados via fetch
-    let questions = []; // assertions.json
-    let interpretations = {}; // interpretacoes em { "SIGLA-N": {...}, ... }
+    let questions = [];      // assertions.json (lista de afirmações)
+    let interpretations = {}; // interpretacoes em { "CONTR-B": {...}, ... }
 
-    // Carrega IP
+    // Captura IP
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
-    // Função de OS e atualização de rodapé
+    // Atualiza rodapé (IP, hora, SO)
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -110,7 +110,6 @@
       .then(r => r.json())
       .then(data => {
         questions = data;
-        // Cada question deve exibir 4 botões (1 a 4) => Likert
       })
       .catch(err => console.error("Erro ao carregar assertions.json:", err));
 
@@ -118,20 +117,16 @@
     fetch("/interpretations.json")
       .then(r => r.json())
       .then(data => {
-        // Transforma array em objeto indexado
-        // Exemplo de chave: "CONTR-B"
+        // Converte cada objeto do array em uma entrada do objeto 'interpretations'
+        // Exemplo: "CONTR-B" -> { sab: "Controlador", nivel: "Baixo", ... }
         data.forEach(item => {
-          // item.sigla => "CONTR-B", mas no seu caso a sigla já tem o "-B" ou não?
-          // Observando seu JSON, você tem algo como "sigla": "CONTR-B".
-          // Precisamos de algo para mapear. Se "sigla" já vem com o sufixo "-B", "-M", "-A", 
-          // então a key = item.sigla. Se não, a key = item.sigla + "-" + item.nivel[0].
-          // Mas pelo seu JSON, a sigla já contém o nível, ex: "CONTR-B".
+          // item.sigla já é algo como "CONTR-B", "CONTR-M", etc.
           interpretations[item.sigla] = item;
         });
       })
       .catch(err => console.error("Erro ao carregar interpretations.json:", err));
 
-    // Inicia Teste
+    // Botão Iniciar
     document.getElementById("startBtn").addEventListener("click", () => {
       const inputName = document.getElementById("userName").value.trim();
       let inputEmail = document.getElementById("userEmail").value.trim().toLowerCase();
@@ -157,7 +152,7 @@
       renderQuestion();
     });
 
-    // Validação de email (simples)
+    // Função simples de validação de email
     function validateEmail(email) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email.toLowerCase());
@@ -191,10 +186,10 @@
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
 
-        // Texto da pergunta
+        // Texto da pergunta (uma afirmação)
         const questionText = document.createElement("p");
         questionText.className = "question-text";
-        questionText.textContent = qData.text; // Exibe a afirmação inteira (com sigla)
+        questionText.textContent = qData.text;
         quizDiv.appendChild(questionText);
 
         // Criar 4 botões (escala Likert de 1 a 4)
@@ -212,12 +207,12 @@
             // Salva a resposta
             answers.push({
               sigla: qData.sigla,
-              value: index + 1 // 1, 2, 3 ou 4
+              value: index + 1 // 1, 2, 3, 4
             });
             const elapsed = new Date() - questionStartTime;
             questionTimes.push(elapsed);
 
-            // Próxima
+            // Próxima pergunta
             currentQuestion++;
             renderQuestion();
           };
@@ -229,10 +224,10 @@
       }
     }
 
-    // Converte soma (2 a 8) em "Baixo", "Médio" ou "Alto"
+    // Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
     function somaParaNivel(soma) {
       if (soma >= 7) return "Alto";
-      else if (soma >= 5) return "Médio";
+      if (soma >= 5) return "Médio";
       return "Baixo";
     }
 
@@ -262,33 +257,25 @@
       });
 
       // Identificar todas as siglas que apareceram
-      // (caso queira exibir só as que o usuário respondeu, use Object.keys(scores))
-      // mas se quiser exibir todas as 20, extraia do JSON "questions".
-      // Exemplo: const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
+      // (caso queira exibir apenas as que foram respondidas)
       const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
 
-      // Cria container para resultados
+      // Container para os resultados
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
       siglasUnicas.forEach(sig => {
         const soma = scores[sig] || 0;
-        // 2 a 8
-        const nivel = somaParaNivel(soma);
-        // Monta a chave: ex: "CONTR-B", "CONTR-M" ou "CONTR-A"
-        // Mas no seu JSON final, a sigla já inclui o "-B"? 
-        // Pelos dados, ex: "CONTR-B"? Não, você disse "CONTR" + "-" + "B".
-        // Precisamos ver se "sig" é "CONTR" ou "CONTR-B". 
-        // Se "sig" for "CONTR", então a key = "CONTR-" + (B|M|A).
-        // Mas você escreveu no interpretations.json algo como "CONTR-B"? 
-        // Se sim, precisamos extrair a parte sem o sufixo.
-        // MAS no assertions.json, ex: "text": "... (CONTR)", "sigla": "CONTR"
-        // Então iremos formar: "CONTR-B", "CONTR-M", "CONTR-A".
-        let suffix = (nivel === "Baixo") ? "B" : (nivel === "Médio" ? "M" : "A");
-        let interpretKey = sig + "-" + suffix; 
+        const nivel = somaParaNivel(soma); // "Baixo", "Médio", "Alto"
+
+        // Monta a chave p/ buscar no JSON (ex.: "CONTR-B", "CONTR-M", "CONTR-A")
+        // Se "sig" for "CONTR", concatenamos "-B", "-M" ou "-A"
+        // Ex.: "CONTR" + "-" + "B" => "CONTR-B"
+        let suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
+        let interpretKey = sig + "-" + suffix;
         let interpretObj = interpretations[interpretKey];
 
-        // Caso não encontre, exibe "Sem interpretação"
+        // Se não encontrou, exibe "Sem interpretação"
         let sabotadorNome = interpretKey;
         let textoParticipante = "Interpretação: Sem interpretação.";
         let textoAvaliador = "Interpretação (Avaliador): Sem interpretação.";
@@ -299,7 +286,6 @@
           textoAvaliador = interpretObj.textoAvaliador;
         }
 
-        // Monta HTML
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
         perfilDiv.innerHTML = `
@@ -313,7 +299,7 @@
 
       resultDiv.appendChild(resultsContainer);
 
-      // Tempo total
+      // Tempo total e estatísticas
       const testTotalTime = new Date() - testStartTime;
       const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
       const fastestTime = Math.min(...questionTimes);
@@ -321,7 +307,6 @@
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
 
-      // Info de tempo
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `
@@ -332,7 +317,7 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão PDF (opcional)
+      // Botão PDF
       const pdfBtn = document.createElement("button");
       pdfBtn.textContent = "Gerar PDF";
       pdfBtn.className = "btn";

@@ -22,6 +22,22 @@
       right: 10px;
       z-index: 1000;
     }
+
+    /* Maior contraste nos blocos de resultado */
+    .results-container .perfil-result {
+      background: #f9f9f9;
+      border: 1px solid #999;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .info-card {
+      background: #fdfdfd;
+      border: 2px solid #aaa;
+      border-radius: 4px;
+      padding: 10px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body onload="carregarParametros()">
@@ -100,7 +116,7 @@
     }
 
     /******************************************************
-     * 4) Função para remover a sigla (entre parênteses) do final do texto.
+     * 4) Função para remover a sigla (entre parênteses)
      ******************************************************/
     function removeIndicador(text) {
       return text.replace(/\s*\([^)]*\)\s*$/, "");
@@ -255,9 +271,10 @@
     }
 
     /******************************************************
-     * 15) Renderiza Resultado e para o timer, ocultando botões
+     * 15) Renderiza Resultado, para o timer e mostra só o botão Imprimir
      ******************************************************/
     function renderResult() {
+      // Para o timer
       clearInterval(timerInterval);
 
       resultDiv.innerHTML = "";
@@ -339,26 +356,21 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão para imprimir (atalho de impressão)
+      // Botão para imprimir
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";
       printBtn.onclick = () => window.print();
       resultDiv.appendChild(printBtn);
 
-      // Botão para enviar ao AppSheet (fixo)
-      const sendBtn = document.createElement("button");
-      sendBtn.textContent = "Enviar ao AppSheet (fixo)";
-      sendBtn.className = "btn";
-      sendBtn.style.marginLeft = "10px";
-      sendBtn.onclick = enviarAoAppSheet;
-      resultDiv.appendChild(sendBtn);
+      // Ocultar o botão de envio ao AppSheet: não criar/mostrar
+      // Se você quiser remover a função enviarAoAppSheet(), basta apagar seu corpo
 
       resultDiv.classList.remove("hidden");
     }
 
     /******************************************************
-     * 16) Gera PDF com html2pdf.js
+     * 16) Gera PDF com html2pdf.js (não exibido na tela, mas se quiser chamar manualmente)
      ******************************************************/
     function gerarPDF() {
       const elemento = document.getElementById("result");
@@ -373,7 +385,7 @@
     }
 
     /******************************************************
-     * 17) Envia dados fixos ao AppSheet
+     * 17) Envia dados fixos ao AppSheet (função não chamada)
      ******************************************************/
     function enviarAoAppSheet() {
       const appId = "108acbee-fe0e-47f2-95b5-bcc84";

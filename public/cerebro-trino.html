@@ -2,11 +2,11 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Teste de Perfil (Cérebro Trino)</title>
+  <title>9CERTRIO1</title> <!-- Aqui você pode colocar só o código, ex: "9CERTRIO1" -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <!-- Link para o CSS externo -->
+  <!-- Link para o CSS externo (se houver) -->
   <link rel="stylesheet" href="/style.css" />
 
   <style>
@@ -23,7 +23,14 @@
       right: 10px;
       z-index: 1000;
     }
-    /* Card grande para o perfil composto */
+    /* Marca de teste já concluído */
+    #testDoneMark {
+      display: none;
+      color: green;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    /* Cartão de perfil composto */
     .composite-card {
       background: #f5f5f5;
       border: 2px solid #ccc;
@@ -37,7 +44,7 @@
       font-size: 1.4em;
       font-weight: bold;
     }
-    /* Cartão de cada dimensão */
+    /* Cartão de cada dimensão (R, E, N) */
     .perfil-result {
       background: #fff;
       border: 1px solid #ccc;
@@ -48,12 +55,10 @@
       align-items: center;
       justify-content: space-between;
     }
-    /* Container com as infos de texto */
     .perfil-result .info {
       flex: 1;
       margin-right: 15px;
     }
-    /* Círculo com a letra do perfil (R, E, N) */
     .cerebro-letter {
       width: 40px;
       height: 40px;
@@ -66,26 +71,19 @@
       font-size: 1.2em;
       color: #333;
     }
-    /* Marca de teste já concluído */
-    #testDoneMark {
-      display: none;
-      color: green;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
   </style>
 </head>
 <body onload="carregarParametros(); checkIfDone();">
   <!-- Cabeçalho fixo -->
   <header>
-    Teste de Perfil (Cérebro Trino)
+    9CERTRIO1
   </header>
 
   <!-- Relógio (tempo decorrido) -->
   <div id="timer">00:00</div>
 
   <main id="app">
-    <!-- Marca de teste já concluído (Local Storage) -->
+    <!-- Indica se o teste já foi concluído antes -->
     <div id="testDoneMark">
       Teste já concluído ✔
     </div>
@@ -94,8 +92,8 @@
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Abaixo estão afirmações sobre como você geralmente age ou se sente. Escolha a opção que mais representa você hoje,
-        sem preocupação com respostas certas ou erradas.
+        Leia cada afirmação e escolha a opção que mais representa como você age ou se sente.
+        Não há respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
@@ -109,7 +107,7 @@
 
   <footer id="footer"></footer>
 
-  <!-- Biblioteca html2pdf.js (caso queira gerar PDF) -->
+  <!-- Biblioteca html2pdf.js (opcional) -->
   <script 
     src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
     integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
@@ -165,10 +163,10 @@
     }
 
     /******************************************************
-     * 4) Remove indicadores (se houver) do final do texto
+     * 4) Remove indicadores do final do texto (se quiser)
      ******************************************************/
     function removeIndicador(text) {
-      return text; // Ajuste se precisar remover algo
+      return text;
     }
 
     /******************************************************
@@ -323,7 +321,9 @@
      * 15) Renderiza Resultado
      ******************************************************/
     function renderResult() {
+      // Para o timer
       clearInterval(timerInterval);
+      // Marca como concluído
       localStorage.setItem("cerebroTrinoDone", "true");
 
       resultDiv.innerHTML = "";
@@ -331,7 +331,7 @@
       // Cabeçalho do resultado
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (Cérebro Trino)`;
+      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (9CERTRIO1)`;
       resultDiv.appendChild(headerDiv);
 
       // Exibe email abaixo do nome
@@ -342,6 +342,7 @@
         resultDiv.appendChild(emailLine);
       }
 
+      // Data/hora
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
       const dateLine = document.createElement("p");
@@ -349,7 +350,7 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Calcula a soma de pontos para cada dimensão (R, E, N)
+      // Soma de pontos para R, E, N
       let scores = { "R": 0, "E": 0, "N": 0 };
       answers.forEach(resp => {
         if (scores.hasOwnProperty(resp.sigla)) {
@@ -357,14 +358,14 @@
         }
       });
 
-      // Monta array e ordena por pontuação decrescente
+      // Ordena perfis por pontuação
       let compositeArray = [];
       Object.keys(scores).forEach(key => {
         compositeArray.push({ sigla: key, score: scores[key] });
       });
       compositeArray.sort((a, b) => b.score - a.score);
 
-      // Perfil composto (só letras com pontuação > 0)
+      // Perfil composto (só letras > 0)
       const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
       const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
 
@@ -374,7 +375,7 @@
       compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
 
-      // Exibe os 3 perfis (R, E, N), mesmo que algum seja 0
+      // Exibe R, E, N, mesmo que algum seja 0
       const allProfiles = ["R", "E", "N"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
@@ -397,12 +398,11 @@
             perfilNome = interpretObj.perfil;
             textoInterpretacao = interpretObj.textoParticipante;
           } else {
-            // Fallback
             perfilNome = sig;
             textoInterpretacao = "Sem interpretação disponível.";
           }
         } else {
-          // pontuação zero
+          // Zero
           switch(sig) {
             case "R": perfilNome = "Reptiliano (Instintivo)"; break;
             case "E": perfilNome = "Límbico (Emocional)"; break;
@@ -411,7 +411,7 @@
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
 
-        // Cria card
+        // Monta o card
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
 
@@ -432,10 +432,9 @@
           `;
         }
 
-        // Círculo com a letra (R, E, N)
         const letterDiv = document.createElement("div");
         letterDiv.className = "cerebro-letter";
-        letterDiv.textContent = sig; // ex: "R", "E", "N"
+        letterDiv.textContent = sig; // "R", "E", "N"
 
         perfilDiv.appendChild(infoDiv);
         perfilDiv.appendChild(letterDiv);
@@ -508,7 +507,7 @@
             "IP": ipAddress,
             "Nome": userName || "SEM_NOME",
             "Email": userEmail || "SEM_EMAIL",
-            "Nome_Teste": "Cérebro Trino",
+            "Nome_Teste": "9CERTRIO1",
             "Versao_Teste": "1.0",
             "Resultado": "Exemplo de resultado fixo"
           }

@@ -36,13 +36,11 @@
   <main id="app">
     <!-- Tela de Introdução -->
     <section id="intro">
-      <!-- Bem-vindo(a), com nome do participante -->
       <h1>Bem-vindo(a), <span id="nomeParticipante"></span>!</h1>
       <p>
         Leia cada pergunta e escolha a alternativa que mais representa como você age ou pensa em situações similares.
         Não há respostas certas ou erradas.
       </p>
-      <!-- Botão para iniciar o teste (sem validação de nome/email) -->
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
 
@@ -53,7 +51,6 @@
     <section id="result" class="hidden"></section>
   </main>
 
-  <!-- Rodapé fixo -->
   <footer id="footer"></footer>
 
   <!-- Biblioteca html2pdf.js -->
@@ -65,15 +62,10 @@
   </script>
 
   <script>
-    /******************************************************
-     * 1) Carrega parâmetros (nome e email) da URL
-     ******************************************************/
     function carregarParametros() {
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
       const emailParam = urlParams.get("email");
-
-      // Exibe o nome do participante no cabeçalho
       if (nomeParam) {
         document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
         userName = nomeParam.toUpperCase();
@@ -83,9 +75,6 @@
       }
     }
 
-    /******************************************************
-     * 2) Função para formatar tempo (minutos e segundos)
-     ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
       const min = Math.floor(totalSec / 60);
@@ -93,61 +82,39 @@
       return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
     }
 
-    /******************************************************
-     * 3) Função para atualizar o relógio (timer)
-     ******************************************************/
     function updateTimer() {
       if (testStartTime) {
         const elapsed = new Date() - testStartTime;
         document.getElementById("timer").textContent = formatMinSec(elapsed);
       }
     }
-    // Atualiza o timer a cada 1 segundo
     setInterval(updateTimer, 1000);
 
-    /******************************************************
-     * 4) Função para remover a sigla (entre parênteses)
-     ******************************************************/
     function removeIndicador(text) {
       return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
 
-    /******************************************************
-     * 5) Variáveis globais
-     ******************************************************/
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = []; // array de { sigla, value }
+    const answers = [];
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
 
-    /******************************************************
-     * 6) Referências aos elementos
-     ******************************************************/
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
-    /******************************************************
-     * 7) Arrays/Objetos carregados via fetch
-     ******************************************************/
-    let questions = [];      // assertions.json (lista de afirmações)
-    let interpretations = {}; // interpretações em { "CONTR-B": {...}, ... }
+    let questions = [];
+    let interpretations = {};
 
-    /******************************************************
-     * 8) Captura IP
-     ******************************************************/
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
-    /******************************************************
-     * 9) Atualiza rodapé (IP, hora, SO)
-     ******************************************************/
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -164,17 +131,11 @@
     }
     setInterval(updateFooter, 1000);
 
-    /******************************************************
-     * 10) Carrega JSON de afirmações
-     ******************************************************/
     fetch("/assertions.json")
       .then(r => r.json())
       .then(data => { questions = data; })
       .catch(err => console.error("Erro ao carregar assertions.json:", err));
 
-    /******************************************************
-     * 11) Carrega JSON de interpretações
-     ******************************************************/
     fetch("/interpretations.json")
       .then(r => r.json())
       .then(data => {
@@ -184,26 +145,15 @@
       })
       .catch(err => console.error("Erro ao carregar interpretations.json:", err));
 
-    /******************************************************
-     * 12) Inicia Teste (sem validar nome/email)
-     ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
-      // Inicia cronômetro
       testStartTime = new Date();
-      // Oculta a tela de introdução
       introDiv.classList.add("hidden");
-      // Mostra o quiz
       quizDiv.classList.remove("hidden");
-      // Renderiza a primeira pergunta
       renderQuestion();
     });
 
-    /******************************************************
-     * 13) Renderiza a questão atual
-     ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
-
       if (currentQuestion < questions.length) {
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
@@ -213,7 +163,6 @@
         questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
         quizDiv.appendChild(questionNumber);
 
-        // Barra de progresso
         const progressContainer = document.createElement("div");
         progressContainer.className = "progress-container";
         quizDiv.appendChild(progressContainer);
@@ -227,13 +176,11 @@
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
 
-        // Texto da pergunta (sem sigla)
         const questionText = document.createElement("p");
         questionText.className = "question-text";
         questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
 
-        // Escala Likert (1 a 4)
         const scaleLabels = [
           "Discordo totalmente (1)",
           "Discordo parcialmente (2)",
@@ -259,28 +206,19 @@
       }
     }
 
-    /******************************************************
-     * 14) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
-     ******************************************************/
     function somaParaNivel(soma) {
       if (soma >= 7) return "Alto";
       if (soma >= 5) return "Médio";
       return "Baixo";
     }
 
-    /******************************************************
-     * 15) Renderiza Resultado
-     ******************************************************/
     function renderResult() {
       resultDiv.innerHTML = "";
-
-      // Cabeçalho (usa a var userName)
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (SAB)`;
       resultDiv.appendChild(headerDiv);
 
-      // Data/hora
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
       const dateLine = document.createElement("p");
@@ -288,7 +226,6 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Soma de pontos por sigla
       let scores = {};
       answers.forEach(resp => {
         if (!scores[resp.sigla]) scores[resp.sigla] = 0;
@@ -330,7 +267,6 @@
 
       resultDiv.appendChild(resultsContainer);
 
-      // Estatísticas de tempo
       const testTotalTime = new Date() - testStartTime;
       const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
       const fastestTime = Math.min(...questionTimes);
@@ -348,19 +284,22 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão PDF
       const pdfBtn = document.createElement("button");
       pdfBtn.textContent = "Gerar PDF";
       pdfBtn.className = "btn";
       pdfBtn.onclick = gerarPDF;
       resultDiv.appendChild(pdfBtn);
 
+      const sendBtn = document.createElement("button");
+      sendBtn.textContent = "Enviar ao AppSheet (fixo)";
+      sendBtn.className = "btn";
+      sendBtn.style.marginLeft = "10px";
+      sendBtn.onclick = enviarAoAppSheet;
+      resultDiv.appendChild(sendBtn);
+
       resultDiv.classList.remove("hidden");
     }
 
-    /******************************************************
-     * 16) Gera PDF com html2pdf.js
-     ******************************************************/
     function gerarPDF() {
       const elemento = document.getElementById("result");
       const opcoes = {
@@ -371,6 +310,49 @@
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
       html2pdf().from(elemento).set(opcoes).save();
+    }
+
+    function enviarAoAppSheet() {
+      const appId = "108acbee-fe0e-47f2-95b5-bcc84";
+      const tableName = "Página1";
+      const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
+      const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
+      const bodyData = {
+        Action: "Add",
+        Properties: {
+          Locale: "pt-BR",
+          Location: "0,0",
+          Timezone: "E. South America Standard Time"
+        },
+        Rows: [
+          {
+            "DateTime_Envio": new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
+            "IP": ipAddress,
+            "Nome": userName || "SEM_NOME",
+            "Email": userEmail || "SEM_EMAIL",
+            "Nome_Teste": "SAB",
+            "Versao_Teste": "1.0",
+            "Resultado": "Controlador Alto (fixo)"
+          }
+        ]
+      };
+
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "ApplicationAccessKey": accessKey
+        },
+        body: JSON.stringify(bodyData)
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        alert("Enviado ao AppSheet com sucesso!");
+      })
+      .catch(err => {
+        alert("Erro ao enviar ao AppSheet!");
+        console.error("Erro ao enviar ao AppSheet:", err);
+      });
     }
   </script>
 </body>

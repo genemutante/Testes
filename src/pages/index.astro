@@ -11,7 +11,34 @@
   <header>
     <h2>Portal de Testes de Perfil</h2>
   </header>
+  <script>
+    // Função para validar e iniciar o teste
+    function iniciarSabotadores() {
+      // Captura valores
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
 
+      // Validação
+      if (nameInput.length < 8 || !nameInput.includes(" ")) {
+        alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
+        return;
+      }
+      if (!validateEmail(emailInput)) {
+        alert("Por favor, insira um email válido.");
+        return;
+      }
+
+      // Monta URL
+      const url = `sab.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      // Redireciona
+      window.location.href = url;
+    }
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email.toLowerCase());
+    }
+  </script>
   <main id="intro">
     <h1>Bem-vindo(a) ao Portal de Testes</h1>
     <p>Por favor, insira seu nome e último sobrenome:</p>
@@ -45,33 +72,6 @@
     © 2025 - Portal de Testes de Perfil
   </footer>
 
-  <script>
-    // Função para validar e iniciar o teste
-    function iniciarSabotadores() {
-      // Captura valores
-      const nameInput = document.getElementById("userName").value.trim();
-      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
 
-      // Validação
-      if (nameInput.length < 8 || !nameInput.includes(" ")) {
-        alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
-        return;
-      }
-      if (!validateEmail(emailInput)) {
-        alert("Por favor, insira um email válido.");
-        return;
-      }
-
-      // Monta URL
-      const url = `sab.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
-      // Redireciona
-      window.location.href = url;
-    }
-
-    function validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return re.test(email.toLowerCase());
-    }
-  </script>
 </body>
 </html>

@@ -62,62 +62,33 @@
     referrerpolicy="no-referrer">
   </script>
 
-  <!-- Script principal -->
   <script>
-    /* Lista completa de perfis (usamos o termo genérico "perfil") */
-    const allPerfis = [
-      "Controlador",
-      "Perfeccionista",
-      "Agradador",
-      "Evitador",
-      "Vítima",
-      "Inquieto",
-      "Hiper-realizador",
-      "Hiper-vigilante",
-      "Racionalizador"
-    ];
-
-    // Variáveis de controle do teste
+    // Variáveis globais
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = []; // Cada resposta deverá incluir { sigla: "...", value: X }
+    const answers = []; // array de { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
 
+    // Referências aos elementos
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
-    let questions = []; // Será carregado do arquivo assertions.json (ex.: 40 afirmações)
-    let interpretations = {}; // Será carregado do arquivo interpretations.json
+    // Arrays/Objetos que serão carregados via fetch
+    let questions = []; // assertions.json
+    let interpretations = {}; // interpretacoes em { "SIGLA-N": {...}, ... }
 
-    // Remove o trecho entre parênteses (indicador) do final do texto
-    function removeIndicador(text) {
-      return text.replace(/\s*\([^)]*\)\s*$/, "");
-    }
-
-    // Embaralha array (Fisher-Yates)
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-    function shuffleQuestionsAndOptions() {
-      shuffle(questions);
-      questions.forEach(q => shuffle(q.options));
-    }
-
-    // Captura IP
+    // Carrega IP
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
-    // Atualiza rodapé (IP, hora, SO)
+    // Função de OS e atualização de rodapé
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -130,52 +101,48 @@
     function updateFooter() {
       const footer = document.getElementById("footer");
       const timeInBrasilia = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-      footer.textContent = `IP: ${ipAddress} | Hora de Brasília: ${timeInBrasilia} | Sistema Operacional: ${getOS()}`;
+      footer.textContent = `IP: ${ipAddress} | Hora de Brasília: ${timeInBrasilia} | SO: ${getOS()}`;
     }
     setInterval(updateFooter, 1000);
 
-    // Formata tempo em min:seg
-    function formatMinSec(ms) {
-      const totalSec = Math.floor(ms / 1000);
-      const min = Math.floor(totalSec / 60);
-      const sec = totalSec % 60;
-      return min > 0 ? `${min} min. ${sec} seg.` : `${sec} seg.`;
-    }
-
-    // Carrega as afirmações (JSON)
+    // Carrega JSON de afirmações
     fetch("/assertions.json")
-      .then(resp => resp.json())
-      .then(data => { questions = data; })
+      .then(r => r.json())
+      .then(data => {
+        questions = data;
+        // Cada question deve exibir 4 botões (1 a 4) => Likert
+      })
       .catch(err => console.error("Erro ao carregar assertions.json:", err));
 
-    // Carrega as interpretações (JSON)
+    // Carrega JSON de interpretações
     fetch("/interpretations.json")
-      .then(resp => resp.json())
-      .then(data => { 
-        // Transforma array em objeto indexado pela chave "sigla-nivel", ex.: "CONTR-A"
+      .then(r => r.json())
+      .then(data => {
+        // Transforma array em objeto indexado
+        // Exemplo de chave: "CONTR-B"
         data.forEach(item => {
-          let nivelKey = item.nivel === "Alto" ? "A" : item.nivel === "Médio" ? "M" : "B";
-          interpretations[item.sigla + "-" + nivelKey] = item;
+          // item.sigla => "CONTR-B", mas no seu caso a sigla já tem o "-B" ou não?
+          // Observando seu JSON, você tem algo como "sigla": "CONTR-B".
+          // Precisamos de algo para mapear. Se "sigla" já vem com o sufixo "-B", "-M", "-A", 
+          // então a key = item.sigla. Se não, a key = item.sigla + "-" + item.nivel[0].
+          // Mas pelo seu JSON, a sigla já contém o nível, ex: "CONTR-B".
+          interpretations[item.sigla] = item;
         });
       })
       .catch(err => console.error("Erro ao carregar interpretations.json:", err));
 
-    // Botão Iniciar
+    // Inicia Teste
     document.getElementById("startBtn").addEventListener("click", () => {
       const inputName = document.getElementById("userName").value.trim();
-      let inputEmail = document.getElementById("userEmail").value.trim();
-
-      // Converte email para minúsculas
-      inputEmail = inputEmail.toLowerCase();
+      let inputEmail = document.getElementById("userEmail").value.trim().toLowerCase();
       document.getElementById("userEmail").value = inputEmail;
 
-      // Validação do nome
+      // Valida nome
       if (inputName.length < 8 || !inputName.includes(" ")) {
         alert("Por favor, insira seu nome e último sobrenome com no mínimo 8 caracteres.");
         return;
       }
-
-      // Validação de email
+      // Valida email
       if (!validateEmail(inputEmail)) {
         alert("Por favor, insira um email válido.");
         return;
@@ -184,24 +151,24 @@
       userName = inputName.toUpperCase();
       userEmail = inputEmail;
 
-      shuffleQuestionsAndOptions();
-
       testStartTime = new Date();
       introDiv.classList.add("hidden");
       quizDiv.classList.remove("hidden");
       renderQuestion();
     });
 
-    // Validação simples de email
+    // Validação de email (simples)
     function validateEmail(email) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email.toLowerCase());
     }
 
-    // Renderiza cada pergunta
+    // Renderiza a questão atual
     function renderQuestion() {
       quizDiv.innerHTML = "";
+
       if (currentQuestion < questions.length) {
+        // Pega a questão atual
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
 
@@ -227,22 +194,30 @@
         // Texto da pergunta
         const questionText = document.createElement("p");
         questionText.className = "question-text";
-        questionText.textContent = removeIndicador(qData.text);
+        questionText.textContent = qData.text; // Exibe a afirmação inteira (com sigla)
         quizDiv.appendChild(questionText);
 
-        // Opções (Escala Likert: 1 a 4)
-        qData.options.forEach((option, index) => {
+        // Criar 4 botões (escala Likert de 1 a 4)
+        const scaleLabels = [
+          "Discordo totalmente (1)",
+          "Discordo parcialmente (2)",
+          "Concordo parcialmente (3)",
+          "Concordo totalmente (4)"
+        ];
+        scaleLabels.forEach((label, index) => {
           const btn = document.createElement("button");
           btn.className = "option";
-          // Cada alternativa mostra a escala (ex.: "a) Discordo totalmente", "b) Discordo parcialmente", etc.)
-          const alternativas = ["(1) Discordo totalmente", "(2) Discordo parcialmente", "(3) Concordo parcialmente", "(4) Concordo totalmente"];
-          btn.textContent = `${alternativas[index]} – ${removeIndicador(option.text)}`;
+          btn.textContent = label;
           btn.onclick = () => {
-            // Aqui, guardamos a resposta como um objeto { sigla: ..., value: ... }
-            // Considerando que a alternativa 0 = 1 ponto, 1 = 2 pontos, etc.
-            answers.push({ sigla: option.profile, value: index + 1 });
+            // Salva a resposta
+            answers.push({
+              sigla: qData.sigla,
+              value: index + 1 // 1, 2, 3 ou 4
+            });
             const elapsed = new Date() - questionStartTime;
             questionTimes.push(elapsed);
+
+            // Próxima
             currentQuestion++;
             renderQuestion();
           };
@@ -254,18 +229,18 @@
       }
     }
 
-    // Função para converter a soma dos pontos em classificação textual
-    function classificarPontuacao(total) {
-      if (total >= 7) return "A"; // Alto
-      else if (total >= 5) return "M"; // Médio
-      else return "B"; // Baixo
+    // Converte soma (2 a 8) em "Baixo", "Médio" ou "Alto"
+    function somaParaNivel(soma) {
+      if (soma >= 7) return "Alto";
+      else if (soma >= 5) return "Médio";
+      return "Baixo";
     }
 
-    // Renderiza os resultados
+    // Renderiza Resultado
     function renderResult() {
       resultDiv.innerHTML = "";
 
-      // Cabeçalho de Resultado
+      // Cabeçalho
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName} (SAB)`;
@@ -279,45 +254,105 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Calcula a soma de pontos para cada perfil
+      // Soma de pontos por sigla
       let scores = {};
       answers.forEach(resp => {
-        if (!scores[resp.sigla]) {
-          scores[resp.sigla] = 0;
-        }
-        scores[resp.sigla] += resp.value;
+        if (!scores[resp.sigla]) scores[resp.sigla] = 0;
+        scores[resp.sigla] += resp.value; // soma 1..4
       });
 
-      // Container de Resultados
+      // Identificar todas as siglas que apareceram
+      // (caso queira exibir só as que o usuário respondeu, use Object.keys(scores))
+      // mas se quiser exibir todas as 20, extraia do JSON "questions".
+      // Exemplo: const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
+      const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
+
+      // Cria container para resultados
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
-      // Para cada perfil (usando allPerfis)
-      allPerfis.forEach(perfil => {
-        const totalPontos = scores[perfil] || 0;
-        // Se não houve respostas para o perfil, assumimos 0 (ou podemos optar por ignorar)
-        // Para este exemplo, vamos mostrar mesmo que 0
-        const nivelLetra = totalPontos > 0 ? classificarPontuacao(totalPontos) : "B";
-        // Monta a chave para buscar no JSON de interpretações (ex.: "CONTR-A")
-        const chave = perfil.substring(0, 5).toUpperCase() + "-" + nivelLetra;
-        const interpretacao = interpretations[chave] || { perfil: perfil, textoParticipante: "Sem interpretação.", textoAvaliador: "Sem interpretação." };
+      siglasUnicas.forEach(sig => {
+        const soma = scores[sig] || 0;
+        // 2 a 8
+        const nivel = somaParaNivel(soma);
+        // Monta a chave: ex: "CONTR-B", "CONTR-M" ou "CONTR-A"
+        // Mas no seu JSON final, a sigla já inclui o "-B"? 
+        // Pelos dados, ex: "CONTR-B"? Não, você disse "CONTR" + "-" + "B".
+        // Precisamos ver se "sig" é "CONTR" ou "CONTR-B". 
+        // Se "sig" for "CONTR", então a key = "CONTR-" + (B|M|A).
+        // Mas você escreveu no interpretations.json algo como "CONTR-B"? 
+        // Se sim, precisamos extrair a parte sem o sufixo.
+        // MAS no assertions.json, ex: "text": "... (CONTR)", "sigla": "CONTR"
+        // Então iremos formar: "CONTR-B", "CONTR-M", "CONTR-A".
+        let suffix = (nivel === "Baixo") ? "B" : (nivel === "Médio" ? "M" : "A");
+        let interpretKey = sig + "-" + suffix; 
+        let interpretObj = interpretations[interpretKey];
 
-        // Cria o bloco para o perfil
+        // Caso não encontre, exibe "Sem interpretação"
+        let sabotadorNome = interpretKey;
+        let textoParticipante = "Interpretação: Sem interpretação.";
+        let textoAvaliador = "Interpretação (Avaliador): Sem interpretação.";
+
+        if (interpretObj) {
+          sabotadorNome = interpretObj.sabotador;
+          textoParticipante = interpretObj.textoParticipante;
+          textoAvaliador = interpretObj.textoAvaliador;
+        }
+
+        // Monta HTML
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
         perfilDiv.innerHTML = `
-          <h3>${interpretacao.perfil || perfil}</h3>
-          <p><strong>Pontuação:</strong> ${totalPontos} (${nivelLetra === "A" ? "Alto" : nivelLetra === "M" ? "Médio" : "Baixo"})</p>
-          <p><strong>Interpretação (Participante):</strong> ${interpretacao.textoParticipante}</p>
-          <p><strong>Interpretação (Avaliador):</strong> ${interpretacao.textoAvaliador}</p>
+          <h3>${sabotadorNome}</h3>
+          <p><strong>Pontuação:</strong> ${soma} (${nivel})</p>
+          <p><strong>Interpretação (Participante):</strong> ${textoParticipante}</p>
+          <p><strong>Interpretação (Avaliador):</strong> ${textoAvaliador}</p>
         `;
         resultsContainer.appendChild(perfilDiv);
       });
 
       resultDiv.appendChild(resultsContainer);
-      resultDiv.classList.remove("hidden");
 
-      // (Opcional) Você pode implementar aqui a função para gerar PDF usando html2pdf.js, se necessário.
+      // Tempo total
+      const testTotalTime = new Date() - testStartTime;
+      const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
+      const fastestTime = Math.min(...questionTimes);
+      const slowestTime = Math.max(...questionTimes);
+      const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
+      const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
+
+      // Info de tempo
+      const infoCard = document.createElement("div");
+      infoCard.className = "info-card";
+      infoCard.innerHTML = `
+        <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
+        <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
+        <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
+        <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
+      `;
+      resultDiv.appendChild(infoCard);
+
+      // Botão PDF (opcional)
+      const pdfBtn = document.createElement("button");
+      pdfBtn.textContent = "Gerar PDF";
+      pdfBtn.className = "btn";
+      pdfBtn.onclick = gerarPDF;
+      resultDiv.appendChild(pdfBtn);
+
+      resultDiv.classList.remove("hidden");
+    }
+
+    // Gera PDF com html2pdf.js
+    function gerarPDF() {
+      const elemento = document.getElementById("result");
+      const opcoes = {
+        margin: 0.5,
+        filename: 'resultado-teste.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().from(elemento).set(opcoes).save();
     }
   </script>
 </body>

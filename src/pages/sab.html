@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teste de Perfil (SAB)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
+  <!-- Link para o CSS externo -->
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* Regras adicionais para o relógio */
+    #timer {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #fff;
+      background-color: #1B5E20;
+      padding: 5px 10px;
+      border-radius: 4px;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body onload="carregarParametros()">
+  <!-- Cabeçalho fixo -->
+  <header>
+    Teste de Perfil (SAB)
+  </header>
+
+  <!-- Relógio (tempo decorrido) -->
+  <div id="timer">00:00</div>
+
+  <main id="app">
+    <!-- Tela de Introdução -->
+    <section id="intro">
+      <h1>Bem-vindo(a)!</h1>
+      <p>
+        Leia cada pergunta e escolha a alternativa que mais representa como você age ou pensa em situações similares.
+        Não há respostas certas ou erradas.
+      </p>
+      <!-- Campo de Nome -->
+      <p>Por favor, insira seu nome e último sobrenome:</p>
+      <input 
+        type="text" 
+        id="userName" 
+        class="input-field" 
+        placeholder="SEU NOME (EX.: IVO DIAS)"
+        required
+      />
+      <!-- Campo de Email -->
+      <p>Por favor, insira seu email:</p>
+      <input 
+        type="email" 
+        id="userEmail" 
+        class="input-field" 
+        placeholder="SEU EMAIL (EX.: FULANO@TESTE.COM)"
+        required
+      />
+      <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
+    </section>
+
+    <!-- Tela do Questionário -->
+    <section id="quiz" class="hidden"></section>
+
+    <!-- Tela de Resultados -->
+    <section id="result" class="hidden"></section>
+  </main>
+
+  <!-- Rodapé fixo -->
+  <footer id="footer"></footer>
+
+  <!-- Biblioteca html2pdf.js -->
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
+    integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  </script>
+
+  <script>
+    /******************************************************
+     * 1) Carrega parâmetros (nome e email) da URL
+     ******************************************************/
+    function carregarParametros() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const nomeParam = urlParams.get("name");
+      const emailParam = urlParams.get("email");
+
+      if (nomeParam) {
+        document.getElementById("userName").value = nomeParam;
+      }
+      if (emailParam) {
+        document.getElementById("userEmail").value = emailParam;
+      }
+    }
+
+    /******************************************************
+     * 2) Função para formatar tempo (minutos e segundos)
+     ******************************************************/
+    function formatMinSec(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const min = Math.floor(totalSec / 60);
+      const sec = totalSec % 60;
+      return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+    }
+
+    /******************************************************
+     * 3) Função para atualizar o relógio (timer)
+     ******************************************************/
+    function updateTimer() {
+      if (testStartTime) {
+        const elapsed = new Date() - testStartTime;
+        document.getElementById("timer").textContent = formatMinSec(elapsed);
+      }
+    }
+    // Atualiza o timer a cada 1 segundo
+    setInterval(updateTimer, 1000);
+
+    /******************************************************
+     * 4) Função para remover a sigla (entre parênteses)
+     ******************************************************/
+    function removeIndicador(text) {
+      return text.replace(/\s*\([^)]*\)\s*$/, "");
+    }
+
+    /******************************************************
+     * 5) Variáveis globais
+     ******************************************************/
+    let currentQuestion = 0;
+    let userName = '';
+    let userEmail = '';
+    const answers = []; // array de { sigla, value }
+    const questionTimes = [];
+    let testStartTime = 0;
+    let questionStartTime = 0;
+    let ipAddress = "Carregando...";
+
+    /******************************************************
+     * 6) Referências aos elementos
+     ******************************************************/
+    const introDiv = document.getElementById("intro");
+    const quizDiv = document.getElementById("quiz");
+    const resultDiv = document.getElementById("result");
+
+    /******************************************************
+     * 7) Arrays/Objetos carregados via fetch
+     ******************************************************/
+    let questions = [];      // assertions.json (lista de afirmações)
+    let interpretations = {}; // interpretações em { "CONTR-B": {...}, ... }
+
+    /******************************************************
+     * 8) Captura IP
+     ******************************************************/
+    fetch("https://api.ipify.org?format=json")
+      .then(resp => resp.json())
+      .then(data => { ipAddress = data.ip; })
+      .catch(err => { ipAddress = "Indisponível"; console.error(err); });
+
+    /******************************************************
+     * 9) Atualiza rodapé (IP, hora, SO)
+     ******************************************************/
+    function getOS() {
+      const platform = window.navigator.platform;
+      const ua = window.navigator.userAgent;
+      if (/(Mac|iPhone|iPod|iPad)/i.test(platform)) return "iOS / Mac OS";
+      if (/Win/i.test(platform)) return "Windows";
+      if (/Android/i.test(ua)) return "Android";
+      if (/Linux/i.test(platform)) return "Linux";
+      return "Desconhecido";
+    }
+    function updateFooter() {
+      const footer = document.getElementById("footer");
+      const timeInBrasilia = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+      footer.textContent = `IP: ${ipAddress} | Hora de Brasília: ${timeInBrasilia} | SO: ${getOS()}`;
+    }
+    setInterval(updateFooter, 1000);
+
+    /******************************************************
+     * 10) Carrega JSON de afirmações
+     ******************************************************/
+    fetch("/assertions.json")
+      .then(r => r.json())
+      .then(data => { questions = data; })
+      .catch(err => console.error("Erro ao carregar assertions.json:", err));
+
+    /******************************************************
+     * 11) Carrega JSON de interpretações
+     ******************************************************/
+    fetch("/interpretations.json")
+      .then(r => r.json())
+      .then(data => {
+        data.forEach(item => {
+          interpretations[item.sigla] = item;
+        });
+      })
+      .catch(err => console.error("Erro ao carregar interpretations.json:", err));
+
+    /******************************************************
+     * 12) Inicia Teste
+     ******************************************************/
+    document.getElementById("startBtn").addEventListener("click", () => {
+      const inputName = document.getElementById("userName").value.trim();
+      let inputEmail = document.getElementById("userEmail").value.trim().toLowerCase();
+      document.getElementById("userEmail").value = inputEmail;
+
+      // Valida nome
+      if (inputName.length < 8 || !inputName.includes(" ")) {
+        alert("Por favor, insira seu nome e último sobrenome com no mínimo 8 caracteres.");
+        return;
+      }
+      // Valida email
+      if (!validateEmail(inputEmail)) {
+        alert("Por favor, insira um email válido.");
+        return;
+      }
+
+      userName = inputName.toUpperCase();
+      userEmail = inputEmail;
+
+      testStartTime = new Date();
+      introDiv.classList.add("hidden");
+      quizDiv.classList.remove("hidden");
+      renderQuestion();
+    });
+
+    // Função de validação simples de email
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email.toLowerCase());
+    }
+
+    /******************************************************
+     * 13) Renderiza a questão atual
+     ******************************************************/
+    function renderQuestion() {
+      quizDiv.innerHTML = "";
+
+      if (currentQuestion < questions.length) {
+        const qData = questions[currentQuestion];
+        questionStartTime = new Date();
+
+        const questionNumber = document.createElement("h2");
+        questionNumber.className = "question-number";
+        questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
+        quizDiv.appendChild(questionNumber);
+
+        // Barra de progresso
+        const progressContainer = document.createElement("div");
+        progressContainer.className = "progress-container";
+        quizDiv.appendChild(progressContainer);
+
+        const progressBarBg = document.createElement("div");
+        progressBarBg.className = "progress-bar-bg";
+        progressContainer.appendChild(progressBarBg);
+
+        const progressBarFill = document.createElement("div");
+        progressBarFill.className = "progress-bar-fill";
+        progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+        progressBarBg.appendChild(progressBarFill);
+
+        // Texto da pergunta (sem sigla)
+        const questionText = document.createElement("p");
+        questionText.className = "question-text";
+        questionText.textContent = removeIndicador(qData.text);
+        quizDiv.appendChild(questionText);
+
+        // Escala Likert (1 a 4)
+        const scaleLabels = [
+          "Discordo totalmente (1)",
+          "Discordo parcialmente (2)",
+          "Concordo parcialmente (3)",
+          "Concordo totalmente (4)"
+        ];
+        scaleLabels.forEach((label, index) => {
+          const btn = document.createElement("button");
+          btn.className = "option";
+          btn.textContent = label;
+          btn.onclick = () => {
+            answers.push({ sigla: qData.sigla, value: index + 1 });
+            const elapsed = new Date() - questionStartTime;
+            questionTimes.push(elapsed);
+            currentQuestion++;
+            renderQuestion();
+          };
+          quizDiv.appendChild(btn);
+        });
+      } else {
+        quizDiv.classList.add("hidden");
+        renderResult();
+      }
+    }
+
+    /******************************************************
+     * 14) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
+     ******************************************************/
+    function somaParaNivel(soma) {
+      if (soma >= 7) return "Alto";
+      if (soma >= 5) return "Médio";
+      return "Baixo";
+    }
+
+    /******************************************************
+     * 15) Renderiza Resultado
+     ******************************************************/
+    function renderResult() {
+      resultDiv.innerHTML = "";
+
+      // Cabeçalho
+      const headerDiv = document.createElement("div");
+      headerDiv.id = "result-header";
+      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName} (SAB)`;
+      resultDiv.appendChild(headerDiv);
+
+      // Data/hora
+      const now = new Date();
+      const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+      const dateLine = document.createElement("p");
+      dateLine.className = "result-datetime";
+      dateLine.textContent = `Gerado em: ${resultDatetime}`;
+      resultDiv.appendChild(dateLine);
+
+      // Soma de pontos por sigla
+      let scores = {};
+      answers.forEach(resp => {
+        if (!scores[resp.sigla]) scores[resp.sigla] = 0;
+        scores[resp.sigla] += resp.value;
+      });
+
+      const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
+      const resultsContainer = document.createElement("div");
+      resultsContainer.className = "results-container";
+
+      function getEmoji(nivel) {
+        if (nivel === "Alto") return "🔴";
+        if (nivel === "Médio") return "🟡";
+        return "🟢";
+      }
+
+      siglasUnicas.forEach(sig => {
+        const soma = scores[sig] || 0;
+        const nivel = somaParaNivel(soma);
+        let suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
+        let interpretKey = sig + "-" + suffix;
+        let interpretObj = interpretations[interpretKey];
+
+        let perfilNome = interpretObj ? interpretObj.sabotador : sig;
+        let textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
+
+        const perfilDiv = document.createElement("div");
+        perfilDiv.className = "perfil-result";
+        perfilDiv.innerHTML = `
+          <div class="info">
+            <h3>${perfilNome}</h3>
+            <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel})</p>
+            <p class="texto-participante">${textoInterpretacao}</p>
+          </div>
+          <div class="indicador">${getEmoji(nivel)}</div>
+        `;
+        resultsContainer.appendChild(perfilDiv);
+      });
+
+      resultDiv.appendChild(resultsContainer);
+
+      // Estatísticas de tempo
+      const testTotalTime = new Date() - testStartTime;
+      const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
+      const fastestTime = Math.min(...questionTimes);
+      const slowestTime = Math.max(...questionTimes);
+      const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
+      const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
+
+      const infoCard = document.createElement("div");
+      infoCard.className = "info-card";
+      infoCard.innerHTML = `
+        <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
+        <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
+        <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
+        <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
+      `;
+      resultDiv.appendChild(infoCard);
+
+      // Botão PDF
+      const pdfBtn = document.createElement("button");
+      pdfBtn.textContent = "Gerar PDF";
+      pdfBtn.className = "btn";
+      pdfBtn.onclick = gerarPDF;
+      resultDiv.appendChild(pdfBtn);
+
+      resultDiv.classList.remove("hidden");
+    }
+
+    /******************************************************
+     * 16) Gera PDF com html2pdf.js
+     ******************************************************/
+    function gerarPDF() {
+      const elemento = document.getElementById("result");
+      const opcoes = {
+        margin: 0.5,
+        filename: 'resultado-teste.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().from(elemento).set(opcoes).save();
+    }
+  </script>
+</body>
+</html>

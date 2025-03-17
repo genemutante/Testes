@@ -36,7 +36,6 @@
   <main id="app">
     <!-- Tela de Introdução -->
     <section id="intro">
-      <!-- Exibe o nome do participante já vindo via URL -->
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
         Leia cada pergunta e escolha a alternativa que mais representa como você age ou pensa em situações similares.
@@ -93,17 +92,16 @@
     /******************************************************
      * 3) Função para atualizar o relógio (timer)
      ******************************************************/
+    let timerInterval = setInterval(updateTimer, 1000);
     function updateTimer() {
       if (testStartTime) {
         const elapsed = new Date() - testStartTime;
         document.getElementById("timer").textContent = formatMinSec(elapsed);
       }
     }
-    setInterval(updateTimer, 1000);
 
     /******************************************************
-     * 4) Função para remover a sigla (entre parênteses) do final do texto.
-     * Essa função garante que o participante não veja o perfil na afirmação.
+     * 4) Função para remover a sigla (entre parênteses)
      ******************************************************/
     function removeIndicador(text) {
       return text.replace(/\s*\([^)]*\)\s*$/, "");
@@ -115,7 +113,7 @@
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = [];
+    const answers = []; // array de { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
@@ -258,11 +256,13 @@
     }
 
     /******************************************************
-     * 15) Renderiza Resultado
+     * 15) Renderiza Resultado e para o timer
      ******************************************************/
     function renderResult() {
-      resultDiv.innerHTML = "";
+      // Para o relógio
+      clearInterval(timerInterval);
 
+      resultDiv.innerHTML = "";
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (SAB)`;
@@ -333,18 +333,8 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      const pdfBtn = document.createElement("button");
-      pdfBtn.textContent = "Gerar PDF";
-      pdfBtn.className = "btn";
-      pdfBtn.onclick = gerarPDF;
-      resultDiv.appendChild(pdfBtn);
-
-      const sendBtn = document.createElement("button");
-      sendBtn.textContent = "Enviar ao AppSheet (fixo)";
-      sendBtn.className = "btn";
-      sendBtn.style.marginLeft = "10px";
-      sendBtn.onclick = enviarAoAppSheet;
-      resultDiv.appendChild(sendBtn);
+      // Oculta os botões da tela de resultado (não exibindo PDF e envio)
+      // Se desejar, você pode remover os botões ou simplesmente não criá-los.
 
       resultDiv.classList.remove("hidden");
     }

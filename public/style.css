@@ -17,8 +17,8 @@ tbody, tfoot, thead, tr, th, td, article, aside,
 canvas, details, embed, figure, figcaption,
 footer, header, hgroup, menu, nav, output, ruby,
 section, summary, time, mark, audio, video {
-  margin: 0; 
-  padding: 0; 
+  margin: 0;
+  padding: 0;
   border: 0;
   font-size: 100%;
   font: inherit;
@@ -27,39 +27,51 @@ section, summary, time, mark, audio, video {
 
 /* Layout principal */
 body {
-  line-height: 1;
+  line-height: 1.5;
   font-family: 'Roboto', sans-serif;
   background: linear-gradient(135deg, #f0f0f0, #ffffff);
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  padding: 20px;
 }
+
+/* Cabeçalho, Painel e Rodapé com largura fixa e centralizados */
 header, footer, #app {
-  width: 90%;
+  width: 100%;
   max-width: 650px;
   margin: 20px auto;
   border-radius: 8px;
   text-align: center;
 }
+
+/* Cabeçalho */
 header {
   background-color: #000;
   color: #fff;
-  padding: 15px 10px;
+  padding: 15px;
   font-size: 1.6em;
   font-weight: 600;
 }
+
+/* Rodapé */
 footer {
   background-color: #000;
   color: #fff;
   padding: 5px 10px;
   font-size: 10px;
 }
+
+/* Painel central */
 #app {
   background: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 30px;
+  border-radius: 8px;
 }
+
+/* Elementos ocultos */
 .hidden {
   display: none;
 }
@@ -79,8 +91,11 @@ footer {
   margin: 0.5em 0;
   line-height: 1.4;
 }
+
+/* Campos de entrada */
 .input-field {
   width: 100%;
+  max-width: 300px;
   padding: 12px;
   font-size: 1em;
   border: 1px solid #ccc;
@@ -88,13 +103,13 @@ footer {
   margin: 15px 0;
 }
 #userName {
-  text-transform: uppercase; /* Nome em maiúsculas */
+  text-transform: uppercase;
 }
-/* Se quiser forçar o email em minúsculas enquanto digita */
 #userEmail {
   text-transform: lowercase;
 }
 
+/* Botões padrão */
 .btn {
   background: #2E7D32;
   color: #fff;
@@ -104,76 +119,31 @@ footer {
   font-size: 1em;
   cursor: pointer;
   transition: background 0.3s;
-  margin: 0 auto;
-  display: block;
+  width: 100%;
 }
 .btn:hover {
   background: #1B5E20;
 }
-
-/* Questões */
-#quiz .question-number {
-  margin-bottom: 10px;
-  text-align: left;
-  font-weight: 500;
-  color: #333;
-}
-#quiz .question-text {
-  margin-bottom: 20px;
-  text-align: left;
-  color: #222;
-  font-weight: bold;
-  background: #f3f3f3; /* cor diferente para destacar */
-  padding: 10px;
-  border-radius: 4px;
-}
-.option {
-  display: block;
-  width: 100%;
-  background: #E8EEF3;
-  color: #333;
-  border: 1px solid #A1B0C5;
-  padding: 12px;
-  margin: 10px 0;
+.btn-desabilitado {
+  background: #aaa;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
   border-radius: 4px;
   font-size: 1em;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s, border 0.3s;
-  text-align: left;
-}
-.option:hover {
-  background: #FFA500; /* tom de laranja */
-  color: #000;
-  font-weight: bold;
-  border: 1px solid #000;
-  transform: scale(1.02);
-}
-
-/* Barra de Progresso (no questionário) */
-.progress-container {
+  cursor: not-allowed;
   width: 100%;
-  margin: 10px 0 20px;
-}
-.progress-bar-bg {
-  width: 100%;
-  background-color: #ccc;
-  height: 10px;
-  border-radius: 5px;
-  overflow: hidden;
-}
-.progress-bar-fill {
-  height: 100%;
-  border-radius: 5px;
-  transition: width 0.3s;
-  /* Degradê laranja para a parte preenchida */
-  background: linear-gradient(90deg, #FFA500, #FF8C00);
 }
 
-/* ===================== */
-/* Tela de Resultados    */
-/* ===================== */
+/* Grid para os botões do painel */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
 
-/* Cabeçalho e data/hora do resultado */
+/* Resultados: Cabeçalho e Data/Hora */
 #result-header {
   text-align: center;
   margin: 0;
@@ -196,19 +166,26 @@ footer {
   margin-top: 20px;
 }
 
-/* Cartão de cada perfil (mais profissional) */
+/* Cartões de resultado para cada perfil */
 .perfil-result {
-  background: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 15px;
+  background: #ffffff;
+  border: 2px solid #333;
+  border-radius: 6px;
+  padding: 20px;
   margin-bottom: 20px;
-  text-align: left; /* ou center, se preferir */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.perfil-result .info {
+  flex: 1;
+  margin-right: 15px;
 }
 .perfil-result h3 {
   margin-bottom: 8px;
-  font-size: 1.1em;
-  color: #333;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #222;
 }
 .perfil-result .pontuacao {
   margin-bottom: 8px;
@@ -220,7 +197,21 @@ footer {
   color: #333;
 }
 
-/* Cartão de estatísticas (tempo total, média, etc.) */
+/* Indicador (círculo com letra) */
+.autoest-letter, .cerebro-letter {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #333;
+}
+
+/* Cartão de estatísticas (tempo) */
 .info-card {
   background: #f8f9fa;
   border: 1px solid #ddd;
@@ -236,65 +227,3 @@ footer {
 .info-card strong {
   font-weight: 500;
 }
-
-
-
-
-
-/* ===================== */
-/* Estilo do Resultado   */
-/* ===================== */
-
-/* Cartão de cada perfil */
-.perfil-result {
-  background: #ffffff; /* fundo branco para maior contraste */
-  border: 2px solid #333; /* borda mais espessa e escura */
-  border-radius: 6px;
-  padding: 20px;
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.perfil-result .info {
-  flex: 1;
-}
-
-.perfil-result h3 {
-  margin-bottom: 8px;
-  font-size: 1.2em;
-  font-weight: bold; /* título em negrito */
-  color: #222;
-}
-
-.perfil-result .pontuacao {
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #444;
-}
-
-.perfil-result .texto-participante {
-  line-height: 1.4;
-  color: #333;
-}
-
-/* Indicador visual (emoji) */
-.indicador {
-  font-size: 2.5em;
-  margin-left: 15px;
-}
-
-#timer {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #fff;
-  background-color: #1B5E20;
-  padding: 5px 10px;
-  border-radius: 4px;
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-}
-

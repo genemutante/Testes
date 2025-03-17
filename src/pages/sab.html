@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <!-- Link para o CSS externo -->
+  <!-- Seu CSS principal -->
   <link rel="stylesheet" href="/style.css" />
   <style>
-    /* Regras adicionais para o relógio */
+    /* Timer fixo */
     #timer {
       font-size: 1.2em;
       font-weight: bold;
@@ -25,16 +25,11 @@
   </style>
 </head>
 <body onload="carregarParametros()">
-  <!-- Cabeçalho fixo -->
-  <header>
-    Teste de Perfil (SAB)
-  </header>
+  <header>Teste de Perfil (SAB)</header>
 
-  <!-- Relógio (tempo decorrido) -->
   <div id="timer">00:00</div>
 
   <main id="app">
-    <!-- Tela de Introdução -->
     <section id="intro">
       <h1>Bem-vindo(a), <span id="nomeParticipante"></span>!</h1>
       <p>
@@ -44,10 +39,7 @@
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
 
-    <!-- Tela do Questionário -->
     <section id="quiz" class="hidden"></section>
-
-    <!-- Tela de Resultados -->
     <section id="result" class="hidden"></section>
   </main>
 
@@ -62,10 +54,28 @@
   </script>
 
   <script>
+    let currentQuestion = 0;
+    let userName = '';
+    let userEmail = '';
+    const answers = [];
+    const questionTimes = [];
+    let testStartTime = 0;
+    let questionStartTime = 0;
+    let ipAddress = "Carregando...";
+
+    let questions = [];
+    let interpretations = {};
+    let scoresGlobal = {};
+
+    const introDiv = document.getElementById("intro");
+    const quizDiv = document.getElementById("quiz");
+    const resultDiv = document.getElementById("result");
+
     function carregarParametros() {
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
       const emailParam = urlParams.get("email");
+
       if (nomeParam) {
         document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
         userName = nomeParam.toUpperCase();
@@ -94,22 +104,6 @@
       return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
 
-    let currentQuestion = 0;
-    let userName = '';
-    let userEmail = '';
-    const answers = [];
-    const questionTimes = [];
-    let testStartTime = 0;
-    let questionStartTime = 0;
-    let ipAddress = "Carregando...";
-
-    const introDiv = document.getElementById("intro");
-    const quizDiv = document.getElementById("quiz");
-    const resultDiv = document.getElementById("result");
-
-    let questions = [];
-    let interpretations = {};
-
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
@@ -131,11 +125,13 @@
     }
     setInterval(updateFooter, 1000);
 
+    // Carrega afirmações
     fetch("/assertions.json")
       .then(r => r.json())
       .then(data => { questions = data; })
       .catch(err => console.error("Erro ao carregar assertions.json:", err));
 
+    // Carrega interpretações
     fetch("/interpretations.json")
       .then(r => r.json())
       .then(data => {
@@ -154,6 +150,7 @@
 
     function renderQuestion() {
       quizDiv.innerHTML = "";
+
       if (currentQuestion < questions.length) {
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
@@ -214,6 +211,7 @@
 
     function renderResult() {
       resultDiv.innerHTML = "";
+
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (SAB)`;
@@ -231,6 +229,7 @@
         if (!scores[resp.sigla]) scores[resp.sigla] = 0;
         scores[resp.sigla] += resp.value;
       });
+      scoresGlobal = scores;
 
       const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
       const resultsContainer = document.createElement("div");
@@ -284,18 +283,28 @@
       `;
       resultDiv.appendChild(infoCard);
 
+      // Botão PDF
       const pdfBtn = document.createElement("button");
       pdfBtn.textContent = "Gerar PDF";
       pdfBtn.className = "btn";
       pdfBtn.onclick = gerarPDF;
       resultDiv.appendChild(pdfBtn);
 
-      const sendBtn = document.createElement("button");
-      sendBtn.textContent = "Enviar ao AppSheet (fixo)";
-      sendBtn.className = "btn";
-      sendBtn.style.marginLeft = "10px";
-      sendBtn.onclick = enviarAoAppSheet;
-      resultDiv.appendChild(sendBtn);
+      // Botão para exibir string final
+      const showStringBtn = document.createElement("button");
+      showStringBtn.textContent = "Obter String p/ WhatsApp";
+      showStringBtn.className = "btn";
+      showStringBtn.style.marginLeft = "10px";
+      showStringBtn.onclick = exibirStringResultado;
+      resultDiv.appendChild(showStringBtn);
+
+      // Botão para enviar email
+      const emailBtn = document.createElement("button");
+      emailBtn.textContent = "Enviar por Email";
+      emailBtn.className = "btn";
+      emailBtn.style.marginLeft = "10px";
+      emailBtn.onclick = enviarPorEmail;
+      resultDiv.appendChild(emailBtn);
 
       resultDiv.classList.remove("hidden");
     }
@@ -312,47 +321,51 @@
       html2pdf().from(elemento).set(opcoes).save();
     }
 
-    function enviarAoAppSheet() {
-      const appId = "108acbee-fe0e-47f2-95b5-bcc84";
-      const tableName = "Página1";
-      const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
-      const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
-      const bodyData = {
-        Action: "Add",
-        Properties: {
-          Locale: "pt-BR",
-          Location: "0,0",
-          Timezone: "E. South America Standard Time"
-        },
-        Rows: [
-          {
-            "DateTime_Envio": new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
-            "IP": ipAddress,
-            "Nome": userName || "SEM_NOME",
-            "Email": userEmail || "SEM_EMAIL",
-            "Nome_Teste": "SAB",
-            "Versao_Teste": "1.0",
-            "Resultado": "Controlador Alto (fixo)"
-          }
-        ]
-      };
+    function exibirStringResultado() {
+      const dateTimeEnvio = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+      const ip = ipAddress || "0.0.0.0";
+      const nome = userName || "SEM_NOME";
+      const email = userEmail || "SEM_EMAIL";
+      const nomeTeste = "SAB101";
+      const versaoTeste = "v1";
+      const siglas = Object.keys(scoresGlobal); 
+      const resultado = siglas.join("@");
+      const finalString = `${dateTimeEnvio};${ip};${nome};${email};${nomeTeste};${versaoTeste};${resultado}`;
+      alert("Copie e envie no WhatsApp:\n\n" + finalString);
+    }
 
-      fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "ApplicationAccessKey": accessKey
-        },
-        body: JSON.stringify(bodyData)
-      })
-      .then(resp => resp.json())
-      .then(data => {
-        alert("Enviado ao AppSheet com sucesso!");
-      })
-      .catch(err => {
-        alert("Erro ao enviar ao AppSheet!");
-        console.error("Erro ao enviar ao AppSheet:", err);
-      });
+    /******************************************************
+     * 17) Enviar por Email
+     ******************************************************/
+    function enviarPorEmail() {
+      // Montamos o mesmo texto do exibirStringResultado
+      const dateTimeEnvio = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+      const ip = ipAddress || "0.0.0.0";
+      const nome = userName || "SEM_NOME";
+      const email = userEmail || "SEM_EMAIL";
+      const nomeTeste = "SAB101";
+      const versaoTeste = "v1";
+      const siglas = Object.keys(scoresGlobal);
+      const resultado = siglas.join("@");
+
+      const finalString = 
+        "DateTime_Envio: " + dateTimeEnvio + "\n" +
+        "IP: " + ip + "\n" +
+        "Nome: " + nome + "\n" +
+        "Email: " + email + "\n" +
+        "Nome_Teste: " + nomeTeste + "\n" +
+        "Versao_Teste: " + versaoTeste + "\n" +
+        "Resultado: " + resultado + "\n";
+
+      // Assunto do email
+      const subject = "Resultado do Teste SAB";
+      // Corpo do email (codificamos para inserir no mailto)
+      const body = encodeURIComponent(finalString);
+
+      // Abre o cliente de email
+      // Se quiser já inserir um "to=", coloque mailto:fulano@exemplo.com
+      const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
+      window.location.href = mailtoLink;
     }
   </script>
 </body>

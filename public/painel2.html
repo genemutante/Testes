@@ -20,7 +20,8 @@
       color: #fff;
       border: none;
       cursor: pointer;
-      margin: 10px 0;
+      margin: 0;
+      width: 100%;
     }
     .btn:hover {
       background: #1B5E20;
@@ -31,7 +32,14 @@
       color: #fff;
       border: none;
       cursor: not-allowed;
-      margin: 10px 0;
+      margin: 0;
+      width: 100%;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -61,15 +69,15 @@
       style="text-transform: lowercase;"
     />
 
-    <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+    <div class="grid-container">
       <!-- 1) 9CERTRIO1 (Cérebro Trino) – Ativo -->
       <button id="cerebroTrinoBtn" class="btn" onclick="iniciarCerebroTrino()">9CERTRIO1</button>
       
       <!-- 2) 8CANCOM2 (Canais de Comunicação) – Ativo -->
       <button id="canaisComBtn" class="btn" onclick="iniciarCanaisCom()">8CANCOM2</button>
       
-      <!-- 3) 7COMPHA03 (Competências e Habilidades) – Habilitado -->
-      <button id="comphabBtn" class="btn" onclick="iniciarComphab()">7COMPHA03</button>
+      <!-- 3) 7COMPHA03 (Competências e Habilidades) – Em Breve -->
+      <button class="btn btn-desabilitado" disabled>7COMPHA03</button>
       
       <!-- 4) 6ESTAUT4 (Autoestima) – Em Breve -->
       <button class="btn btn-desabilitado" disabled>6ESTAUT4</button>
@@ -109,12 +117,6 @@
         btn.textContent = "8CANCOM2 ✔";
       }
     }
-    function checkComphabStatus() {
-      const btn = document.getElementById("comphabBtn");
-      if (localStorage.getItem("comphabDone") === "true") {
-        btn.textContent = "7COMPHA03 ✔";
-      }
-    }
     function checkSabotadoresStatus() {
       const btn = document.getElementById("sabotadoresBtn");
       if (localStorage.getItem("sabTestDone") === "true") {
@@ -143,15 +145,6 @@
       const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
       if (!validarCampos(nameInput, emailInput)) return;
       const url = `canaiscom.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
-      window.location.href = url;
-    }
-
-    // Função para iniciar o teste de Competências e Habilidades
-    function iniciarComphab() {
-      const nameInput = document.getElementById("userName").value.trim();
-      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
-      if (!validarCampos(nameInput, emailInput)) return;
-      const url = `comphab.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
       window.location.href = url;
     }
 
@@ -196,7 +189,6 @@
     window.onload = function() {
       checkCerebroTrinoStatus();
       checkCanaisComStatus();
-      checkComphabStatus();
       checkSabotadoresStatus();
       checkDiscStatus();
     }

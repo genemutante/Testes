@@ -32,7 +32,6 @@
         placeholder="SEU NOME (EX.: IVO DIAS)"
         required
       />
-
       <!-- Campo de Email -->
       <p>Por favor, insira seu email:</p>
       <input 
@@ -42,7 +41,6 @@
         placeholder="SEU EMAIL (EX.: FULANO@TESTE.COM)"
         required
       />
-
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
 
@@ -56,7 +54,7 @@
   <!-- Rodapé fixo -->
   <footer id="footer"></footer>
 
-  <!-- 1) Carrega a biblioteca html2pdf.js ANTES do seu script principal -->
+  <!-- Biblioteca html2pdf.js -->
   <script 
     src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
     integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
@@ -64,10 +62,10 @@
     referrerpolicy="no-referrer">
   </script>
 
-  <!-- 2) Seu script principal -->
+  <!-- Script principal -->
   <script>
-    /* Lista completa de sabotadores */
-    const allSabotadores = [
+    /* Lista completa de perfis (usamos o termo genérico "perfil") */
+    const allPerfis = [
       "Controlador",
       "Perfeccionista",
       "Agradador",
@@ -83,7 +81,7 @@
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = [];
+    const answers = []; // Cada resposta deverá incluir { sigla: "...", value: X }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
@@ -93,10 +91,11 @@
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
-    let questions = []; // Será carregado do arquivo questions.json
+    let questions = []; // Será carregado do arquivo assertions.json (ex.: 40 afirmações)
+    let interpretations = {}; // Será carregado do arquivo interpretations.json
 
-    // Remove o sabotador (trecho entre parênteses) do final do texto
-    function removeSabotador(text) {
+    // Remove o trecho entre parênteses (indicador) do final do texto
+    function removeIndicador(text) {
       return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
 
@@ -143,13 +142,23 @@
       return min > 0 ? `${min} min. ${sec} seg.` : `${sec} seg.`;
     }
 
-    // Carrega perguntas
-    fetch("/questions.json")
+    // Carrega as afirmações (JSON)
+    fetch("/assertions.json")
       .then(resp => resp.json())
-      .then(data => {
-        questions = data;
+      .then(data => { questions = data; })
+      .catch(err => console.error("Erro ao carregar assertions.json:", err));
+
+    // Carrega as interpretações (JSON)
+    fetch("/interpretations.json")
+      .then(resp => resp.json())
+      .then(data => { 
+        // Transforma array em objeto indexado pela chave "sigla-nivel", ex.: "CONTR-A"
+        data.forEach(item => {
+          let nivelKey = item.nivel === "Alto" ? "A" : item.nivel === "Médio" ? "M" : "B";
+          interpretations[item.sigla + "-" + nivelKey] = item;
+        });
       })
-      .catch(err => console.error("Erro ao carregar questions.json:", err));
+      .catch(err => console.error("Erro ao carregar interpretations.json:", err));
 
     // Botão Iniciar
     document.getElementById("startBtn").addEventListener("click", () => {
@@ -175,7 +184,6 @@
       userName = inputName.toUpperCase();
       userEmail = inputEmail;
 
-      // Embaralha perguntas
       shuffleQuestionsAndOptions();
 
       testStartTime = new Date();
@@ -184,13 +192,13 @@
       renderQuestion();
     });
 
-    // Função simples de validação de email
+    // Validação simples de email
     function validateEmail(email) {
-      // Regex básica
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email.toLowerCase());
     }
 
+    // Renderiza cada pergunta
     function renderQuestion() {
       quizDiv.innerHTML = "";
       if (currentQuestion < questions.length) {
@@ -202,7 +210,7 @@
         questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
         quizDiv.appendChild(questionNumber);
 
-        // Barra de progresso (topo)
+        // Barra de progresso
         const progressContainer = document.createElement("div");
         progressContainer.className = "progress-container";
         quizDiv.appendChild(progressContainer);
@@ -219,18 +227,22 @@
         // Texto da pergunta
         const questionText = document.createElement("p");
         questionText.className = "question-text";
-        questionText.textContent = removeSabotador(qData.text);
+        questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
 
-        // Opções
+        // Opções (Escala Likert: 1 a 4)
         qData.options.forEach((option, index) => {
           const btn = document.createElement("button");
           btn.className = "option";
-          btn.textContent = `${["a)", "b)", "c)", "d)"][index]} ${removeSabotador(option.text)}`;
+          // Cada alternativa mostra a escala (ex.: "a) Discordo totalmente", "b) Discordo parcialmente", etc.)
+          const alternativas = ["(1) Discordo totalmente", "(2) Discordo parcialmente", "(3) Concordo parcialmente", "(4) Concordo totalmente"];
+          btn.textContent = `${alternativas[index]} – ${removeIndicador(option.text)}`;
           btn.onclick = () => {
+            // Aqui, guardamos a resposta como um objeto { sigla: ..., value: ... }
+            // Considerando que a alternativa 0 = 1 ponto, 1 = 2 pontos, etc.
+            answers.push({ sigla: option.profile, value: index + 1 });
             const elapsed = new Date() - questionStartTime;
             questionTimes.push(elapsed);
-            answers.push(option.profile);
             currentQuestion++;
             renderQuestion();
           };
@@ -242,10 +254,18 @@
       }
     }
 
+    // Função para converter a soma dos pontos em classificação textual
+    function classificarPontuacao(total) {
+      if (total >= 7) return "A"; // Alto
+      else if (total >= 5) return "M"; // Médio
+      else return "B"; // Baixo
+    }
+
+    // Renderiza os resultados
     function renderResult() {
       resultDiv.innerHTML = "";
 
-      // Cabeçalho
+      // Cabeçalho de Resultado
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName} (SAB)`;
@@ -259,105 +279,45 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Container de resultados
+      // Calcula a soma de pontos para cada perfil
+      let scores = {};
+      answers.forEach(resp => {
+        if (!scores[resp.sigla]) {
+          scores[resp.sigla] = 0;
+        }
+        scores[resp.sigla] += resp.value;
+      });
+
+      // Container de Resultados
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
-      // Coluna esquerda
-      const leftDiv = document.createElement("div");
-      leftDiv.className = "results-left";
+      // Para cada perfil (usando allPerfis)
+      allPerfis.forEach(perfil => {
+        const totalPontos = scores[perfil] || 0;
+        // Se não houve respostas para o perfil, assumimos 0 (ou podemos optar por ignorar)
+        // Para este exemplo, vamos mostrar mesmo que 0
+        const nivelLetra = totalPontos > 0 ? classificarPontuacao(totalPontos) : "B";
+        // Monta a chave para buscar no JSON de interpretações (ex.: "CONTR-A")
+        const chave = perfil.substring(0, 5).toUpperCase() + "-" + nivelLetra;
+        const interpretacao = interpretations[chave] || { perfil: perfil, textoParticipante: "Sem interpretação.", textoAvaliador: "Sem interpretação." };
 
-      const total = questions.length;
-      const counts = answers.reduce((acc, profile) => {
-        acc[profile] = (acc[profile] || 0) + 1;
-        return acc;
-      }, {});
-
-      allSabotadores.forEach(sab => {
-        const count = counts[sab] || 0;
-        const percent = Math.round((count / total) * 100);
-
-        const itemDiv = document.createElement("div");
-        itemDiv.className = "result-item";
-
-        // Barra de fundo (preenchimento)
-        const bar = document.createElement("div");
-        bar.className = "percentage-bar";
-
-        const fill = document.createElement("div");
-        fill.className = "percentage-fill";
-        fill.style.width = percent + "%";
-        fill.textContent = percent + "%";
-
-        bar.appendChild(fill);
-
-        const sabotadorLabel = document.createElement("span");
-        sabotadorLabel.className = "sabotador-label";
-        sabotadorLabel.textContent = sab;
-
-        itemDiv.appendChild(bar);
-        itemDiv.appendChild(sabotadorLabel);
-        leftDiv.appendChild(itemDiv);
+        // Cria o bloco para o perfil
+        const perfilDiv = document.createElement("div");
+        perfilDiv.className = "perfil-result";
+        perfilDiv.innerHTML = `
+          <h3>${interpretacao.perfil || perfil}</h3>
+          <p><strong>Pontuação:</strong> ${totalPontos} (${nivelLetra === "A" ? "Alto" : nivelLetra === "M" ? "Médio" : "Baixo"})</p>
+          <p><strong>Interpretação (Participante):</strong> ${interpretacao.textoParticipante}</p>
+          <p><strong>Interpretação (Avaliador):</strong> ${interpretacao.textoAvaliador}</p>
+        `;
+        resultsContainer.appendChild(perfilDiv);
       });
 
-      // Coluna direita
-      const rightDiv = document.createElement("div");
-      rightDiv.className = "results-right";
-
-      const testTotalTime = new Date() - testStartTime;
-      const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
-      const fastestTime = Math.min(...questionTimes);
-      const slowestTime = Math.max(...questionTimes);
-      const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
-      const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
-
-      let predominant = null;
-      let maxCount = -1;
-      Object.keys(counts).forEach(key => {
-        if (counts[key] > maxCount) {
-          maxCount = counts[key];
-          predominant = key;
-        }
-      });
-
-      const infoCard = document.createElement("div");
-      infoCard.className = "info-card";
-      infoCard.innerHTML = `
-        <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
-        <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
-        <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
-        <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
-        ${ predominant ? `<p><strong>Traço Predominante:</strong> ${predominant}</p>` : "" }
-      `;
-      rightDiv.appendChild(infoCard);
-
-      resultsContainer.appendChild(leftDiv);
-      resultsContainer.appendChild(rightDiv);
       resultDiv.appendChild(resultsContainer);
-
-      // Botão para gerar PDF
-      const pdfBtn = document.createElement("button");
-      pdfBtn.textContent = "Gerar PDF";
-      pdfBtn.className = "btn";
-      pdfBtn.onclick = gerarPDF;
-      resultDiv.appendChild(pdfBtn);
-
       resultDiv.classList.remove("hidden");
-    }
 
-    // Função para gerar PDF usando html2pdf.js
-    function gerarPDF() {
-      const elemento = document.getElementById("result");
-      const opcoes = {
-        margin: 0.5,
-        filename: 'resultado-teste.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-
-      // Agora a função html2pdf está definida, pois carregamos a lib antes deste script
-      html2pdf().from(elemento).set(opcoes).save();
+      // (Opcional) Você pode implementar aqui a função para gerar PDF usando html2pdf.js, se necessário.
     }
   </script>
 </body>

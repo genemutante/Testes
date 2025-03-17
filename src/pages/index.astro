@@ -4,15 +4,35 @@
   <meta charset="UTF-8" />
   <title>Página Inicial - Testes de Perfil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .input-field {
+      width: 300px;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .btn {
+      padding: 10px 20px;
+      background: #2E7D32;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    .btn:hover {
+      background: #1B5E20;
+    }
+  </style>
 </head>
 <body>
   <header>
     <h2>Portal de Testes de Perfil v1</h2>
   </header>
 
-  <main id="intro">
+  <main>
     <h1>Bem-vindo(a) ao Portal de Testes</h1>
     <p>Por favor, insira seu nome e último sobrenome:</p>
     <input 
@@ -28,27 +48,23 @@
       type="email" 
       id="userEmail" 
       class="input-field" 
-      placeholder="SEU EMAIL (EX.: FULANO@TESTE.COM)"
+      placeholder="seu email (ex.: fulano@teste.com)"
       required
       style="text-transform: lowercase;"
     />
 
-    <div class="testes-container">
-      <!-- Teste de Sabotadores -->
+    <div style="margin-top: 20px;">
       <button class="btn" onclick="iniciarSabotadores()">Teste de Sabotadores</button>
-      <button class="btn btn-desabilitado" disabled>Teste DISC (Em Breve)</button>
-      <button class="btn btn-desabilitado" disabled>Teste Quociente Emocional (Em Breve)</button>
+      <button class="btn" disabled style="background:#aaa;cursor:not-allowed;">Teste DISC (Em Breve)</button>
+      <button class="btn" disabled style="background:#aaa;cursor:not-allowed;">Teste Quociente Emocional (Em Breve)</button>
     </div>
   </main>
 
-  <footer id="footer" style="text-align:center; margin-top:20px; font-size:10px; color:#666;">
+  <footer style="margin-top:20px;font-size:10px;color:#666;">
     © 2025 - Portal de Testes de Perfil
   </footer>
 
-  <!-- Coloque o script aqui, após o HTML, para garantir que a função exista
-       quando o botão for clicado -->
   <script>
-    // Função para validar e iniciar o teste
     function iniciarSabotadores() {
       // Captura valores
       const nameInput = document.getElementById("userName").value.trim();
@@ -70,7 +86,6 @@
       window.location.href = url;
     }
 
-    // Validação de email (regex simples)
     function validateEmail(email) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email.toLowerCase());

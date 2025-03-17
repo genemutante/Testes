@@ -4,16 +4,19 @@
   <meta charset="UTF-8" />
   <title>Portal de Testes de Perfil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Link para o CSS externo -->
-  <link rel="stylesheet" href="/style.css" />
+  <!-- Link para seu arquivo CSS unificado -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Cabeçalho fixo -->
   <header>
-    <h2>Portal de Testes de Perfil v2</h2>
+    Portal de Testes de Perfil v2
   </header>
 
-  <main>
+  <!-- Container principal (mesmo estilo do #app nas outras páginas) -->
+  <main id="app">
     <h1>Bem-vindo(a) ao Portal de Testes</h1>
+
     <p>Por favor, insira seu nome e último sobrenome:</p>
     <input 
       type="text" 
@@ -21,7 +24,6 @@
       class="input-field" 
       placeholder="SEU NOME (EX.: IVO DIAS)"
       required
-      style="text-transform: uppercase;"
     />
     <p>Por favor, insira seu email:</p>
     <input 
@@ -30,45 +32,48 @@
       class="input-field" 
       placeholder="seu email (ex.: fulano@teste.com)"
       required
-      style="text-transform: lowercase;"
     />
 
+    <!-- Grade de botões (3 colunas) -->
     <div class="grid-container">
-      <!-- 1) 9CERTRIO1 (Cérebro Trino) – Ativo -->
+      <!-- 1) 9CERTRIO1 (Cérebro Trino) -->
       <button id="cerebroTrinoBtn" class="btn" onclick="iniciarCerebroTrino()">9CERTRIO1</button>
       
-      <!-- 2) 8CANCOM2 (Canais de Comunicação) – Ativo -->
+      <!-- 2) 8CANCOM2 (Canais de Comunicação) -->
       <button id="canaisComBtn" class="btn" onclick="iniciarCanaisCom()">8CANCOM2</button>
       
-      <!-- 3) 7COMPHA03 (Competências e Habilidades) – Ativo -->
+      <!-- 3) 7COMPHA03 (Competências e Habilidades) -->
       <button id="comphabBtn" class="btn" onclick="iniciarCompetencias()">7COMPHA03</button>
       
-      <!-- 4) 6ESTAUT4 (Autoestima) – Ativo -->
+      <!-- 4) 6ESTAUT4 (Autoestima) -->
       <button id="autoestBtn" class="btn" onclick="iniciarAutoestima()">6ESTAUT4</button>
       
-      <!-- 5) 5ATVPRE005 (Proatividade) – Ativo -->
+      <!-- 5) 5ATVPRE005 (Proatividade) -->
       <button id="proatBtn" class="btn" onclick="iniciarProatividade()">5ATVPRE005</button>
       
-      <!-- 6) 4QEMO002 (Quociente Emocional) – Ativo -->
+      <!-- 6) 4QEMO002 (Quociente Emocional) -->
       <button id="qeBtn" class="btn" onclick="iniciarQe()">4QEMO002</button>
       
-      <!-- 7) 3SABCOM7 (Comportamentos Sabotadores) – Ativo -->
+      <!-- 7) 3SABCOM7 (Comportamentos Sabotadores) -->
       <button id="sabotadoresBtn" class="btn" onclick="iniciarSabotadores()">3SABCOM7</button>
       
-      <!-- 8) 2PERDSK08 (DISK) – Ativo -->
+      <!-- 8) 2PERDSK08 (DISK) -->
       <button id="discBtn" class="btn" onclick="iniciarDisc()">2PERDSK08</button>
       
-      <!-- 9) 1VECA0009 (VECA) – Ativo -->
+      <!-- 9) 1VECA0009 (VECA) -->
       <button id="vecaBtn" class="btn" onclick="iniciarVeca()">1VECA0009</button>
     </div>
   </main>
 
-  <footer style="margin-top:20px;font-size:10px;color:#666;">
+  <!-- Rodapé fixo -->
+  <footer>
     © 2025 - Portal de Testes de Perfil
   </footer>
 
   <script>
-    // Funções de checagem para atualizar os botões com a marca de teste concluído
+    // ============================
+    // Funções de checagem (localStorage)
+    // ============================
     function checkCerebroTrinoStatus() {
       const btn = document.getElementById("cerebroTrinoBtn");
       if (localStorage.getItem("cerebroTrinoDone") === "true") {
@@ -124,7 +129,28 @@
       }
     }
 
-    // Função para validar os campos e redirecionar para o teste correspondente
+    // ============================
+    // Função de validação genérica
+    // ============================
+    function validarCampos(nameInput, emailInput) {
+      if (nameInput.length < 8 || !nameInput.includes(" ")) {
+        alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
+        return false;
+      }
+      if (!validateEmail(emailInput)) {
+        alert("Por favor, insira um email válido.");
+        return false;
+      }
+      return true;
+    }
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email.toLowerCase());
+    }
+
+    // ============================
+    // Função genérica para iniciar teste
+    // ============================
     function iniciarTeste(urlPage) {
       const nameInput = document.getElementById("userName").value.trim();
       const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
@@ -133,7 +159,9 @@
       window.location.href = url;
     }
 
-    // Funções para iniciar cada teste
+    // ============================
+    // Funções específicas
+    // ============================
     function iniciarCerebroTrino() {
       iniciarTeste("cerebro-trino.html");
     }
@@ -162,26 +190,9 @@
       iniciarTeste("veca.html");
     }
 
-    // Função de validação de campos (nome e email)
-    function validarCampos(nameInput, emailInput) {
-      if (nameInput.length < 8 || !nameInput.includes(" ")) {
-        alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
-        return false;
-      }
-      if (!validateEmail(emailInput)) {
-        alert("Por favor, insira um email válido.");
-        return false;
-      }
-      return true;
-    }
-
-    // Validação simples de email
-    function validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return re.test(email.toLowerCase());
-    }
-
-    // Ao carregar a página, verifica o status de cada teste
+    // ============================
+    // Ao carregar a página
+    // ============================
     window.onload = function() {
       checkCerebroTrinoStatus();
       checkCanaisComStatus();

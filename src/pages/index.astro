@@ -63,7 +63,15 @@
   </script>
 
   <script>
-    // Variáveis globais
+    // 1) Função de formatação de tempo (minutos e segundos)
+    function formatMinSec(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const min = Math.floor(totalSec / 60);
+      const sec = totalSec % 60;
+      return min > 0 ? `${min} min. ${sec} seg.` : `${sec} seg.`;
+    }
+
+    // 2) Variáveis globais
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
@@ -73,22 +81,22 @@
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
 
-    // Referências aos elementos
+    // 3) Referências aos elementos
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
-    // Arrays/Objetos que serão carregados via fetch
+    // 4) Arrays/Objetos que serão carregados via fetch
     let questions = [];      // assertions.json (lista de afirmações)
     let interpretations = {}; // interpretacoes em { "CONTR-B": {...}, ... }
 
-    // Captura IP
+    // 5) Captura IP
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
-    // Atualiza rodapé (IP, hora, SO)
+    // 6) Atualiza rodapé (IP, hora, SO)
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -105,7 +113,7 @@
     }
     setInterval(updateFooter, 1000);
 
-    // Carrega JSON de afirmações
+    // 7) Carrega JSON de afirmações
     fetch("/assertions.json")
       .then(r => r.json())
       .then(data => {
@@ -113,20 +121,19 @@
       })
       .catch(err => console.error("Erro ao carregar assertions.json:", err));
 
-    // Carrega JSON de interpretações
+    // 8) Carrega JSON de interpretações
     fetch("/interpretations.json")
       .then(r => r.json())
       .then(data => {
         // Converte cada objeto do array em uma entrada do objeto 'interpretations'
-        // Exemplo: "CONTR-B" -> { sab: "Controlador", nivel: "Baixo", ... }
         data.forEach(item => {
-          // item.sigla já é algo como "CONTR-B", "CONTR-M", etc.
+          // Ex: "CONTR-B", "PERFE-A", etc.
           interpretations[item.sigla] = item;
         });
       })
       .catch(err => console.error("Erro ao carregar interpretations.json:", err));
 
-    // Botão Iniciar
+    // 9) Botão Iniciar
     document.getElementById("startBtn").addEventListener("click", () => {
       const inputName = document.getElementById("userName").value.trim();
       let inputEmail = document.getElementById("userEmail").value.trim().toLowerCase();
@@ -152,13 +159,13 @@
       renderQuestion();
     });
 
-    // Função simples de validação de email
+    // 10) Validação simples de email
     function validateEmail(email) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email.toLowerCase());
     }
 
-    // Renderiza a questão atual
+    // 11) Renderiza a questão atual
     function renderQuestion() {
       quizDiv.innerHTML = "";
 
@@ -207,7 +214,7 @@
             // Salva a resposta
             answers.push({
               sigla: qData.sigla,
-              value: index + 1 // 1, 2, 3, 4
+              value: index + 1 // 1..4
             });
             const elapsed = new Date() - questionStartTime;
             questionTimes.push(elapsed);
@@ -224,14 +231,14 @@
       }
     }
 
-    // Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
+    // 12) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
     function somaParaNivel(soma) {
       if (soma >= 7) return "Alto";
       if (soma >= 5) return "Médio";
       return "Baixo";
     }
 
-    // Renderiza Resultado
+    // 13) Renderiza Resultado
     function renderResult() {
       resultDiv.innerHTML = "";
 
@@ -253,14 +260,13 @@
       let scores = {};
       answers.forEach(resp => {
         if (!scores[resp.sigla]) scores[resp.sigla] = 0;
-        scores[resp.sigla] += resp.value; // soma 1..4
+        scores[resp.sigla] += resp.value;
       });
 
-      // Identificar todas as siglas que apareceram
-      // (caso queira exibir apenas as que foram respondidas)
+      // Pega todas as siglas distintas do JSON
       const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
 
-      // Container para os resultados
+      // Container p/ resultados
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
@@ -268,14 +274,11 @@
         const soma = scores[sig] || 0;
         const nivel = somaParaNivel(soma); // "Baixo", "Médio", "Alto"
 
-        // Monta a chave p/ buscar no JSON (ex.: "CONTR-B", "CONTR-M", "CONTR-A")
-        // Se "sig" for "CONTR", concatenamos "-B", "-M" ou "-A"
-        // Ex.: "CONTR" + "-" + "B" => "CONTR-B"
+        // Monta a chave: ex: "CONTR-B", "PERFE-A", ...
         let suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
         let interpretKey = sig + "-" + suffix;
         let interpretObj = interpretations[interpretKey];
 
-        // Se não encontrou, exibe "Sem interpretação"
         let sabotadorNome = interpretKey;
         let textoParticipante = "Interpretação: Sem interpretação.";
         let textoAvaliador = "Interpretação (Avaliador): Sem interpretação.";
@@ -299,7 +302,7 @@
 
       resultDiv.appendChild(resultsContainer);
 
-      // Tempo total e estatísticas
+      // Estatísticas de tempo
       const testTotalTime = new Date() - testStartTime;
       const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
       const fastestTime = Math.min(...questionTimes);
@@ -327,7 +330,7 @@
       resultDiv.classList.remove("hidden");
     }
 
-    // Gera PDF com html2pdf.js
+    // 14) Gera PDF com html2pdf.js
     function gerarPDF() {
       const elemento = document.getElementById("result");
       const opcoes = {

@@ -62,31 +62,31 @@
     />
 
     <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-      <!-- 1) 9CERTRIO1 (Cérebro Trino) => Ativo -->
+      <!-- 1) 9CERTRIO1 (Cérebro Trino) – Ativo -->
       <button id="cerebroTrinoBtn" class="btn" onclick="iniciarCerebroTrino()">9CERTRIO1</button>
-
-      <!-- 2) 8CANCOM2 (Canais de Comunicação) => Em Breve -->
-      <button class="btn btn-desabilitado" disabled>8CANCOM2</button>
-
-      <!-- 3) 7COMPHA3 (Competências e Habilidades) => Em Breve -->
+      
+      <!-- 2) 8CANCOM2 (Canais de Comunicação) – Ativo -->
+      <button id="canaisComBtn" class="btn" onclick="iniciarCanaisCom()">8CANCOM2</button>
+      
+      <!-- 3) 7COMPHA3 (Competências e Habilidades) – Em Breve -->
       <button class="btn btn-desabilitado" disabled>7COMPHA3</button>
-
-      <!-- 4) 6ESTAUT4 (Autoestima) => Em Breve -->
+      
+      <!-- 4) 6ESTAUT4 (Autoestima) – Em Breve -->
       <button class="btn btn-desabilitado" disabled>6ESTAUT4</button>
-
-      <!-- 5) 5ATVPRE005 (Proatividade) => Em Breve -->
+      
+      <!-- 5) 5ATVPRE005 (Proatividade) – Em Breve -->
       <button class="btn btn-desabilitado" disabled>5ATVPRE005</button>
-
-      <!-- 6) 4QEMO002 (Quociente Emocional) => Em Breve -->
+      
+      <!-- 6) 4QEMO002 (Quociente Emocional) – Em Breve -->
       <button class="btn btn-desabilitado" disabled>4QEMO002</button>
-
-      <!-- 7) 3SABCOM7 (Comportamentos Sabotadores) => Ativo -->
+      
+      <!-- 7) 3SABCOM7 (Comportamentos Sabotadores) – Ativo -->
       <button id="sabotadoresBtn" class="btn" onclick="iniciarSabotadores()">3SABCOM7</button>
-
-      <!-- 8) 2PERDSK08 (DISK) => Ativo -->
+      
+      <!-- 8) 2PERDSK08 (DISK) – Ativo -->
       <button id="discBtn" class="btn" onclick="iniciarDisc()">2PERDSK08</button>
-
-      <!-- 9) 1VECA0009 (VECA) => Em Breve -->
+      
+      <!-- 9) 1VECA0009 (VECA) – Em Breve -->
       <button class="btn btn-desabilitado" disabled>1VECA0009</button>
     </div>
   </main>
@@ -96,23 +96,25 @@
   </footer>
 
   <script>
-    // Verifica se Cérebro Trino já foi concluído e atualiza o botão
+    // Funções de checagem para atualizar os botões com a marca de teste concluído
     function checkCerebroTrinoStatus() {
       const btn = document.getElementById("cerebroTrinoBtn");
       if (localStorage.getItem("cerebroTrinoDone") === "true") {
         btn.textContent = "9CERTRIO1 ✔";
       }
     }
-
-    // Verifica se Sabotadores já foi concluído e atualiza o botão
+    function checkCanaisComStatus() {
+      const btn = document.getElementById("canaisComBtn");
+      if (localStorage.getItem("canaisComDone") === "true") {
+        btn.textContent = "8CANCOM2 ✔";
+      }
+    }
     function checkSabotadoresStatus() {
       const btn = document.getElementById("sabotadoresBtn");
       if (localStorage.getItem("sabTestDone") === "true") {
         btn.textContent = "3SABCOM7 ✔";
       }
     }
-
-    // Verifica se DISK já foi concluído e atualiza o botão
     function checkDiscStatus() {
       const btn = document.getElementById("discBtn");
       if (localStorage.getItem("discTestDone") === "true") {
@@ -120,7 +122,7 @@
       }
     }
 
-    // Iniciar Cérebro Trino
+    // Função para validar os campos e iniciar o teste de Cérebro Trino
     function iniciarCerebroTrino() {
       const nameInput = document.getElementById("userName").value.trim();
       const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
@@ -129,7 +131,16 @@
       window.location.href = url;
     }
 
-    // Iniciar Sabotadores
+    // Função para iniciar o teste dos Canais de Comunicação
+    function iniciarCanaisCom() {
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (!validarCampos(nameInput, emailInput)) return;
+      const url = `canaiscom.html?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
+    }
+
+    // Função para iniciar o teste de Sabotadores
     function iniciarSabotadores() {
       const nameInput = document.getElementById("userName").value.trim();
       const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
@@ -138,7 +149,7 @@
       window.location.href = url;
     }
 
-    // Iniciar DISK
+    // Função para iniciar o teste DISK
     function iniciarDisc() {
       const nameInput = document.getElementById("userName").value.trim();
       const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
@@ -147,7 +158,7 @@
       window.location.href = url;
     }
 
-    // Função de validação de campos (nome/email)
+    // Função de validação de campos (nome e email)
     function validarCampos(nameInput, emailInput) {
       if (nameInput.length < 8 || !nameInput.includes(" ")) {
         alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
@@ -169,6 +180,7 @@
     // Ao carregar a página, verifica status de cada teste
     window.onload = function() {
       checkCerebroTrinoStatus();
+      checkCanaisComStatus();
       checkSabotadoresStatus();
       checkDiscStatus();
     }

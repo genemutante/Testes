@@ -2,15 +2,14 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Teste de Perfil - 2PERDSK08 </title>
+  <title>Teste de Perfil (DISC)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
   <!-- Link para o CSS externo -->
   <link rel="stylesheet" href="/style.css" />
-
   <style>
-    /* Relógio no canto */
+    /* Estilos específicos para este teste (mínimos, o restante vem do style.css) */
     #timer {
       font-size: 1.2em;
       font-weight: bold;
@@ -23,35 +22,48 @@
       right: 10px;
       z-index: 1000;
     }
-    /* Card grande para o perfil composto */
+    /* Marca de teste concluído */
+    #testDoneMark {
+      display: none;
+      color: var(--brand-red);
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    /* Card do Perfil Composto */
     .composite-card {
       background: #f5f5f5;
       border: 2px solid #ccc;
       border-radius: 8px;
       padding: 15px;
-      margin: 15px 0;
+      margin: 20px 0;
       text-align: center;
     }
     .composite-card h2 {
       margin: 0;
-      font-size: 1.4em;
+      font-size: 1.5em;
       font-weight: bold;
     }
-    /* Cartão de cada dimensão */
+    /* Card de cada dimensão */
     .perfil-result {
       background: #fff;
       border: 1px solid #ccc;
       border-radius: 6px;
       padding: 15px;
-      margin: 10px 0;
+      margin-bottom: 15px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    /* Container com as infos de texto */
     .perfil-result .info {
       flex: 1;
       margin-right: 15px;
+    }
+    .perfil-result h3 {
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 1.2em;
+      color: #222;
     }
     /* Círculo com a letra do perfil (D, I, S, C) */
     .disc-letter {
@@ -66,36 +78,32 @@
       font-size: 1.2em;
       color: #333;
     }
-    /* Marca de teste já concluído */
-    #testDoneMark {
-      display: none;
-      color: green;
-      font-weight: bold;
-      margin-bottom: 10px;
+    /* Botão Imprimir centralizado com espaçamento */
+    .print-container {
+      text-align: center;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body onload="carregarParametros(); checkIfDone();">
   <!-- Cabeçalho fixo -->
   <header>
-    Teste de Perfil - 2PERDSK08
+    Teste de Perfil (DISC)
   </header>
 
   <!-- Relógio (tempo decorrido) -->
   <div id="timer">00:00</div>
 
-  <main id="app">
-    <!-- Se desejar, exibe a marca de teste já concluído -->
-    <div id="testDoneMark">
-      Teste já concluído ✔
-    </div>
+  <!-- Container principal -->
+  <main id="app" class="container">
+    <!-- Marca de teste já concluído -->
+    <div id="testDoneMark">Teste já concluído ✔</div>
     
     <!-- Tela de Introdução -->
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Abaixo estão afirmações sobre como você costuma agir ou se sentir. Escolha a opção que mais combina com você hoje,
-        sem se preocupar com respostas certas ou erradas.
+        Abaixo estão afirmações sobre como você costuma agir ou se sentir. Escolha a opção que mais combina com você hoje, sem se preocupar com respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
@@ -109,7 +117,7 @@
 
   <footer id="footer"></footer>
 
-  <!-- Biblioteca html2pdf.js (caso queira gerar PDF) -->
+  <!-- Biblioteca html2pdf.js (opcional para gerar PDF) -->
   <script 
     src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
     integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
@@ -144,7 +152,7 @@
     }
 
     /******************************************************
-     * 2) Função para formatar tempo (minutos e segundos)
+     * 2) Formata tempo (minutos e segundos)
      ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
@@ -154,7 +162,7 @@
     }
 
     /******************************************************
-     * 3) Função para atualizar o relógio (timer)
+     * 3) Atualiza o cronômetro (timer)
      ******************************************************/
     let timerInterval = setInterval(updateTimer, 1000);
     function updateTimer() {
@@ -165,10 +173,10 @@
     }
 
     /******************************************************
-     * 4) Remove indicadores (se houver) do final do texto
+     * 4) Função para remover indicadores do final do texto
      ******************************************************/
     function removeIndicador(text) {
-      return text; // Não removemos nada adicional aqui
+      return text; // Neste teste, não removemos nada
     }
 
     /******************************************************
@@ -177,7 +185,7 @@
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = [];  // array de { sigla, value }
+    const answers = [];  // Cada resposta: { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
@@ -193,7 +201,7 @@
     /******************************************************
      * 7) Arrays/Objetos carregados via fetch
      ******************************************************/
-    let questions = [];      // disc_assertions.json
+    let questions = [];       // disc_assertions.json
     let interpretations = {}; // disc_interpretations.json
 
     /******************************************************
@@ -227,7 +235,7 @@
      * 10) Carrega JSON de afirmações
      ******************************************************/
     fetch("/disc_assertions.json")
-      .then(r => r.json())
+      .then(resp => resp.json())
       .then(data => { questions = data; })
       .catch(err => console.error("Erro ao carregar disc_assertions.json:", err));
 
@@ -235,7 +243,7 @@
      * 11) Carrega JSON de interpretações
      ******************************************************/
     fetch("/disc_interpretations.json")
-      .then(r => r.json())
+      .then(resp => resp.json())
       .then(data => {
         data.forEach(item => {
           interpretations[item.sigla] = item;
@@ -244,7 +252,7 @@
       .catch(err => console.error("Erro ao carregar disc_interpretations.json:", err));
 
     /******************************************************
-     * 12) Inicia Teste
+     * 12) Inicia o Teste
      ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
@@ -262,11 +270,13 @@
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
 
+        // Número da pergunta
         const questionNumber = document.createElement("h2");
         questionNumber.className = "question-number";
         questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
         quizDiv.appendChild(questionNumber);
 
+        // Barra de progresso
         const progressContainer = document.createElement("div");
         progressContainer.className = "progress-container";
         quizDiv.appendChild(progressContainer);
@@ -280,11 +290,13 @@
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
 
+        // Texto da pergunta
         const questionText = document.createElement("p");
         questionText.className = "question-text";
         questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
 
+        // Opções (escala Likert)
         const scaleLabels = [
           "Discordo totalmente (1)",
           "Discordo parcialmente (2)",
@@ -311,18 +323,16 @@
     }
 
     /******************************************************
-     * 14) Converte soma em "Baixo", "Moderado" ou "Alto"
+     * 14) Converte soma (10-40) em "Baixa", "Moderado" ou "Alto"
      ******************************************************/
     function somaParaNivel(soma) {
-      // Cada perfil tem 10 afirmações, pontuação mínima 10 e máxima 40
-      if (soma >= 30) return "Alto";
-      if (soma >= 20) return "Moderado";
-      return "Baixo";
+      if (soma >= 31) return "Alta";
+      if (soma >= 21) return "Moderado";
+      return "Baixa";
     }
 
     /******************************************************
-     * 15) Renderiza Resultado, exibe card do perfil composto 
-     *     e mostra todos os 4 perfis, mesmo com pontuação 0
+     * 15) Renderiza o Resultado
      ******************************************************/
     function renderResult() {
       clearInterval(timerInterval);
@@ -330,20 +340,22 @@
 
       resultDiv.innerHTML = "";
 
-      // Cabeçalho do resultado
+      // Cabeçalho do resultado (nome destacado)
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (DISC)`;
+      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (DISC)`;
       resultDiv.appendChild(headerDiv);
 
-      // Exibe email abaixo do nome
+      // Email centralizado
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
+        emailLine.style.textAlign = "center";
         emailLine.textContent = userEmail;
         resultDiv.appendChild(emailLine);
       }
 
+      // Data/hora
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
       const dateLine = document.createElement("p");
@@ -366,26 +378,23 @@
       });
       compositeArray.sort((a, b) => b.score - a.score);
 
-      // Monta string do perfil composto (somente as que pontuaram > 0)
+      // Perfil composto (apenas as dimensões que pontuaram > 0)
       const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
       const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
 
       // Card do Perfil Composto
       const compositeDiv = document.createElement("div");
       compositeDiv.className = "composite-card";
-      // Se não houve pontuação em nenhum, exibe "N/A"
       compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
 
-      // Exibe todos os 4 perfis (D, I, S, C), mesmo com pontuação 0
-      const siglasUnicas = ["D", "I", "S", "C"];
+      // Exibe os 4 perfis (D, I, S, C), mesmo com pontuação 0
+      const allProfiles = ["D", "I", "S", "C"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
-      siglasUnicas.forEach(sig => {
-        const soma = scores[sig];
-
-        // Verifica se há interpretações
+      allProfiles.forEach(sig => {
+        const soma = scores[sig] || 0;
         let nivel = "";
         let interpretObj = null;
         let perfilNome = "";
@@ -393,14 +402,13 @@
 
         if (soma > 0) {
           nivel = somaParaNivel(soma);
-          const suffix = (nivel === "Alto") ? "A" : (nivel === "Moderado" ? "M" : "B");
+          const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderado" ? "M" : "B");
           const interpretKey = sig + "-" + suffix;
           interpretObj = interpretations[interpretKey];
           perfilNome = interpretObj ? interpretObj.perfil : sig;
           textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
         } else {
-          // Caso pontuação = 0
-          // Se quiser, defina um nome fixo (ex: "Dominância") para D, etc.
+          // Se não houve pontuação, exibe o nome completo fixo
           switch(sig) {
             case "D": perfilNome = "Dominância"; break;
             case "I": perfilNome = "Influência"; break;
@@ -410,32 +418,21 @@
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
 
-        // Card da dimensão
+        // Cria o card para a dimensão
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
 
-        // Bloco de texto
         const infoDiv = document.createElement("div");
         infoDiv.className = "info";
+        infoDiv.innerHTML = `
+          <h3>${perfilNome}</h3>
+          <p class="pontuacao">Pontuação: ${soma} (${nivel || "Nenhuma"})</p>
+          <p class="texto-participante">${textoInterpretacao}</p>
+        `;
 
-        if (soma > 0) {
-          infoDiv.innerHTML = `
-            <h3>${perfilNome}</h3>
-            <p class="pontuacao">Pontuação: ${soma} (${nivel})</p>
-            <p class="texto-participante">${textoInterpretacao}</p>
-          `;
-        } else {
-          infoDiv.innerHTML = `
-            <h3>${perfilNome}</h3>
-            <p class="pontuacao">Pontuação: 0 (Nenhuma)</p>
-            <p class="texto-participante">${textoInterpretacao}</p>
-          `;
-        }
-
-        // Círculo com a letra do perfil
         const letterDiv = document.createElement("div");
         letterDiv.className = "disc-letter";
-        letterDiv.textContent = sig; // ex: "D", "I", "S", "C"
+        letterDiv.textContent = sig; // Exibe a letra: D, I, S, ou C
 
         perfilDiv.appendChild(infoDiv);
         perfilDiv.appendChild(letterDiv);
@@ -462,12 +459,16 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão Imprimir
+      // Botão Imprimir centralizado com espaçamento acima
+      const printDiv = document.createElement("div");
+      printDiv.style.textAlign = "center";
+      printDiv.style.marginTop = "20px";
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";
       printBtn.onclick = () => window.print();
-      resultDiv.appendChild(printBtn);
+      printDiv.appendChild(printBtn);
+      resultDiv.appendChild(printDiv);
 
       resultDiv.classList.remove("hidden");
     }
@@ -479,58 +480,12 @@
       const elemento = document.getElementById("result");
       const opcoes = {
         margin: 0.5,
-        filename: 'resultado-teste.pdf',
+        filename: 'resultado-9CERTRIO1.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
       html2pdf().from(elemento).set(opcoes).save();
-    }
-
-    /******************************************************
-     * 17) Exemplo de função para enviar ao AppSheet (não chamada)
-     ******************************************************/
-    function enviarAoAppSheet() {
-      const appId = "108acbee-fe0e-47f2-95b5-bcc84";
-      const tableName = "Página1";
-      const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
-      const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
-      const bodyData = {
-        Action: "Add",
-        Properties: {
-          Locale: "pt-BR",
-          Location: "0,0",
-          Timezone: "E. South America Standard Time"
-        },
-        Rows: [
-          {
-            "DateTime_Envio": new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
-            "IP": ipAddress,
-            "Nome": userName || "SEM_NOME",
-            "Email": userEmail || "SEM_EMAIL",
-            "Nome_Teste": "DISC",
-            "Versao_Teste": "1.0",
-            "Resultado": "Exemplo de resultado fixo"
-          }
-        ]
-      };
-
-      fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "ApplicationAccessKey": accessKey
-        },
-        body: JSON.stringify(bodyData)
-      })
-      .then(resp => resp.json())
-      .then(data => {
-        alert("Enviado ao AppSheet com sucesso!");
-      })
-      .catch(err => {
-        alert("Erro ao enviar ao AppSheet!");
-        console.error("Erro ao enviar ao AppSheet:", err);
-      });
     }
   </script>
 </body>

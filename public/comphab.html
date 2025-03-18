@@ -2,77 +2,12 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>TESTE DE PERFIL - 7COMPHA03</title> <!-- Código do teste -->
+  <title>TESTE DE PERFIL - 7COMPHA03</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
   <!-- Link para o CSS externo -->
   <link rel="stylesheet" href="/style.css" />
-
-  <style>
-    /* Relógio no canto */
-    #timer {
-      font-size: 1.2em;
-      font-weight: bold;
-      color: #fff;
-      background-color: #1B5E20;
-      padding: 5px 10px;
-      border-radius: 4px;
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-    }
-    /* Marca de teste já concluído */
-    #testDoneMark {
-      display: none;
-      color: green;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    /* Card do Perfil Composto */
-    .composite-card {
-      background: #f5f5f5;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      padding: 15px;
-      margin: 15px 0;
-      text-align: center;
-    }
-    .composite-card h2 {
-      margin: 0;
-      font-size: 1.4em;
-      font-weight: bold;
-    }
-    /* Card de cada competência */
-    .perfil-result {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 15px;
-      margin: 10px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .perfil-result .info {
-      flex: 1;
-      margin-right: 15px;
-    }
-    /* Círculo com a letra da competência */
-    .comphab-letter {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.2em;
-      color: #333;
-    }
-  </style>
 </head>
 <body onload="carregarParametros(); checkIfDone();">
   <!-- Cabeçalho fixo -->
@@ -80,15 +15,13 @@
     TESTE DE PERFIL - 7COMPHA03
   </header>
 
-  <!-- Relógio (tempo decorrido) -->
-  <div id="timer">00:00</div>
+  <!-- Cronômetro -->
+  <div id="timer"></div>
 
-  <main id="app">
+  <main id="app" class="container">
     <!-- Marca de teste já concluído -->
-    <div id="testDoneMark">
-      Teste já concluído ✔
-    </div>
-    
+    <div id="testDoneMark" class="test-concluido"></div>
+
     <!-- Tela de Introdução -->
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
@@ -108,12 +41,9 @@
   <footer id="footer"></footer>
 
   <!-- Biblioteca html2pdf.js (opcional para gerar PDF) -->
-  <script 
-    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
-    integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer">
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
+          integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script>
     /******************************************************
@@ -137,12 +67,12 @@
      ******************************************************/
     function checkIfDone() {
       if (localStorage.getItem("comphabDone") === "true") {
-        document.getElementById("testDoneMark").style.display = "block";
+        document.getElementById("testDoneMark").textContent = "Teste já concluído ✔";
       }
     }
 
     /******************************************************
-     * 2) Formata tempo (minutos e segundos)
+     * 2) Função para formatar tempo (min:seg)
      ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
@@ -152,7 +82,7 @@
     }
 
     /******************************************************
-     * 3) Atualiza o relógio (timer)
+     * 3) Atualiza o cronômetro (timer)
      ******************************************************/
     let timerInterval = setInterval(updateTimer, 1000);
     function updateTimer() {
@@ -163,7 +93,8 @@
     }
 
     /******************************************************
-     * 4) Função para remover indicadores do final do texto (se houver)
+     * 4) Função para remover indicadores do final do texto
+     * (não necessário para este teste, mas mantida para compatibilidade)
      ******************************************************/
     function removeIndicador(text) {
       return text;
@@ -175,7 +106,7 @@
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = [];  // Cada resposta é um objeto { sigla, value }
+    const answers = [];  // Cada resposta: { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
@@ -189,10 +120,24 @@
     const resultDiv = document.getElementById("result");
 
     /******************************************************
-     * 7) Arrays/Objetos via fetch
+     * 7) Carrega os JSONs de afirmações e interpretações
      ******************************************************/
     let questions = [];       // Carregado de comphab_assertions.json
     let interpretations = {}; // Carregado de comphab_interpretations.json
+
+    fetch("/comphab_assertions.json")
+      .then(resp => resp.json())
+      .then(data => { questions = data; })
+      .catch(err => console.error("Erro ao carregar comphab_assertions.json:", err));
+
+    fetch("/comphab_interpretations.json")
+      .then(resp => resp.json())
+      .then(data => {
+        data.forEach(item => {
+          interpretations[item.sigla] = item;
+        });
+      })
+      .catch(err => console.error("Erro ao carregar comphab_interpretations.json:", err));
 
     /******************************************************
      * 8) Captura IP
@@ -222,27 +167,7 @@
     setInterval(updateFooter, 1000);
 
     /******************************************************
-     * 10) Carrega JSON de afirmações
-     ******************************************************/
-    fetch("/comphab_assertions.json")
-      .then(resp => resp.json())
-      .then(data => { questions = data; })
-      .catch(err => console.error("Erro ao carregar comphab_assertions.json:", err));
-
-    /******************************************************
-     * 11) Carrega JSON de interpretações
-     ******************************************************/
-    fetch("/comphab_interpretations.json")
-      .then(resp => resp.json())
-      .then(data => {
-        data.forEach(item => {
-          interpretations[item.sigla] = item;
-        });
-      })
-      .catch(err => console.error("Erro ao carregar comphab_interpretations.json:", err));
-
-    /******************************************************
-     * 12) Inicia o Teste (sem validação extra, pois os dados já vêm válidos)
+     * 10) Inicia o Teste
      ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
@@ -252,7 +177,7 @@
     });
 
     /******************************************************
-     * 13) Renderiza a questão atual
+     * 11) Renderiza a questão atual
      ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
@@ -309,7 +234,7 @@
     }
 
     /******************************************************
-     * 14) Converte soma (8..32) em "Baixa", "Moderada" ou "Alta"
+     * 12) Converte a soma (8-32) em "Baixa", "Moderada" ou "Alta"
      ******************************************************/
     function somaParaNivel(soma) {
       if (soma >= 26) return "Alta";
@@ -318,24 +243,24 @@
     }
 
     /******************************************************
-     * 15) Renderiza o Resultado
+     * 13) Renderiza o Resultado
      ******************************************************/
     function renderResult() {
       clearInterval(timerInterval);
       localStorage.setItem("comphabDone", "true");
-
       resultDiv.innerHTML = "";
 
-      // Cabeçalho do resultado
+      // Cabeçalho do resultado com destaque para o nome
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (7COMPHA03)`;
+      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (7COMPHA03)`;
       resultDiv.appendChild(headerDiv);
 
-      // Exibe email abaixo do nome (se houver)
+      // Exibe email centralizado, se disponível
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
+        emailLine.style.textAlign = "center";
         emailLine.textContent = userEmail;
         resultDiv.appendChild(emailLine);
       }
@@ -348,7 +273,7 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Calcula soma de pontos por competência (C, T, A, P, O)
+      // Calcula a soma dos pontos por competência
       let scores = { "C": 0, "T": 0, "A": 0, "P": 0, "O": 0 };
       answers.forEach(resp => {
         if (scores.hasOwnProperty(resp.sigla)) {
@@ -356,24 +281,22 @@
         }
       });
 
-      // Cria array e ordena por pontuação decrescente
+      // Cria o perfil composto (apenas as competências pontuadas)
       let compositeArray = [];
       Object.keys(scores).forEach(key => {
         compositeArray.push({ sigla: key, score: scores[key] });
       });
       compositeArray.sort((a, b) => b.score - a.score);
-
-      // Perfil composto (só os que pontuaram > 0)
       const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
       const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
 
-      // Card do Perfil Composto
+      // Card do Perfil Composto (destacado)
       const compositeDiv = document.createElement("div");
       compositeDiv.className = "composite-card";
-      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
+      compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
 
-      // Exibe os 5 perfis (C, T, A, P, O)
+      // Exibe os cards de cada competência
       const allProfiles = ["C", "T", "A", "P", "O"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
@@ -384,13 +307,11 @@
         let interpretObj = null;
         let perfilNome = "";
         let textoInterpretacao = "";
-
         if (soma > 0) {
           nivel = somaParaNivel(soma);
           const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderada" ? "M" : "B");
           const interpretKey = sig + "-" + suffix;
           interpretObj = interpretations[interpretKey];
-
           if (interpretObj) {
             perfilNome = interpretObj.perfil;
             textoInterpretacao = interpretObj.textoParticipante;
@@ -409,31 +330,18 @@
           }
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
-
-        // Cria card para cada competência
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
-
         const infoDiv = document.createElement("div");
         infoDiv.className = "info";
-        if (soma > 0) {
-          infoDiv.innerHTML = `
-            <h3>${perfilNome}</h3>
-            <p class="pontuacao">Pontuação: ${soma} (${nivel})</p>
-            <p class="texto-participante">${textoInterpretacao}</p>
-          `;
-        } else {
-          infoDiv.innerHTML = `
-            <h3>${perfilNome}</h3>
-            <p class="pontuacao">Pontuação: 0 (Nenhuma)</p>
-            <p class="texto-participante">${textoInterpretacao}</p>
-          `;
-        }
-
+        infoDiv.innerHTML = `
+          <h3>${perfilNome}</h3>
+          <p class="pontuacao">Pontuação: ${soma} (${nivel || "Nenhuma"})</p>
+          <p class="texto-participante">${textoInterpretacao}</p>
+        `;
         const letterDiv = document.createElement("div");
         letterDiv.className = "comphab-letter";
         letterDiv.textContent = sig;
-
         perfilDiv.appendChild(infoDiv);
         perfilDiv.appendChild(letterDiv);
         resultsContainer.appendChild(perfilDiv);
@@ -448,7 +356,6 @@
       const slowestTime = Math.max(...questionTimes);
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
-
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `
@@ -459,18 +366,22 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão Imprimir
+      // Botão Imprimir centralizado com espaçamento acima
+      const printDiv = document.createElement("div");
+      printDiv.style.textAlign = "center";
+      printDiv.style.marginTop = "20px";
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";
       printBtn.onclick = () => window.print();
-      resultDiv.appendChild(printBtn);
+      printDiv.appendChild(printBtn);
+      resultDiv.appendChild(printDiv);
 
       resultDiv.classList.remove("hidden");
     }
 
     /******************************************************
-     * 16) Gera PDF com html2pdf.js (opcional)
+     * 14) Gera PDF com html2pdf.js (opcional)
      ******************************************************/
     function gerarPDF() {
       const elemento = document.getElementById("result");
@@ -482,52 +393,6 @@
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
       html2pdf().from(elemento).set(opcoes).save();
-    }
-
-    /******************************************************
-     * 17) Exemplo de função para envio ao AppSheet (não chamada)
-     ******************************************************/
-    function enviarAoAppSheet() {
-      const appId = "108acbee-fe0e-47f2-95b5-bcc84";
-      const tableName = "Página1";
-      const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
-      const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
-      const bodyData = {
-        Action: "Add",
-        Properties: {
-          Locale: "pt-BR",
-          Location: "0,0",
-          Timezone: "E. South America Standard Time"
-        },
-        Rows: [
-          {
-            "DateTime_Envio": new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
-            "IP": ipAddress,
-            "Nome": userName || "SEM_NOME",
-            "Email": userEmail || "SEM_EMAIL",
-            "Nome_Teste": "7COMPHA03",
-            "Versao_Teste": "1.0",
-            "Resultado": "Exemplo de resultado fixo"
-          }
-        ]
-      };
-
-      fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "ApplicationAccessKey": accessKey
-        },
-        body: JSON.stringify(bodyData)
-      })
-      .then(resp => resp.json())
-      .then(data => {
-        alert("Enviado ao AppSheet com sucesso!");
-      })
-      .catch(err => {
-        alert("Erro ao enviar ao AppSheet!");
-        console.error("Erro ao enviar ao AppSheet:", err);
-      });
     }
   </script>
 </body>

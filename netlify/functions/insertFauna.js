@@ -6,7 +6,7 @@ const q = faunadb.query;
 // >>> COLOQUE SUA CHAVE DIRETAMENTE AQUI <<<
 const client = 
 new faunadb.Client({
-  secret: "fnacapi_omd2ZXJzaW9uAWdwYXlsb2FkWFiiYmlkcjQyNTc5Mzk0NzQyNzY2ODU2NWZzZWNyZXR4OEdIRTVoOVZvb2oyazdNVk1kMnJKYThndnpmZDlCVVlMQ0JZcjFybE1XeCtUY0JBNlNBUDBWZz09",
+  secret: "fnAF6MUveHAAQKY-p2m5F1ahncfkxZVZiNM0ROyH",
   domain: "db.us.fauna.com",
   scheme: "https",
 });

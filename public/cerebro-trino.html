@@ -2,76 +2,12 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>TESTE DE PERFIL - 9CERTRIO1</title> <!-- Aqui você pode colocar só o código, ex: "9CERTRIO1" -->
+  <title>TESTE DE PERFIL - 9CERTRIO1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <!-- Link para o CSS externo (se houver) -->
+  <!-- Link para o CSS externo -->
   <link rel="stylesheet" href="/style.css" />
-
-  <style>
-    /* Relógio no canto */
-    #timer {
-      font-size: 1.2em;
-      font-weight: bold;
-      color: #fff;
-      background-color: #1B5E20;
-      padding: 5px 10px;
-      border-radius: 4px;
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-    }
-    /* Marca de teste já concluído */
-    #testDoneMark {
-      display: none;
-      color: green;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    /* Cartão de perfil composto */
-    .composite-card {
-      background: #f5f5f5;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      padding: 15px;
-      margin: 15px 0;
-      text-align: center;
-    }
-    .composite-card h2 {
-      margin: 0;
-      font-size: 1.4em;
-      font-weight: bold;
-    }
-    /* Cartão de cada dimensão (R, E, N) */
-    .perfil-result {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 15px;
-      margin: 10px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .perfil-result .info {
-      flex: 1;
-      margin-right: 15px;
-    }
-    .cerebro-letter {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.2em;
-      color: #333;
-    }
-  </style>
 </head>
 <body onload="carregarParametros(); checkIfDone();">
   <!-- Cabeçalho fixo -->
@@ -80,14 +16,13 @@
   </header>
 
   <!-- Relógio (tempo decorrido) -->
-  <div id="timer">00:00</div>
+  <div id="timer"></div>
 
-  <main id="app">
-    <!-- Indica se o teste já foi concluído antes -->
-    <div id="testDoneMark">
-      Teste já concluído ✔
-    </div>
-    
+  <!-- Container principal -->
+  <main id="app" class="container">
+    <!-- Marca de teste já concluído -->
+    <div id="testDoneMark" class="test-concluido"></div>
+
     <!-- Tela de Introdução -->
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
@@ -123,6 +58,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
       const emailParam = urlParams.get("email");
+
       if (nomeParam) {
         document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
         userName = nomeParam.toUpperCase();
@@ -136,13 +72,16 @@
      * 1.1) Verifica se o teste já foi feito e exibe a marca
      ******************************************************/
     function checkIfDone() {
+      // Caso o teste de Cérebro Trino já esteja concluído no localStorage
       if (localStorage.getItem("cerebroTrinoDone") === "true") {
-        document.getElementById("testDoneMark").style.display = "block";
+        const mark = document.getElementById("testDoneMark");
+        mark.textContent = "Teste já concluído ✔";
+        mark.style.display = "block";
       }
     }
 
     /******************************************************
-     * 2) Função para formatar tempo (minutos e segundos)
+     * 2) Formata tempo (min:seg)
      ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
@@ -163,10 +102,10 @@
     }
 
     /******************************************************
-     * 4) Remove indicadores do final do texto (se quiser)
+     * 4) Remove indicadores do final do texto (se necessário)
      ******************************************************/
     function removeIndicador(text) {
-      return text;
+      return text; // Ajuste caso precise remover algo específico
     }
 
     /******************************************************
@@ -175,7 +114,7 @@
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = [];  // array de { sigla, value }
+    const answers = [];  // { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
@@ -242,7 +181,7 @@
       .catch(err => console.error("Erro ao carregar cerebro_interpretations.json:", err));
 
     /******************************************************
-     * 12) Inicia Teste
+     * 12) Inicia o Teste
      ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
@@ -256,15 +195,18 @@
      ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
+
       if (currentQuestion < questions.length) {
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
 
+        // Número da pergunta
         const questionNumber = document.createElement("h2");
         questionNumber.className = "question-number";
         questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
         quizDiv.appendChild(questionNumber);
 
+        // Barra de progresso
         const progressContainer = document.createElement("div");
         progressContainer.className = "progress-container";
         quizDiv.appendChild(progressContainer);
@@ -278,11 +220,13 @@
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
 
+        // Texto da pergunta
         const questionText = document.createElement("p");
         questionText.className = "question-text";
         questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
 
+        // Opções (1 a 4)
         const scaleLabels = [
           "Discordo totalmente (1)",
           "Discordo parcialmente (2)",
@@ -321,23 +265,24 @@
      * 15) Renderiza Resultado
      ******************************************************/
     function renderResult() {
-      // Para o timer
       clearInterval(timerInterval);
-      // Marca como concluído
+
+      // Marca no localStorage
       localStorage.setItem("cerebroTrinoDone", "true");
 
       resultDiv.innerHTML = "";
 
-      // Cabeçalho do resultado
+      // Cabeçalho do resultado (nome em destaque)
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (TESTE DE PERFIL - 9CERTRIO1)`;
+      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (9CERTRIO1)`;
       resultDiv.appendChild(headerDiv);
 
-      // Exibe email abaixo do nome
+      // Email centralizado (se houver)
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
+        emailLine.style.textAlign = "center";
         emailLine.textContent = userEmail;
         resultDiv.appendChild(emailLine);
       }
@@ -350,7 +295,7 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Soma de pontos para R, E, N
+      // Calcula soma de pontos (R, E, N)
       let scores = { "R": 0, "E": 0, "N": 0 };
       answers.forEach(resp => {
         if (scores.hasOwnProperty(resp.sigla)) {
@@ -365,24 +310,23 @@
       });
       compositeArray.sort((a, b) => b.score - a.score);
 
-      // Perfil composto (só letras > 0)
+      // Perfil composto
       const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
       const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
 
       // Card do Perfil Composto
       const compositeDiv = document.createElement("div");
       compositeDiv.className = "composite-card";
-      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
+      compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
 
-      // Exibe R, E, N, mesmo que algum seja 0
+      // Exibe R, E, N (mesmo que seja zero)
       const allProfiles = ["R", "E", "N"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
       allProfiles.forEach(sig => {
-        const soma = scores[sig];
-
+        const soma = scores[sig] || 0;
         let nivel = "";
         let interpretObj = null;
         let perfilNome = "";
@@ -402,7 +346,7 @@
             textoInterpretacao = "Sem interpretação disponível.";
           }
         } else {
-          // Zero
+          // Se pontuação zero
           switch(sig) {
             case "R": perfilNome = "Reptiliano (Instintivo)"; break;
             case "E": perfilNome = "Límbico (Emocional)"; break;
@@ -411,7 +355,7 @@
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
 
-        // Monta o card
+        // Card do perfil
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
 
@@ -434,7 +378,7 @@
 
         const letterDiv = document.createElement("div");
         letterDiv.className = "cerebro-letter";
-        letterDiv.textContent = sig; // "R", "E", "N"
+        letterDiv.textContent = sig; // "R", "E" ou "N"
 
         perfilDiv.appendChild(infoDiv);
         perfilDiv.appendChild(letterDiv);
@@ -461,12 +405,18 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão Imprimir
+      // Botão Imprimir (centralizado)
+      const printDiv = document.createElement("div");
+      printDiv.style.textAlign = "center";
+      printDiv.style.marginTop = "20px";
+
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";
       printBtn.onclick = () => window.print();
-      resultDiv.appendChild(printBtn);
+
+      printDiv.appendChild(printBtn);
+      resultDiv.appendChild(printDiv);
 
       resultDiv.classList.remove("hidden");
     }
@@ -478,7 +428,7 @@
       const elemento = document.getElementById("result");
       const opcoes = {
         margin: 0.5,
-        filename: 'resultado-cerebro-trino.pdf',
+        filename: 'resultado-9CERTRIO1.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
@@ -494,6 +444,7 @@
       const tableName = "Página1";
       const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
       const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
+
       const bodyData = {
         Action: "Add",
         Properties: {

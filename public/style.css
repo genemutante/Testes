@@ -317,7 +317,15 @@ p {
 /***************************************************
  * INDICADOR (CÍRCULO COM LETRA/EMOJI)
  ***************************************************/
-.cerebro-letter, .autoest-letter {
+.cerebro-letter, 
+.canais-letter,
+.cerebro-letter,
+.comphab-letter,
+.disc-letter,
+.qe-letter,
+.sab-letter,
+.proatv-letter,
+.autoest-letter {
   width: 40px;
   height: 40px;
   border-radius: 50%;

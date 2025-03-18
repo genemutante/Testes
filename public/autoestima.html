@@ -9,7 +9,7 @@
   <!-- Link para o CSS externo -->
   <link rel="stylesheet" href="/style.css" />
   <style>
-    /* Regras básicas para o cronômetro e cards de resultado */
+    /* Estilos específicos para o teste de Autoestima */
     #timer {
       font-size: 1.2em;
       font-weight: bold;
@@ -24,7 +24,7 @@
     }
     .composite-card {
       background: #f5f5f5;
-      border: 2px solid #ccc;
+      border: 2px solid #333;
       border-radius: 8px;
       padding: 15px;
       margin: 15px 0;
@@ -34,23 +34,35 @@
       margin: 0;
       font-size: 1.4em;
       font-weight: bold;
+      color: #222;
     }
     .perfil-result {
-      background: #fff;
-      border: 1px solid #ccc;
+      background: #ffffff;
+      border: 2px solid #333;
       border-radius: 6px;
-      padding: 15px;
-      margin: 10px 0;
+      padding: 20px;
+      margin-bottom: 20px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
     .perfil-result .info {
       flex: 1;
-      margin-right: 15px;
     }
     .perfil-result h3 {
+      margin-bottom: 8px;
+      font-size: 1.2em;
       font-weight: bold;
+      color: #222;
+    }
+    .perfil-result .pontuacao {
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #444;
+    }
+    .perfil-result .texto-participante {
+      line-height: 1.4;
+      color: #333;
     }
     .autoest-letter {
       width: 40px;
@@ -67,6 +79,7 @@
     .result-email {
       font-size: 0.9em;
       color: #555;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -84,7 +97,8 @@
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Leia cuidadosamente as afirmações abaixo e marque aquela que mais se aproxima de como você geralmente se percebe ou se sente. Não há respostas certas ou erradas.
+        Leia cuidadosamente as afirmações abaixo e marque aquela que mais se aproxima de como você geralmente se percebe ou se sente.
+        Não há respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
@@ -145,10 +159,10 @@
     }
 
     /******************************************************
-     * 4) Função para remover indicadores (não há indicadores para Autoestima)
+     * 4) Função para remover indicadores (não há necessidade)
      ******************************************************/
     function removeIndicador(text) {
-      return text; // Não há necessidade de remoção
+      return text;
     }
 
     /******************************************************
@@ -218,7 +232,7 @@
     setInterval(updateFooter, 1000);
 
     /******************************************************
-     * 10) Inicia o Teste
+     * 10) Inicia o Teste (sem validação, pois já foi feito na tela anterior)
      ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
@@ -259,7 +273,6 @@
         questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
 
-        // Cria os botões da escala Likert (1 a 4)
         const scaleLabels = [
           "Discordo totalmente (1)",
           "Discordo parcialmente (2)",
@@ -300,7 +313,6 @@
     function renderResult() {
       clearInterval(timerInterval);
       localStorage.setItem("autoestDone", "true");
-
       resultDiv.innerHTML = "";
 
       // Cabeçalho do resultado
@@ -309,7 +321,7 @@
       headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (AUTOESTE)`;
       resultDiv.appendChild(headerDiv);
 
-      // Exibe email abaixo do nome, se disponível
+      // Exibe o email abaixo do nome, se disponível
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
@@ -317,7 +329,6 @@
         resultDiv.appendChild(emailLine);
       }
 
-      // Data/hora
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
       const dateLine = document.createElement("p");
@@ -333,7 +344,7 @@
         }
       });
 
-      // Cria array de resultados e monta o perfil composto (ordenado por pontuação decrescente)
+      // Monta array para compor o perfil final e ordena
       let compositeArray = [];
       Object.keys(scores).forEach(key => {
         compositeArray.push({ sigla: key, score: scores[key] });
@@ -341,11 +352,6 @@
       compositeArray.sort((a, b) => b.score - a.score);
       const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
       const compositeProfile = nonZeroProfiles.map(item => {
-        // Mapeia as dimensões para as letras do resultado final:
-        // Autovalorização -> "A"
-        // Autoaceitação -> "V" (para diferenciar)
-        // Confiança Pessoal -> "C"
-        // Resiliência Emocional -> "R"
         switch(item.sigla) {
           case "AV": return "A";
           case "AA": return "V";
@@ -354,31 +360,28 @@
           default: return "";
         }
       }).join("");
-
+      
       // Card do Perfil Composto
       const compositeDiv = document.createElement("div");
       compositeDiv.className = "composite-card";
       compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
 
-      // Exibe o card de cada dimensão (mesmo que não pontue, com aviso)
+      // Exibe o card de cada dimensão
       const allDimensions = ["AV", "AA", "CP", "RE"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
-
       allDimensions.forEach(dim => {
         const soma = scores[dim] || 0;
         let nivel = "";
         let interpretObj = null;
         let perfilNome = "";
         let textoInterpretacao = "";
-
         if (soma > 0) {
           nivel = somaParaNivel(soma);
           const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderada" ? "M" : "B");
           const interpretKey = dim + "-" + suffix;
           interpretObj = interpretations[interpretKey];
-
           if (interpretObj) {
             perfilNome = interpretObj.perfil;
             textoInterpretacao = interpretObj.textoParticipante;
@@ -395,10 +398,8 @@
           }
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
-
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
-
         const infoDiv = document.createElement("div");
         infoDiv.className = "info";
         if (soma > 0) {
@@ -414,22 +415,18 @@
             <p class="texto-participante">${textoInterpretacao}</p>
           `;
         }
-
         const letterDiv = document.createElement("div");
         letterDiv.className = "autoest-letter";
-        // Exibe a letra correspondente: AV->A, AA->V, CP->C, RE->R
         switch(dim) {
           case "AV": letterDiv.textContent = "A"; break;
           case "AA": letterDiv.textContent = "V"; break;
           case "CP": letterDiv.textContent = "C"; break;
           case "RE": letterDiv.textContent = "R"; break;
         }
-
         perfilDiv.appendChild(infoDiv);
         perfilDiv.appendChild(letterDiv);
         resultsContainer.appendChild(perfilDiv);
       });
-
       resultDiv.appendChild(resultsContainer);
 
       // Estatísticas de tempo
@@ -439,7 +436,6 @@
       const slowestTime = Math.max(...questionTimes);
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
-
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `

@@ -25,7 +25,7 @@
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Leia cada afirmação abaixo e selecione a opção que melhor descreve como você geralmente se sente ou age.
+        Leia cada afirmação abaixo e selecione a opção que melhor descreve como você geralmente se sente ou age. 
         Não há respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
@@ -46,7 +46,9 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script>
-    // 1) Carrega parâmetros (nome e email) da URL
+    /******************************************************
+     * 1) Carrega parâmetros (nome e email) da URL
+     ******************************************************/
     function carregarParametros() {
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
@@ -60,7 +62,9 @@
       }
     }
 
-    // 1.1) Verifica se o teste QE já foi concluído e exibe a marca
+    /******************************************************
+     * 1.1) Verifica se o teste QE já foi concluído e exibe a marca
+     ******************************************************/
     function checkIfDone() {
       if (localStorage.getItem("qeTestDone") === "true") {
         const doneMark = document.getElementById("testDoneMark");
@@ -69,7 +73,9 @@
       }
     }
 
-    // 2) Formata tempo (minutos e segundos)
+    /******************************************************
+     * 2) Formata tempo (minutos e segundos)
+     ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
       const min = Math.floor(totalSec / 60);
@@ -77,7 +83,9 @@
       return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
     }
 
-    // 3) Atualiza o cronômetro (timer)
+    /******************************************************
+     * 3) Atualiza o cronômetro (timer)
+     ******************************************************/
     let timerInterval = setInterval(updateTimer, 1000);
     function updateTimer() {
       if (testStartTime) {
@@ -86,12 +94,16 @@
       }
     }
 
-    // 4) Função para remover indicador (remover texto entre parênteses, se houver)
+    /******************************************************
+     * 4) Função para remover indicadores (texto entre parênteses)
+     ******************************************************/
     function removeIndicador(text) {
       return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
 
-    // 5) Variáveis globais
+    /******************************************************
+     * 5) Variáveis globais
+     ******************************************************/
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
@@ -101,22 +113,30 @@
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
 
-    // 6) Referências aos elementos
+    /******************************************************
+     * 6) Referências aos elementos
+     ******************************************************/
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
-    // 7) Carrega os JSONs de afirmações e interpretações
+    /******************************************************
+     * 7) Carrega os JSONs de afirmações e interpretações
+     ******************************************************/
     let questions = [];       // qe_assertions.json
     let interpretations = {}; // qe_interpretations.json
 
-    // 8) Captura IP
+    /******************************************************
+     * 8) Captura IP
+     ******************************************************/
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
-    // 9) Atualiza rodapé (IP, hora, SO)
+    /******************************************************
+     * 9) Atualiza rodapé (IP, hora, SO) – utiliza função updateFooter do style.css
+     ******************************************************/
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -133,13 +153,17 @@
     }
     setInterval(updateFooter, 1000);
 
-    // 10) Carrega JSON de afirmações
+    /******************************************************
+     * 10) Carrega JSON de afirmações
+     ******************************************************/
     fetch("/qe_assertions.json")
       .then(resp => resp.json())
       .then(data => { questions = data; })
       .catch(err => console.error("Erro ao carregar qe_assertions.json:", err));
 
-    // 11) Carrega JSON de interpretações
+    /******************************************************
+     * 11) Carrega JSON de interpretações
+     ******************************************************/
     fetch("/qe_interpretations.json")
       .then(resp => resp.json())
       .then(data => {
@@ -149,7 +173,9 @@
       })
       .catch(err => console.error("Erro ao carregar qe_interpretations.json:", err));
 
-    // 12) Inicia o Teste
+    /******************************************************
+     * 12) Inicia o Teste
+     ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
       introDiv.classList.add("hidden");
@@ -157,7 +183,9 @@
       renderQuestion();
     });
 
-    // 13) Renderiza a questão atual
+    /******************************************************
+     * 13) Renderiza a questão atual
+     ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
       if (currentQuestion < questions.length) {
@@ -212,27 +240,31 @@
       }
     }
 
-    // 14) Converte a soma (10-40) em "Baixa", "Moderada" ou "Alta"
+    /******************************************************
+     * 14) Converte soma (10-40) em "Baixa", "Moderada" ou "Alta"
+     ******************************************************/
     function somaParaNivel(soma) {
       if (soma >= 31) return "Alta";
       if (soma >= 21) return "Moderada";
       return "Baixa";
     }
 
-    // 15) Renderiza o Resultado final
+    /******************************************************
+     * 15) Renderiza o Resultado final
+     ******************************************************/
     function renderResult() {
       clearInterval(timerInterval);
       localStorage.setItem("qeTestDone", "true");
 
       resultDiv.innerHTML = "";
 
-      // Cabeçalho com nome destacado
+      // Cabeçalho com nome destacado e resultado
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (4QEMO006)`;
       resultDiv.appendChild(headerDiv);
 
-      // Exibe o email centralizado
+      // Exibe email centralizado
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
@@ -257,7 +289,7 @@
         }
       });
 
-      // Monta perfil composto (apenas as dimensões que pontuaram > 0)
+      // Monta perfil composto (somente as dimensões que pontuaram > 0)
       let compositeArray = [];
       Object.keys(scores).forEach(key => {
         compositeArray.push({ sigla: key, score: scores[key] });
@@ -301,6 +333,7 @@
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
 
+        // Monta o card para a dimensão
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
 
@@ -314,7 +347,7 @@
 
         const letterDiv = document.createElement("div");
         letterDiv.className = "disc-letter";
-        letterDiv.textContent = sig; // Exibe a letra: C, G, E, R
+        letterDiv.textContent = sig; // Exibe a letra: C, G, E ou R
 
         perfilDiv.appendChild(infoDiv);
         perfilDiv.appendChild(letterDiv);
@@ -341,7 +374,7 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão Imprimir centralizado com espaçamento
+      // Botão Imprimir centralizado com espaçamento acima
       const printDiv = document.createElement("div");
       printDiv.className = "print-container";
       const printBtn = document.createElement("button");
@@ -354,7 +387,9 @@
       resultDiv.classList.remove("hidden");
     }
 
-    // 16) (Opcional) Função para gerar PDF com html2pdf.js
+    /******************************************************
+     * 16) Gera PDF com html2pdf.js (opcional)
+     ******************************************************/
     function gerarPDF() {
       const elemento = document.getElementById("result");
       const opcoes = {

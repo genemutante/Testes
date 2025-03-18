@@ -20,24 +20,21 @@
 
   <!-- Container principal -->
   <main id="app" class="container">
-    <!-- Marca de teste já concluído -->
-    <div id="testDoneMark"></div>
-
-    <!-- Tela de Introdução -->
+    <div id="testDoneMark" class="test-concluido">Teste já concluído ✔</div>
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Abaixo estão afirmações sobre como você costuma agir ou se sentir. Escolha a opção que mais combina com você hoje, sem se preocupar com respostas certas ou erradas.
+        Leia atentamente as afirmações abaixo e selecione a opção que melhor descreve como você pensa, sente ou age.
+        Não há respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
-
-    <!-- Tela do Questionário -->
     <section id="quiz" class="hidden"></section>
-
-    <!-- Tela de Resultados -->
     <section id="result" class="hidden"></section>
   </main>
+  
+  
+  
 
   <footer id="footer"></footer>
 
@@ -294,10 +291,10 @@
           textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
         } else {
           switch(sig) {
-            case "D": perfilNome = "Dominância (Executor)"; break;
-            case "I": perfilNome = "Influência (Comunicador)"; break;
-            case "S": perfilNome = "Estabilidade (Planejador)"; break;
-            case "C": perfilNome = "Conformidade (Analítico)"; break;
+            case "D": perfilNome = "Dominância"; break;
+            case "I": perfilNome = "Influência"; break;
+            case "S": perfilNome = "Estabilidade"; break;
+            case "C": perfilNome = "Conformidade"; break;
           }
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }

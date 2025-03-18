@@ -2,93 +2,17 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Teste de Perfil (DISC)</title>
+  <title>TESTE DE PERFIL - 2PERDSK08</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <!-- Link para o CSS externo -->
+  <!-- CSS externo -->
   <link rel="stylesheet" href="/style.css" />
-  <style>
-    /* Estilos específicos para este teste (mínimos, o restante vem do style.css) */
-    #timer {
-      font-size: 1.2em;
-      font-weight: bold;
-      color: #fff;
-      background-color: #1B5E20;
-      padding: 5px 10px;
-      border-radius: 4px;
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-    }
-    /* Marca de teste concluído */
-    #testDoneMark {
-      display: none;
-      color: var(--brand-red);
-      font-weight: 600;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-    /* Card do Perfil Composto */
-    .composite-card {
-      background: #f5f5f5;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      padding: 15px;
-      margin: 20px 0;
-      text-align: center;
-    }
-    .composite-card h2 {
-      margin: 0;
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-    /* Card de cada dimensão */
-    .perfil-result {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 15px;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .perfil-result .info {
-      flex: 1;
-      margin-right: 15px;
-    }
-    .perfil-result h3 {
-      font-weight: bold;
-      margin-bottom: 8px;
-      font-size: 1.2em;
-      color: #222;
-    }
-    /* Círculo com a letra do perfil (D, I, S, C) */
-    .disc-letter {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.2em;
-      color: #333;
-    }
-    /* Botão Imprimir centralizado com espaçamento */
-    .print-container {
-      text-align: center;
-      margin-top: 20px;
-    }
-  </style>
 </head>
 <body onload="carregarParametros(); checkIfDone();">
   <!-- Cabeçalho fixo -->
   <header>
-    Teste de Perfil (DISC)
+    TESTE DE PERFIL - 2PERDSK08
   </header>
 
   <!-- Relógio (tempo decorrido) -->
@@ -97,8 +21,8 @@
   <!-- Container principal -->
   <main id="app" class="container">
     <!-- Marca de teste já concluído -->
-    <div id="testDoneMark">Teste já concluído ✔</div>
-    
+    <div id="testDoneMark"></div>
+
     <!-- Tela de Introdução -->
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
@@ -118,17 +42,12 @@
   <footer id="footer"></footer>
 
   <!-- Biblioteca html2pdf.js (opcional para gerar PDF) -->
-  <script 
-    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
-    integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer">
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
+          integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script>
-    /******************************************************
-     * 1) Carrega parâmetros (nome e email) da URL
-     ******************************************************/
+    // 1) Carrega parâmetros (nome e email) da URL
     function carregarParametros() {
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
@@ -142,18 +61,15 @@
       }
     }
 
-    /******************************************************
-     * 1.1) Verifica se o teste DISC já foi feito e exibe a marca
-     ******************************************************/
+    // 1.1) Verifica se o teste DISC já foi concluído e exibe a marca
     function checkIfDone() {
       if (localStorage.getItem("discTestDone") === "true") {
+        document.getElementById("testDoneMark").textContent = "Teste já concluído ✔";
         document.getElementById("testDoneMark").style.display = "block";
       }
     }
 
-    /******************************************************
-     * 2) Formata tempo (minutos e segundos)
-     ******************************************************/
+    // 2) Função para formatar tempo (min:seg)
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
       const min = Math.floor(totalSec / 60);
@@ -161,9 +77,7 @@
       return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
     }
 
-    /******************************************************
-     * 3) Atualiza o cronômetro (timer)
-     ******************************************************/
+    // 3) Atualiza o cronômetro (timer)
     let timerInterval = setInterval(updateTimer, 1000);
     function updateTimer() {
       if (testStartTime) {
@@ -172,49 +86,37 @@
       }
     }
 
-    /******************************************************
-     * 4) Função para remover indicadores do final do texto
-     ******************************************************/
+    // 4) Função para remover indicadores (não necessário para DISC)
     function removeIndicador(text) {
-      return text; // Neste teste, não removemos nada
+      return text;
     }
 
-    /******************************************************
-     * 5) Variáveis globais
-     ******************************************************/
+    // 5) Variáveis globais
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = [];  // Cada resposta: { sigla, value }
+    const answers = []; // Cada resposta: { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
 
-    /******************************************************
-     * 6) Referências aos elementos
-     ******************************************************/
+    // 6) Referências aos elementos
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
-    /******************************************************
-     * 7) Arrays/Objetos carregados via fetch
-     ******************************************************/
+    // 7) Arrays/Objetos carregados via fetch
     let questions = [];       // disc_assertions.json
     let interpretations = {}; // disc_interpretations.json
 
-    /******************************************************
-     * 8) Captura IP
-     ******************************************************/
+    // 8) Captura IP
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
-    /******************************************************
-     * 9) Atualiza rodapé (IP, hora, SO)
-     ******************************************************/
+    // 9) Atualiza rodapé (IP, hora, SO)
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -231,17 +133,13 @@
     }
     setInterval(updateFooter, 1000);
 
-    /******************************************************
-     * 10) Carrega JSON de afirmações
-     ******************************************************/
+    // 10) Carrega JSON de afirmações
     fetch("/disc_assertions.json")
       .then(resp => resp.json())
       .then(data => { questions = data; })
       .catch(err => console.error("Erro ao carregar disc_assertions.json:", err));
 
-    /******************************************************
-     * 11) Carrega JSON de interpretações
-     ******************************************************/
+    // 11) Carrega JSON de interpretações
     fetch("/disc_interpretations.json")
       .then(resp => resp.json())
       .then(data => {
@@ -251,9 +149,7 @@
       })
       .catch(err => console.error("Erro ao carregar disc_interpretations.json:", err));
 
-    /******************************************************
-     * 12) Inicia o Teste
-     ******************************************************/
+    // 12) Inicia o Teste
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
       introDiv.classList.add("hidden");
@@ -261,22 +157,18 @@
       renderQuestion();
     });
 
-    /******************************************************
-     * 13) Renderiza a questão atual
-     ******************************************************/
+    // 13) Renderiza a questão atual
     function renderQuestion() {
       quizDiv.innerHTML = "";
       if (currentQuestion < questions.length) {
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
 
-        // Número da pergunta
         const questionNumber = document.createElement("h2");
         questionNumber.className = "question-number";
         questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
         quizDiv.appendChild(questionNumber);
 
-        // Barra de progresso
         const progressContainer = document.createElement("div");
         progressContainer.className = "progress-container";
         quizDiv.appendChild(progressContainer);
@@ -290,13 +182,11 @@
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
 
-        // Texto da pergunta
         const questionText = document.createElement("p");
         questionText.className = "question-text";
         questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
 
-        // Opções (escala Likert)
         const scaleLabels = [
           "Discordo totalmente (1)",
           "Discordo parcialmente (2)",
@@ -322,25 +212,21 @@
       }
     }
 
-    /******************************************************
-     * 14) Converte soma (10-40) em "Baixa", "Moderado" ou "Alto"
-     ******************************************************/
+    // 14) Converte a soma (10-40) em "Baixa", "Moderado" ou "Alta"
     function somaParaNivel(soma) {
       if (soma >= 31) return "Alta";
       if (soma >= 21) return "Moderado";
       return "Baixa";
     }
 
-    /******************************************************
-     * 15) Renderiza o Resultado
-     ******************************************************/
+    // 15) Renderiza o Resultado
     function renderResult() {
       clearInterval(timerInterval);
       localStorage.setItem("discTestDone", "true");
 
       resultDiv.innerHTML = "";
 
-      // Cabeçalho do resultado (nome destacado)
+      // Cabeçalho do resultado com nome destacado
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (DISC)`;
@@ -378,7 +264,7 @@
       });
       compositeArray.sort((a, b) => b.score - a.score);
 
-      // Perfil composto (apenas as dimensões que pontuaram > 0)
+      // Monta o perfil composto (apenas as dimensões que pontuaram > 0)
       const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
       const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
 
@@ -388,7 +274,7 @@
       compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
 
-      // Exibe os 4 perfis (D, I, S, C), mesmo com pontuação 0
+      // Exibe os 4 perfis (D, I, S, C) mesmo com pontuação 0
       const allProfiles = ["D", "I", "S", "C"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
@@ -399,7 +285,6 @@
         let interpretObj = null;
         let perfilNome = "";
         let textoInterpretacao = "";
-
         if (soma > 0) {
           nivel = somaParaNivel(soma);
           const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderado" ? "M" : "B");
@@ -408,7 +293,6 @@
           perfilNome = interpretObj ? interpretObj.perfil : sig;
           textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
         } else {
-          // Se não houve pontuação, exibe o nome completo fixo
           switch(sig) {
             case "D": perfilNome = "Dominância"; break;
             case "I": perfilNome = "Influência"; break;
@@ -417,11 +301,8 @@
           }
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
-
-        // Cria o card para a dimensão
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
-
         const infoDiv = document.createElement("div");
         infoDiv.className = "info";
         infoDiv.innerHTML = `
@@ -429,16 +310,13 @@
           <p class="pontuacao">Pontuação: ${soma} (${nivel || "Nenhuma"})</p>
           <p class="texto-participante">${textoInterpretacao}</p>
         `;
-
         const letterDiv = document.createElement("div");
         letterDiv.className = "disc-letter";
-        letterDiv.textContent = sig; // Exibe a letra: D, I, S, ou C
-
+        letterDiv.textContent = sig;
         perfilDiv.appendChild(infoDiv);
         perfilDiv.appendChild(letterDiv);
         resultsContainer.appendChild(perfilDiv);
       });
-
       resultDiv.appendChild(resultsContainer);
 
       // Estatísticas de tempo
@@ -448,7 +326,6 @@
       const slowestTime = Math.max(...questionTimes);
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
-
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `
@@ -473,14 +350,12 @@
       resultDiv.classList.remove("hidden");
     }
 
-    /******************************************************
-     * 16) Gera PDF com html2pdf.js (opcional)
-     ******************************************************/
+    // 16) Gera PDF com html2pdf.js (opcional)
     function gerarPDF() {
       const elemento = document.getElementById("result");
       const opcoes = {
         margin: 0.5,
-        filename: 'resultado-9CERTRIO1.pdf',
+        filename: 'resultado-teste.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }

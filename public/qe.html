@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>TESTE DE PERFIL - QE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body onload="carregarParametros(); checkIfDone();">
+  <header>
+    TESTE DE PERFIL - QE
+  </header>
+
+  <!-- Cronômetro -->
+  <div id="timer">00:00</div>
+
+  <main id="app" class="container">
+    <!-- Marca de teste já concluído -->
+    <div id="testDoneMark"></div>
+    
+    <!-- Tela de Introdução -->
+    <section id="intro">
+      <h1>Olá, <span id="nomeParticipante"></span>!</h1>
+      <p>
+        Leia cada afirmação abaixo e selecione a opção que melhor descreve como você geralmente se sente ou age.
+        Não há respostas certas ou erradas.
+      </p>
+      <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
+    </section>
+
+    <!-- Tela do Questionário -->
+    <section id="quiz" class="hidden"></section>
+
+    <!-- Tela de Resultados -->
+    <section id="result" class="hidden"></section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <!-- Biblioteca html2pdf.js (opcional para gerar PDF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
+          integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script>
+    // 1) Carrega parâmetros (nome e email) da URL
+    function carregarParametros() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const nomeParam = urlParams.get("name");
+      const emailParam = urlParams.get("email");
+      if (nomeParam) {
+        document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
+        userName = nomeParam.toUpperCase();
+      }
+      if (emailParam) {
+        userEmail = emailParam.toLowerCase();
+      }
+    }
+
+    // 1.1) Verifica se o teste QE já foi concluído e exibe a marca
+    function checkIfDone() {
+      if (localStorage.getItem("qeTestDone") === "true") {
+        const doneMark = document.getElementById("testDoneMark");
+        doneMark.textContent = "Teste já concluído ✔";
+        doneMark.style.display = "block";
+      }
+    }
+
+    // 2) Formata tempo (minutos e segundos)
+    function formatMinSec(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const min = Math.floor(totalSec / 60);
+      const sec = totalSec % 60;
+      return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+    }
+
+    // 3) Atualiza o cronômetro (timer)
+    let timerInterval = setInterval(updateTimer, 1000);
+    function updateTimer() {
+      if (testStartTime) {
+        const elapsed = new Date() - testStartTime;
+        document.getElementById("timer").textContent = formatMinSec(elapsed);
+      }
+    }
+
+    // 4) Função para remover indicador (remover texto entre parênteses, se houver)
+    function removeIndicador(text) {
+      return text.replace(/\s*\([^)]*\)\s*$/, "");
+    }
+
+    // 5) Variáveis globais
+    let currentQuestion = 0;
+    let userName = '';
+    let userEmail = '';
+    const answers = []; // Cada resposta: { sigla, value }
+    const questionTimes = [];
+    let testStartTime = 0;
+    let questionStartTime = 0;
+    let ipAddress = "Carregando...";
+
+    // 6) Referências aos elementos
+    const introDiv = document.getElementById("intro");
+    const quizDiv = document.getElementById("quiz");
+    const resultDiv = document.getElementById("result");
+
+    // 7) Carrega os JSONs de afirmações e interpretações
+    let questions = [];       // qe_assertions.json
+    let interpretations = {}; // qe_interpretations.json
+
+    // 8) Captura IP
+    fetch("https://api.ipify.org?format=json")
+      .then(resp => resp.json())
+      .then(data => { ipAddress = data.ip; })
+      .catch(err => { ipAddress = "Indisponível"; console.error(err); });
+
+    // 9) Atualiza rodapé (IP, hora, SO)
+    function getOS() {
+      const platform = window.navigator.platform;
+      const ua = window.navigator.userAgent;
+      if (/(Mac|iPhone|iPod|iPad)/i.test(platform)) return "iOS / Mac OS";
+      if (/Win/i.test(platform)) return "Windows";
+      if (/Android/i.test(ua)) return "Android";
+      if (/Linux/i.test(platform)) return "Linux";
+      return "Desconhecido";
+    }
+    function updateFooter() {
+      const footer = document.getElementById("footer");
+      const timeInBrasilia = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+      footer.textContent = `IP: ${ipAddress} | Hora de Brasília: ${timeInBrasilia} | SO: ${getOS()}`;
+    }
+    setInterval(updateFooter, 1000);
+
+    // 10) Carrega JSON de afirmações
+    fetch("/qe_assertions.json")
+      .then(resp => resp.json())
+      .then(data => { questions = data; })
+      .catch(err => console.error("Erro ao carregar qe_assertions.json:", err));
+
+    // 11) Carrega JSON de interpretações
+    fetch("/qe_interpretations.json")
+      .then(resp => resp.json())
+      .then(data => {
+        data.forEach(item => {
+          interpretations[item.sigla] = item;
+        });
+      })
+      .catch(err => console.error("Erro ao carregar qe_interpretations.json:", err));
+
+    // 12) Inicia o Teste
+    document.getElementById("startBtn").addEventListener("click", () => {
+      testStartTime = new Date();
+      introDiv.classList.add("hidden");
+      quizDiv.classList.remove("hidden");
+      renderQuestion();
+    });
+
+    // 13) Renderiza a questão atual
+    function renderQuestion() {
+      quizDiv.innerHTML = "";
+      if (currentQuestion < questions.length) {
+        const qData = questions[currentQuestion];
+        questionStartTime = new Date();
+
+        const questionNumber = document.createElement("h2");
+        questionNumber.className = "question-number";
+        questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
+        quizDiv.appendChild(questionNumber);
+
+        const progressContainer = document.createElement("div");
+        progressContainer.className = "progress-container";
+        quizDiv.appendChild(progressContainer);
+
+        const progressBarBg = document.createElement("div");
+        progressBarBg.className = "progress-bar-bg";
+        progressContainer.appendChild(progressBarBg);
+
+        const progressBarFill = document.createElement("div");
+        progressBarFill.className = "progress-bar-fill";
+        progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+        progressBarBg.appendChild(progressBarFill);
+
+        const questionText = document.createElement("p");
+        questionText.className = "question-text";
+        questionText.textContent = removeIndicador(qData.text);
+        quizDiv.appendChild(questionText);
+
+        const scaleLabels = [
+          "Discordo totalmente (1)",
+          "Discordo parcialmente (2)",
+          "Concordo parcialmente (3)",
+          "Concordo totalmente (4)"
+        ];
+        scaleLabels.forEach((label, index) => {
+          const btn = document.createElement("button");
+          btn.className = "option";
+          btn.textContent = label;
+          btn.onclick = () => {
+            answers.push({ sigla: qData.sigla, value: index + 1 });
+            const elapsed = new Date() - questionStartTime;
+            questionTimes.push(elapsed);
+            currentQuestion++;
+            renderQuestion();
+          };
+          quizDiv.appendChild(btn);
+        });
+      } else {
+        quizDiv.classList.add("hidden");
+        renderResult();
+      }
+    }
+
+    // 14) Converte a soma (10-40) em "Baixa", "Moderada" ou "Alta"
+    function somaParaNivel(soma) {
+      if (soma >= 31) return "Alta";
+      if (soma >= 21) return "Moderada";
+      return "Baixa";
+    }
+
+    // 15) Renderiza o Resultado final
+    function renderResult() {
+      clearInterval(timerInterval);
+      localStorage.setItem("qeTestDone", "true");
+
+      resultDiv.innerHTML = "";
+
+      // Cabeçalho com nome destacado
+      const headerDiv = document.createElement("div");
+      headerDiv.id = "result-header";
+      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (QE)`;
+      resultDiv.appendChild(headerDiv);
+
+      // Exibe o email centralizado
+      if (userEmail) {
+        const emailLine = document.createElement("p");
+        emailLine.className = "result-email";
+        emailLine.style.textAlign = "center";
+        emailLine.textContent = userEmail;
+        resultDiv.appendChild(emailLine);
+      }
+
+      // Data/hora
+      const now = new Date();
+      const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+      const dateLine = document.createElement("p");
+      dateLine.className = "result-datetime";
+      dateLine.textContent = `Gerado em: ${resultDatetime}`;
+      resultDiv.appendChild(dateLine);
+
+      // Calcula a soma de pontos para cada dimensão (C, G, E, R)
+      let scores = { "C": 0, "G": 0, "E": 0, "R": 0 };
+      answers.forEach(resp => {
+        if (scores.hasOwnProperty(resp.sigla)) {
+          scores[resp.sigla] += resp.value;
+        }
+      });
+
+      // Monta perfil composto (apenas as dimensões que pontuaram > 0)
+      let compositeArray = [];
+      Object.keys(scores).forEach(key => {
+        compositeArray.push({ sigla: key, score: scores[key] });
+      });
+      compositeArray.sort((a, b) => b.score - a.score);
+      const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
+      const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
+
+      // Card do Perfil Composto
+      const compositeDiv = document.createElement("div");
+      compositeDiv.className = "composite-card";
+      compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
+      resultDiv.appendChild(compositeDiv);
+
+      // Cria cards para cada dimensão (C, G, E, R)
+      const allDimensions = ["C", "G", "E", "R"];
+      const resultsContainer = document.createElement("div");
+      resultsContainer.className = "results-container";
+
+      allDimensions.forEach(sig => {
+        const soma = scores[sig] || 0;
+        let nivel = "";
+        let interpretObj = null;
+        let perfilNome = "";
+        let textoInterpretacao = "";
+
+        if (soma > 0) {
+          nivel = somaParaNivel(soma);
+          const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderada" ? "M" : "B");
+          const interpretKey = sig + "-" + suffix;
+          interpretObj = interpretations[interpretKey];
+          perfilNome = interpretObj ? interpretObj.perfil : sig;
+          textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
+        } else {
+          switch(sig) {
+            case "C": perfilNome = "Autoconsciência"; break;
+            case "G": perfilNome = "Gestão Emocional"; break;
+            case "E": perfilNome = "Empatia"; break;
+            case "R": perfilNome = "Relacionamentos"; break;
+          }
+          textoInterpretacao = "Não houve pontuação neste perfil.";
+        }
+
+        const perfilDiv = document.createElement("div");
+        perfilDiv.className = "perfil-result";
+
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "info";
+        infoDiv.innerHTML = `
+          <h3>${perfilNome}</h3>
+          <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel || "Nenhuma"})</p>
+          <p class="texto-participante">${textoInterpretacao}</p>
+        `;
+
+        const letterDiv = document.createElement("div");
+        letterDiv.className = "disc-letter";
+        letterDiv.textContent = sig; // Exibe a letra: C, G, E, R
+
+        perfilDiv.appendChild(infoDiv);
+        perfilDiv.appendChild(letterDiv);
+        resultsContainer.appendChild(perfilDiv);
+      });
+
+      resultDiv.appendChild(resultsContainer);
+
+      // Estatísticas de tempo
+      const testTotalTime = new Date() - testStartTime;
+      const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
+      const fastestTime = Math.min(...questionTimes);
+      const slowestTime = Math.max(...questionTimes);
+      const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
+      const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
+
+      const infoCard = document.createElement("div");
+      infoCard.className = "info-card";
+      infoCard.innerHTML = `
+        <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
+        <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
+        <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
+        <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
+      `;
+      resultDiv.appendChild(infoCard);
+
+      // Botão Imprimir centralizado com espaçamento
+      const printDiv = document.createElement("div");
+      printDiv.className = "print-container";
+      const printBtn = document.createElement("button");
+      printBtn.textContent = "Imprimir";
+      printBtn.className = "btn";
+      printBtn.onclick = () => window.print();
+      printDiv.appendChild(printBtn);
+      resultDiv.appendChild(printDiv);
+
+      resultDiv.classList.remove("hidden");
+    }
+
+    // 16) (Opcional) Função para gerar PDF com html2pdf.js
+    function gerarPDF() {
+      const elemento = document.getElementById("result");
+      const opcoes = {
+        margin: 0.5,
+        filename: 'resultado-qe.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().from(elemento).set(opcoes).save();
+    }
+  </script>
+</body>
+</html>

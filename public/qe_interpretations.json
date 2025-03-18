@@ -1,0 +1,86 @@
+[
+  {
+    "sigla": "C-A",
+    "perfil": "Autoconsciência",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa que compreende claramente seus sentimentos e demonstra excelente autoconhecimento emocional.",
+    "textoAvaliador": "Ideal para funções que exigem percepção emocional apurada e autogestão emocional eficaz."
+  },
+  {
+    "sigla": "C-M",
+    "perfil": "Autoconsciência",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa com boa percepção emocional, mas que pode precisar de apoio em situações críticas.",
+    "textoAvaliador": "Adequado para ambientes com desafios emocionais moderados."
+  },
+  {
+    "sigla": "C-B",
+    "perfil": "Autoconsciência",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que apresenta dificuldades para identificar e compreender suas próprias emoções.",
+    "textoAvaliador": "Requer suporte constante; cuidado em contextos emocionalmente intensos."
+  },
+  {
+    "sigla": "G-A",
+    "perfil": "Gestão Emocional",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa que controla e regula suas emoções de forma exemplar, mesmo sob pressão.",
+    "textoAvaliador": "Excelente para ambientes com alta demanda emocional, mantendo estabilidade e desempenho."
+  },
+  {
+    "sigla": "G-M",
+    "perfil": "Gestão Emocional",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa que gerencia bem suas emoções na rotina, mas pode precisar de apoio em momentos extremos.",
+    "textoAvaliador": "Adequado para contextos com demandas emocionais moderadas."
+  },
+  {
+    "sigla": "G-B",
+    "perfil": "Gestão Emocional",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa com dificuldades em controlar emoções negativas e manter o equilíbrio.",
+    "textoAvaliador": "Requer suporte e monitoramento; indicado para funções com baixa pressão emocional."
+  },
+  {
+    "sigla": "E-A",
+    "perfil": "Empatia",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa altamente empática, que compreende profundamente os sentimentos alheios.",
+    "textoAvaliador": "Ideal para funções que exigem interações interpessoais intensas e atenção às necessidades dos outros."
+  },
+  {
+    "sigla": "E-M",
+    "perfil": "Empatia",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa com boa capacidade empática, capaz de se conectar com os outros em contextos comuns.",
+    "textoAvaliador": "Adequado para funções com demandas interpessoais equilibradas."
+  },
+  {
+    "sigla": "E-B",
+    "perfil": "Empatia",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa com baixa sensibilidade às emoções alheias, podendo enfrentar desafios em interações.",
+    "textoAvaliador": "Melhor para ambientes mais técnicos; pode necessitar de treinamento em empatia."
+  },
+  {
+    "sigla": "R-A",
+    "perfil": "Relacionamentos",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa extremamente eficaz na construção e manutenção de relações interpessoais saudáveis.",
+    "textoAvaliador": "Excelente para cargos de gestão e funções que exigem forte interação e liderança."
+  },
+  {
+    "sigla": "R-M",
+    "perfil": "Relacionamentos",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa com habilidades razoáveis para manter relacionamentos positivos, embora possa necessitar de apoio em conflitos.",
+    "textoAvaliador": "Adequado para funções com interação interpessoal moderada."
+  },
+  {
+    "sigla": "R-B",
+    "perfil": "Relacionamentos",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que apresenta dificuldades significativas em estabelecer e manter relações interpessoais eficazes.",
+    "textoAvaliador": "Indicado para funções com baixa demanda de interação social; pode precisar de treinamento em habilidades relacionais."
+  }
+]

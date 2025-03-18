@@ -1,0 +1,86 @@
+[
+  {
+    "sigla": "I-B",
+    "perfil": "Iniciativa",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que aguarda estímulos externos frequentes antes de agir.",
+    "textoAvaliador": "Ideal para funções com tarefas claramente definidas e supervisão constante."
+  },
+  {
+    "sigla": "I-M",
+    "perfil": "Iniciativa",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa com iniciativa equilibrada, que age espontaneamente quando recebe algum estímulo.",
+    "textoAvaliador": "Boa para contextos com necessidade moderada de autonomia."
+  },
+  {
+    "sigla": "I-A",
+    "perfil": "Iniciativa",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa altamente proativa, que inicia ações por conta própria com frequência.",
+    "textoAvaliador": "Excelente para funções que demandam alta autonomia e iniciativa constante."
+  },
+  {
+    "sigla": "A-B",
+    "perfil": "Antecipação",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que tende a reagir após os eventos, sem grande capacidade de previsão.",
+    "textoAvaliador": "Indicado para contextos estáveis, onde a antecipação não é crucial."
+  },
+  {
+    "sigla": "A-M",
+    "perfil": "Antecipação",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa com boa capacidade de prever situações comuns, mas com potencial para desenvolvimento.",
+    "textoAvaliador": "Ideal para cargos com demandas moderadas de antecipação e planejamento."
+  },
+  {
+    "sigla": "A-A",
+    "perfil": "Antecipação",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa com excelente capacidade de antecipar problemas e oportunidades.",
+    "textoAvaliador": "Ideal para funções estratégicas que exigem previsão constante e ações preventivas."
+  },
+  {
+    "sigla": "P-B",
+    "perfil": "Persistência",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que tende a desistir rapidamente diante de desafios.",
+    "textoAvaliador": "Indicado para funções com baixa exigência de resistência ao estresse."
+  },
+  {
+    "sigla": "P-M",
+    "perfil": "Persistência",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa que persiste adequadamente, embora possa precisar de estímulo extra em desafios maiores.",
+    "textoAvaliador": "Ideal para contextos com desafios moderados e suporte ocasional."
+  },
+  {
+    "sigla": "P-A",
+    "perfil": "Persistência",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa extremamente determinada, que persiste consistentemente diante dos obstáculos.",
+    "textoAvaliador": "Ótima para funções que exigem alta resiliência e superação constante."
+  },
+  {
+    "sigla": "R-B",
+    "perfil": "Responsabilidade",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que frequentemente evita assumir responsabilidades sem estímulo externo.",
+    "textoAvaliador": "Melhor em ambientes com estrutura rígida e supervisão contínua."
+  },
+  {
+    "sigla": "R-M",
+    "perfil": "Responsabilidade",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa geralmente responsável, que cumpre suas obrigações com comprometimento razoável.",
+    "textoAvaliador": "Adequado para funções que exigem responsabilidade moderada e acompanhamento ocasional."
+  },
+  {
+    "sigla": "R-A",
+    "perfil": "Responsabilidade",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa altamente responsável e comprometida, que assume integralmente as consequências de suas ações.",
+    "textoAvaliador": "Excelente para cargos que demandam alta responsabilidade e confiança."
+  }
+]

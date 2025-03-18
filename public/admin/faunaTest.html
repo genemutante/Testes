@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teste Fauna</title>
+</head>
+<body>
+  <h1>Enviar dados fixos ao Fauna</h1>
+  <button id="sendBtn">Enviar</button>
+
+  <pre id="responseArea"></pre>
+
+  <script>
+    document.getElementById("sendBtn").addEventListener("click", async () => {
+      try {
+        // Faz requisição POST à Function
+        const resp = await fetch("/.netlify/functions/sendToFauna", {
+          method: "POST",
+        });
+        const data = await resp.json();
+        document.getElementById("responseArea").textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById("responseArea").textContent = "Erro: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>

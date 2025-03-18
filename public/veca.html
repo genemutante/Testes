@@ -151,10 +151,10 @@
         questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
         const scaleLabels = [
-          "Discordo totalmente (1)",
-          "Discordo parcialmente (2)",
-          "Concordo parcialmente (3)",
-          "Concordo totalmente (4)"
+          "a) Discordo totalmente",
+          "b) Discordo parcialmente",
+          "c) Concordo parcialmente)",
+          "d) Concordo totalmente"
         ];
         scaleLabels.forEach((label, index) => {
           const btn = document.createElement("button");
@@ -202,7 +202,7 @@
       dateLine.className = "result-datetime";
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
-      let scores = { "D": 0, "I": 0, "S": 0, "C": 0 };
+      let scores = { "V": 0, "E": 0, "C": 0, "A": 0 };
       answers.forEach(resp => {
         if (!scores[resp.sigla]) scores[resp.sigla] = 0;
         scores[resp.sigla] += resp.value;
@@ -218,7 +218,7 @@
       compositeDiv.className = "composite-card";
       compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
-      const siglasUnicas = ["D", "I", "S", "C"];
+      const siglasUnicas = ["V", "E", "C", "A"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
       siglasUnicas.forEach(sig => {
@@ -236,10 +236,10 @@
           textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
         } else {
           switch(sig) {
-            case "D": perfilNome = "Dominância"; break;
-            case "I": perfilNome = "Influência"; break;
-            case "S": perfilNome = "Estabilidade"; break;
-            case "C": perfilNome = "Conformidade"; break;
+            case "V": perfilNome = "Valores"; break;
+            case "E": perfilNome = "Emoções"; break;
+            case "C": perfilNome = "Crenças"; break;
+            case "A": perfilNome = "Atitudes"; break;
           }
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }

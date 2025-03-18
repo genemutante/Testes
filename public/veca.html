@@ -32,11 +32,13 @@
           integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
+  
     // 1) Carrega parâmetros (nome e email)
     function carregarParametros() {
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
       const emailParam = urlParams.get("email");
+ 
       if (nomeParam) {
         document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
         userName = nomeParam.toUpperCase();
@@ -45,12 +47,15 @@
         userEmail = emailParam.toLowerCase();
       }
     }
+ 
     // 1.1) Verifica se o teste VECA já foi concluído
     function checkIfDone() {
       if (localStorage.getItem("vecaTestDone") === "true") {
         document.getElementById("testDoneMark").style.display = "block";
       }
     }
+
+    
     // 2) Formata tempo (min:seg)
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
@@ -58,6 +63,8 @@
       const sec = totalSec % 60;
       return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
     }
+ 
+    
     // 3) Atualiza o timer
     let timerInterval = setInterval(updateTimer, 1000);
     function updateTimer() {
@@ -66,10 +73,15 @@
         document.getElementById("timer").textContent = formatMinSec(elapsed);
       }
     }
+ 
+    
     // 4) Remove indicadores (não há necessidade para VECA)
     function removeIndicador(text) {
       return text;
     }
+ 
+    
+    
     // 5) Variáveis globais
     let currentQuestion = 0;
     let userName = '';
@@ -79,10 +91,14 @@
     let testStartTime = 0;
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
+ 
+    
     // 6) Referências aos elementos
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
+   
+    
     // 7) Carrega JSONs de afirmações e interpretações para VECA
     let questions = [];
     let interpretations = {};
@@ -98,11 +114,15 @@
         });
       })
       .catch(err => console.error("Erro ao carregar veca_interpretations.json:", err));
+  
+    
     // 8) Captura IP
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
+ 
+    
     // 9) Atualiza rodapé
     function getOS() {
       const platform = window.navigator.platform;
@@ -126,6 +146,8 @@
       quizDiv.classList.remove("hidden");
       renderQuestion();
     });
+ 
+    
     // 11) Renderiza a questão atual
     function renderQuestion() {
       quizDiv.innerHTML = "";
@@ -174,21 +196,26 @@
         renderResult();
       }
     }
+
+    
     // 12) Converte a soma (10-40) em "Baixa", "Moderada" ou "Alta"
     function somaParaNivel(soma) {
       if (soma >= 31) return "Alta";
       if (soma >= 21) return "Moderada";
       return "Baixa";
     }
+  
+    
     // 13) Renderiza o Resultado
     function renderResult() {
       clearInterval(timerInterval);
-      localStorage.setItem("discTestDone", "true");
+      localStorage.setItem("vecaTestDone", "true");
       resultDiv.innerHTML = "";
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (1VECA0009)`;
       resultDiv.appendChild(headerDiv);
+
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
@@ -227,12 +254,13 @@
         let interpretObj = null;
         let perfilNome = "";
         let textoInterpretacao = "";
+     
         if (soma > 0) {
           nivel = somaParaNivel(soma);
           const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderada" ? "M" : "B");
           const interpretKey = sig + "-" + suffix;
           interpretObj = interpretations[interpretKey];
-          perfilNome = interpretObj ? interpretObj.sabotador : sig;
+          perfilNome = interpretObj ? interpretObj.perfil : sig;
           textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
         } else {
           switch(sig) {

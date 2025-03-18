@@ -36,7 +36,6 @@
 
   <footer id="footer"></footer>
 
-  <!-- Biblioteca html2pdf.js (opcional para gerar PDF) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
           integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -73,7 +72,7 @@
       }
     }
 
-    // 4) Função para remover indicadores (não há indicadores a remover para Autoestima)
+    // 4) Função para remover indicadores (não necessário para Autoestima)
     function removeIndicador(text) {
       return text;
     }
@@ -148,30 +147,24 @@
       if (currentQuestion < questions.length) {
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
-
         const questionNumber = document.createElement("h2");
         questionNumber.className = "question-number";
         questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
         quizDiv.appendChild(questionNumber);
-
         const progressContainer = document.createElement("div");
         progressContainer.className = "progress-container";
         quizDiv.appendChild(progressContainer);
-
         const progressBarBg = document.createElement("div");
         progressBarBg.className = "progress-bar-bg";
         progressContainer.appendChild(progressBarBg);
-
         const progressBarFill = document.createElement("div");
         progressBarFill.className = "progress-bar-fill";
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
-
         const questionText = document.createElement("p");
         questionText.className = "question-text";
         questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
-
         const scaleLabels = [
           "Discordo totalmente (1)",
           "Discordo parcialmente (2)",
@@ -209,28 +202,39 @@
       clearInterval(timerInterval);
       localStorage.setItem("autoestDone", "true");
       resultDiv.innerHTML = "";
+
+      // Cabeçalho do resultado com destaque no nome e perfil
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (AUTOESTE)`;
+      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (AUTOESTE)`;
       resultDiv.appendChild(headerDiv);
+
+      // Email centralizado
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
+        emailLine.style.textAlign = "center";
         emailLine.textContent = userEmail;
         resultDiv.appendChild(emailLine);
       }
+
+      // Data/hora
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
       const dateLine = document.createElement("p");
       dateLine.className = "result-datetime";
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
+
+      // Calcula as pontuações por dimensão
       let scores = { "AV": 0, "AA": 0, "CP": 0, "RE": 0 };
       answers.forEach(resp => {
         if (scores.hasOwnProperty(resp.sigla)) {
           scores[resp.sigla] += resp.value;
         }
       });
+
+      // Cria o perfil composto e exibe o card de perfil
       let compositeArray = [];
       Object.keys(scores).forEach(key => {
         compositeArray.push({ sigla: key, score: scores[key] });
@@ -248,8 +252,10 @@
       }).join("");
       const compositeDiv = document.createElement("div");
       compositeDiv.className = "composite-card";
-      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
+      compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
+
+      // Exibe os cards de cada dimensão
       const allDimensions = ["AV", "AA", "CP", "RE"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
@@ -306,6 +312,8 @@
         resultsContainer.appendChild(perfilDiv);
       });
       resultDiv.appendChild(resultsContainer);
+
+      // Estatísticas de tempo
       const testTotalTime = new Date() - testStartTime;
       const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
       const fastestTime = Math.min(...questionTimes);
@@ -319,13 +327,21 @@
         <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
         <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>`;
       resultDiv.appendChild(infoCard);
+
+      // Botão Imprimir centralizado com espaçamento acima
+      const printDiv = document.createElement("div");
+      printDiv.style.textAlign = "center";
+      printDiv.style.marginTop = "20px";
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";
       printBtn.onclick = () => window.print();
-      resultDiv.appendChild(printBtn);
+      printDiv.appendChild(printBtn);
+      resultDiv.appendChild(printDiv);
+
       resultDiv.classList.remove("hidden");
     }
+
     function gerarPDF() {
       const elemento = document.getElementById("result");
       const opcoes = {

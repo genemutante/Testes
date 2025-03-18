@@ -17,26 +17,21 @@
   <!-- Cronômetro -->
   <div id="timer">00:00</div>
 
+  <!-- Container principal -->
   <main id="app" class="container">
-    <!-- Marca de teste já concluído -->
-    <div id="testDoneMark"></div>
-    
-    <!-- Tela de Introdução -->
+    <div id="testDoneMark" class="test-concluido">Teste já concluído ✔</div>
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Leia cada afirmação abaixo e selecione a opção que melhor descreve como você geralmente se sente ou age. 
+        Leia atentamente as afirmações abaixo e selecione a opção que melhor descreve como você pensa, sente ou age.
         Não há respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
-
-    <!-- Tela do Questionário -->
     <section id="quiz" class="hidden"></section>
-
-    <!-- Tela de Resultados -->
     <section id="result" class="hidden"></section>
   </main>
+  
 
   <footer id="footer"></footer>
 
@@ -384,7 +379,8 @@
 
       // Botão Imprimir centralizado com espaçamento acima
       const printDiv = document.createElement("div");
-      printDiv.className = "print-container";
+      printDiv.style.textAlign = "center";
+      printDiv.style.marginTop = "20px";
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";

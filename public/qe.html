@@ -216,10 +216,10 @@
         quizDiv.appendChild(questionText);
 
         const scaleLabels = [
-          "Discordo totalmente (1)",
-          "Discordo parcialmente (2)",
-          "Concordo parcialmente (3)",
-          "Concordo totalmente (4)"
+          "a) Discordo totalmente",
+          "b) Discordo parcialmente",
+          "c) Concordo parcialmente",
+          "d) Concordo totalmente"
         ];
         scaleLabels.forEach((label, index) => {
           const btn = document.createElement("button");
@@ -281,6 +281,14 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
+// Autoconsciência	C (Consciência)
+// Gestão Emocional	G (Gestão)
+// Empatia        	E (Empatia)
+// Relacionamentos	R (Relacionamentos)
+
+
+
+      
       // Calcula a soma de pontos para cada dimensão (C, G, E, R)
       let scores = { "C": 0, "G": 0, "E": 0, "R": 0 };
       answers.forEach(resp => {

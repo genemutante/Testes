@@ -6,73 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <!-- Link para o CSS externo (caso tenha) -->
+  <!-- Link para o CSS externo (style.css) -->
   <link rel="stylesheet" href="/style.css" />
-
-  <style>
-    /* Relógio no canto */
-    #timer {
-      font-size: 1.2em;
-      font-weight: bold;
-      color: #fff;
-      background-color: #1B5E20;
-      padding: 5px 10px;
-      border-radius: 4px;
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-    }
-    /* Marca de teste já concluído */
-    #testDoneMark {
-      display: none;
-      color: green;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    /* Cartão do perfil composto */
-    .composite-card {
-      background: #f5f5f5;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      padding: 15px;
-      margin: 15px 0;
-      text-align: center;
-    }
-    .composite-card h2 {
-      margin: 0;
-      font-size: 1.4em;
-      font-weight: bold;
-    }
-    /* Cartão de cada canal (V, A, C) */
-    .perfil-result {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 15px;
-      margin: 10px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .perfil-result .info {
-      flex: 1;
-      margin-right: 15px;
-    }
-    /* Círculo com a letra do canal (V, A, C) */
-    .canais-letter {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.2em;
-      color: #333;
-    }
-  </style>
 </head>
 <body onload="carregarParametros(); checkIfDone();">
   <!-- Cabeçalho fixo -->
@@ -81,13 +16,12 @@
   </header>
 
   <!-- Relógio (tempo decorrido) -->
-  <div id="timer">00:00</div>
+  <div id="timer"></div>
 
-  <main id="app">
+  <!-- Container principal -->
+  <main id="app" class="container">
     <!-- Marca de teste já concluído -->
-    <div id="testDoneMark">
-      Teste já concluído ✔
-    </div>
+    <div id="testDoneMark" class="test-concluido"></div>
 
     <!-- Tela de Introdução -->
     <section id="intro">
@@ -137,8 +71,9 @@
      * 1.1) Verifica se o teste já foi feito e exibe a marca
      ******************************************************/
     function checkIfDone() {
+      // Se o teste de Canais de Comunicação já foi concluído
       if (localStorage.getItem("canaisComDone") === "true") {
-        document.getElementById("testDoneMark").style.display = "block";
+        document.getElementById("testDoneMark").textContent = "Teste já concluído ✔";
       }
     }
 
@@ -167,7 +102,7 @@
      * 4) Remove indicadores do final do texto (se houver)
      ******************************************************/
     function removeIndicador(text) {
-      return text;
+      return text; // Não é necessário remover nada específico
     }
 
     /******************************************************
@@ -323,20 +258,22 @@
      ******************************************************/
     function renderResult() {
       clearInterval(timerInterval);
+      // Marca no localStorage
       localStorage.setItem("canaisComDone", "true");
 
       resultDiv.innerHTML = "";
 
-      // Cabeçalho
+      // Cabeçalho do resultado (com destaque para o nome)
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (8CANCOM2)`;
+      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (8CANCOM2)`;
       resultDiv.appendChild(headerDiv);
 
-      // Exibe email se houver
+      // Email, se existir
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
+        emailLine.style.textAlign = "center";
         emailLine.textContent = userEmail;
         resultDiv.appendChild(emailLine);
       }
@@ -348,7 +285,7 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Soma de pontos (V, A, C)
+      // Soma dos pontos (Visual (V), Auditivo (A), Cinestésico (C))
       let scores = { "V": 0, "A": 0, "C": 0 };
       answers.forEach(resp => {
         if (scores.hasOwnProperty(resp.sigla)) {
@@ -363,24 +300,23 @@
       });
       compositeArray.sort((a, b) => b.score - a.score);
 
-      // Perfil composto
+      // Perfil composto (letras V, A, C)
       const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
       const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
 
       // Card do Perfil Composto
       const compositeDiv = document.createElement("div");
       compositeDiv.className = "composite-card";
-      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
+      compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
 
-      // Exibe V, A, C
+      // Exibe cada canal (V, A, C)
       const allProfiles = ["V", "A", "C"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
       allProfiles.forEach(sig => {
         const soma = scores[sig];
-
         let nivel = "";
         let interpretObj = null;
         let perfilNome = "";
@@ -400,7 +336,7 @@
             textoInterpretacao = "Sem interpretação disponível.";
           }
         } else {
-          // Zero
+          // Se pontuou 0
           switch(sig) {
             case "V": perfilNome = "Visual"; break;
             case "A": perfilNome = "Auditivo"; break;
@@ -409,7 +345,6 @@
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
 
-        // Monta card
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
 
@@ -432,7 +367,7 @@
 
         const letterDiv = document.createElement("div");
         letterDiv.className = "canais-letter";
-        letterDiv.textContent = sig; // "V", "A", "C"
+        letterDiv.textContent = sig; // "V", "A" ou "C"
 
         perfilDiv.appendChild(infoDiv);
         perfilDiv.appendChild(letterDiv);
@@ -459,12 +394,16 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão Imprimir
+      // Botão Imprimir (centralizado)
+      const printDiv = document.createElement("div");
+      printDiv.style.textAlign = "center";
+      printDiv.style.marginTop = "20px";
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";
       printBtn.onclick = () => window.print();
-      resultDiv.appendChild(printBtn);
+      printDiv.appendChild(printBtn);
+      resultDiv.appendChild(printDiv);
 
       resultDiv.classList.remove("hidden");
     }

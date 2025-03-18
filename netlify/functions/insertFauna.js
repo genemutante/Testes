@@ -3,15 +3,15 @@
 const faunadb = require("faunadb");
 const q = faunadb.query;
 
-// Carregue a KEY do Fauna via variáveis de ambiente
-// No Netlify, configure FAUNA_SECRET em "Site settings > Build & deploy > Environment"
+// >>> COLOQUE SUA CHAVE DIRETAMENTE AQUI <<<
 const client = new faunadb.Client({
-  secret: process.env.FAUNA_SECRET,
+  secret: "fnacapi_omd2ZXJzaW9uAWdwYXlsb2FkWFiiYmlkcjQyNTc5Mzk0NzQyNzY2ODU2NWZzZWNyZXR4OEdIRTVoOVZvb2oyazdNVk1kMnJKYThndnpmZDlCVVlMQ0JZcjFybE1XeCtUY0JBNlNBUDBWZz09
+" // Exemplo: "fnAEAXXXXXXXXXXX"
 });
 
 exports.handler = async (event, context) => {
   try {
-    // Exemplo de dados fixos (você pode substituir por dados vindos do event.body, se necessário)
+    // Exemplo de documento fixo a ser inserido
     const doc = {
       DateTime_Envio: new Date().toISOString(),
       IP: "123.456.789",
@@ -22,17 +22,17 @@ exports.handler = async (event, context) => {
       Resposta: "BBB",
     };
 
-    // Insere no Fauna na Collection "RegistrosTestes"
+    // Insere no Fauna (ajuste o nome da Collection conforme o que criou)
     const result = await client.query(
       q.Create(
-        q.Collection("RegistrosTestes"),
+        q.Collection("RegistrosTestes"), 
         { data: doc }
       )
     );
 
     return {
       statusCode: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" }, // boa prática
       body: JSON.stringify({
         message: "Inserido com sucesso no Fauna!",
         faunaResult: result,

@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>TESTE DE PERFIL - 2PERDSK08</title>
+  <title>TESTE DE PERFIL - 3SABCOM7</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
@@ -11,22 +11,21 @@
 </head>
 <body onload="carregarParametros(); checkIfDone();">
   <header>
-    TESTE DE PERFIL - 2PERDSK08
+    TESTE DE PERFIL - 3SABCOM7
   </header>
 
-  <!-- Cronômetro -->
+  <!-- Relógio -->
   <div id="timer">00:00</div>
 
-  <!-- Container principal -->
   <main id="app" class="container">
-    <!-- Marca de teste concluído (exibida se o teste já foi feito) -->
+    <!-- Marca de teste concluído -->
     <div id="testDoneMark"></div>
 
     <!-- Tela de Introdução -->
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Leia cada afirmação e escolha a opção que mais representa como você costuma agir ou se sentir.
+        Leia cada pergunta e escolha a alternativa que mais representa como você age ou pensa em situações similares.
         Não há respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
@@ -63,14 +62,14 @@
 
     // 1.1) Verifica se o teste já foi concluído e exibe a marca
     function checkIfDone() {
-      if (localStorage.getItem("discTestDone") === "true") {
+      if (localStorage.getItem("sabTestDone") === "true") {
         const doneMark = document.getElementById("testDoneMark");
         doneMark.textContent = "Teste já concluído ✔";
         doneMark.style.display = "block";
       }
     }
 
-    // 2) Formata tempo (minutos:segundos)
+    // 2) Formata tempo (min:seg)
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
       const min = Math.floor(totalSec / 60);
@@ -87,7 +86,7 @@
       }
     }
 
-    // 4) Função para remover indicadores do texto (caso haja)
+    // 4) Remove indicador (remove texto entre parênteses no final, se houver)
     function removeIndicador(text) {
       return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
@@ -96,7 +95,7 @@
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = []; // Cada resposta: { sigla, value }
+    const answers = [];  // Cada resposta: { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
@@ -108,8 +107,8 @@
     const resultDiv = document.getElementById("result");
 
     // 7) Carrega os JSONs de afirmações e interpretações
-    let questions = [];       // disc_assertions.json
-    let interpretations = {}; // disc_interpretations.json
+    let questions = [];       // sab_assertions.json
+    let interpretations = {}; // sab_interpretations.json
 
     // 8) Captura IP
     fetch("https://api.ipify.org?format=json")
@@ -135,22 +134,22 @@
     setInterval(updateFooter, 1000);
 
     // 10) Carrega JSON de afirmações
-    fetch("/disc_assertions.json")
+    fetch("/sab_assertions.json")
       .then(resp => resp.json())
       .then(data => { questions = data; })
-      .catch(err => console.error("Erro ao carregar disc_assertions.json:", err));
+      .catch(err => console.error("Erro ao carregar sab_assertions.json:", err));
 
     // 11) Carrega JSON de interpretações
-    fetch("/disc_interpretations.json")
+    fetch("/sab_interpretations.json")
       .then(resp => resp.json())
       .then(data => {
         data.forEach(item => {
           interpretations[item.sigla] = item;
         });
       })
-      .catch(err => console.error("Erro ao carregar disc_interpretations.json:", err));
+      .catch(err => console.error("Erro ao carregar sab_interpretations.json:", err));
 
-    // 12) Inicia o Teste
+    // 12) Inicia o teste
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
       introDiv.classList.add("hidden");
@@ -213,25 +212,27 @@
       }
     }
 
-    // 14) Converte a soma (10-40) em "Baixa", "Moderado" ou "Alta"
+    // 14) Converte a soma (2-8) em "Baixo", "Médio" ou "Alto"
     function somaParaNivel(soma) {
-      if (soma >= 31) return "Alta";
-      if (soma >= 21) return "Moderado";
-      return "Baixa";
+      if (soma >= 7) return "Alto";
+      if (soma >= 5) return "Médio";
+      return "Baixo";
     }
 
-    // 15) Renderiza o Resultado
+    // 15) Renderiza o resultado final
     function renderResult() {
       clearInterval(timerInterval);
-      localStorage.setItem("discTestDone", "true");
+      localStorage.setItem("sabTestDone", "true");
 
       resultDiv.innerHTML = "";
 
+      // Cabeçalho com nome destacado
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (DISC)`;
+      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (3SABCOM7)`;
       resultDiv.appendChild(headerDiv);
 
+      // Email centralizado
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
@@ -240,6 +241,7 @@
         resultDiv.appendChild(emailLine);
       }
 
+      // Data/hora
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
       const dateLine = document.createElement("p");
@@ -247,45 +249,29 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      let scores = { "D": 0, "I": 0, "S": 0, "C": 0 };
+      // Calcula pontuação por dimensão
+      let scores = {};
       answers.forEach(resp => {
-        if (scores.hasOwnProperty(resp.sigla)) {
-          scores[resp.sigla] += resp.value;
-        }
+        if (!scores[resp.sigla]) scores[resp.sigla] = 0;
+        scores[resp.sigla] += resp.value;
       });
 
-      let compositeArray = [];
-      Object.keys(scores).forEach(key => {
-        compositeArray.push({ sigla: key, score: scores[key] });
-      });
-      compositeArray.sort((a, b) => b.score - a.score);
-
-      const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
-      const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
-
-      const compositeDiv = document.createElement("div");
-      compositeDiv.className = "composite-card";
-      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
-      resultDiv.appendChild(compositeDiv);
-
-      const allProfiles = ["D", "I", "S", "C"];
+      const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
-      allProfiles.forEach(sig => {
+      // Exibe os cards individuais (cada dimensão)
+      siglasUnicas.forEach(sig => {
         const soma = scores[sig] || 0;
-        let nivel = "";
-        let interpretObj = null;
-        let perfilNome = "";
-        let textoInterpretacao = "";
-        if (soma > 0) {
-          nivel = somaParaNivel(soma);
-          const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderado" ? "M" : "B");
-          const interpretKey = sig + "-" + suffix;
-          interpretObj = interpretations[interpretKey];
-          perfilNome = interpretObj ? interpretObj.perfil : sig;
-          textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
-        } else {
+        const nivel = somaParaNivel(soma);
+        let suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
+        let interpretKey = sig + "-" + suffix;
+        let interpretObj = interpretations[interpretKey];
+        let perfilNome = interpretObj ? interpretObj.sabotador : sig;
+        let textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
+
+        // Se não houver pontuação, exibe o nome completo fixo
+        if (soma === 0) {
           switch(sig) {
             case "D": perfilNome = "Dominância"; break;
             case "I": perfilNome = "Influência"; break;
@@ -294,30 +280,37 @@
           }
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
+
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
+
         const infoDiv = document.createElement("div");
         infoDiv.className = "info";
         infoDiv.innerHTML = `
           <h3>${perfilNome}</h3>
-          <p class="pontuacao">Pontuação: ${soma} (${nivel || "Nenhuma"})</p>
+          <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel || "Nenhuma"})</p>
           <p class="texto-participante">${textoInterpretacao}</p>
         `;
+
         const letterDiv = document.createElement("div");
         letterDiv.className = "disc-letter";
         letterDiv.textContent = sig;
+
         perfilDiv.appendChild(infoDiv);
         perfilDiv.appendChild(letterDiv);
         resultsContainer.appendChild(perfilDiv);
       });
+
       resultDiv.appendChild(resultsContainer);
 
+      // Estatísticas de tempo
       const testTotalTime = new Date() - testStartTime;
       const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
       const fastestTime = Math.min(...questionTimes);
       const slowestTime = Math.max(...questionTimes);
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
+
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `
@@ -328,6 +321,7 @@
       `;
       resultDiv.appendChild(infoCard);
 
+      // Botão Imprimir centralizado com espaçamento
       const printDiv = document.createElement("div");
       printDiv.className = "print-container";
       const printBtn = document.createElement("button");
@@ -340,6 +334,7 @@
       resultDiv.classList.remove("hidden");
     }
 
+    // 16) Gera PDF (opcional)
     function gerarPDF() {
       const elemento = document.getElementById("result");
       const opcoes = {

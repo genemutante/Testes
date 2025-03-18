@@ -14,7 +14,7 @@
     document.getElementById("sendBtn").addEventListener("click", async () => {
       try {
         // Faz requisição POST à Function
-        const resp = await fetch("/.netlify/functions/sendToFauna", {
+        const resp = await fetch("/.netlify/functions/insertFauna", {
           method: "POST",
         });
         const data = await resp.json();

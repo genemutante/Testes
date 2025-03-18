@@ -64,21 +64,21 @@
   },
   {
     "sigla": "R-A",
-    "perfil": "Rsiliência Emocional",
+    "perfil": "Resiliência Emocional",
     "nivel": "Alta",
     "textoParticipante": "Pessoa resiliente, que mantém equilíbrio emocional mesmo em situações adversas.",
     "textoAvaliador": "Excelente para contextos de alta pressão, demonstrando estabilidade emocional constante."
   },
   {
     "sigla": "R-M",
-    "perfil": "Rsiliência Emocional",
+    "perfil": "Resiliência Emocional",
     "nivel": "Moderada",
     "textoParticipante": "Pessoa que mantém equilíbrio emocional na maioria das situações, embora precise de apoio em momentos críticos.",
     "textoAvaliador": "Adequado para ambientes com níveis moderados de pressão; demonstra boa, mas não plena, estabilidade emocional."
   },
   {
     "sigla": "R-B",
-    "perfil": "Rsiliência Emocional",
+    "perfil": "Resiliência Emocional",
     "nivel": "Baixa",
     "textoParticipante": "Pessoa que se desestabiliza facilmente diante de desafios emocionais ou adversidades.",
     "textoAvaliador": "Rquer acompanhamento próximo; pode enfrentar dificuldades em contextos de alta demanda emocional."

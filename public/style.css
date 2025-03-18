@@ -1,11 +1,12 @@
-/* Garantindo box-sizing para alinhar perfeitamente header, footer e painel */
+/***************************************************
+ * RESET e BOX-SIZING
+ ***************************************************/
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* RESET BÁSICO */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -25,101 +26,341 @@ section, summary, time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* Layout principal */
+/***************************************************
+ * VARIÁVEIS DE COR E ESTILO (OPCIONAL)
+ ***************************************************/
+:root {
+  --bg-light: #f0f0f0;
+  --text-dark: #333;
+  --text-light: #fff;
+  --brand-green: #2E7D32;
+  --brand-green-dark: #1B5E20;
+  --brand-red: #d32f2f;
+  --accent-orange: #FFA500;
+  --accent-orange-dark: #FF8C00;
+  --card-bg: #fff;
+  --card-border: #ddd;
+  --card-shadow: rgba(0, 0, 0, 0.15);
+}
+
+/***************************************************
+ * ESTILOS GERAIS DO BODY
+ ***************************************************/
 body {
-  line-height: 1.5;
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(135deg, #f0f0f0, #ffffff);
+  line-height: 1.6;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
   display: flex;
   flex-direction: column;
-  align-items: center;
   min-height: 100vh;
-  padding: 20px;
-  color: #333;
 }
 
-/* Cabeçalho, container (#app) e rodapé com largura fixa e centralizados */
-header, footer, #app {
+/***************************************************
+ * CABEÇALHO e RODAPÉ
+ ***************************************************/
+header,
+footer {
   width: 100%;
-  max-width: 650px;
-  margin: 20px auto;
-  border-radius: 8px;
+  background-color: #000;
+  color: var(--text-light);
   text-align: center;
+  padding: 15px;
 }
 
-/* Cabeçalho */
-header {
-  background-color: #000;
-  color: #fff;
-  padding: 15px;
+header h2 {
   font-size: 1.6em;
+  font-weight: 600;
+  margin: 0;
+}
+
+footer {
+  font-size: 0.85em;
+}
+
+/***************************************************
+ * CONTAINER PRINCIPAL (Painel e Telas)
+ ***************************************************/
+.container {
+  width: 95%;
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--card-shadow);
+  padding: 30px;
+}
+
+/***************************************************
+ * TÍTULOS E TEXTOS
+ ***************************************************/
+h1, h2, h3 {
+  color: var(--text-dark);
+  margin-bottom: 15px;
+}
+
+h1 {
+  font-size: 1.5em;
   font-weight: 600;
 }
 
-/* Rodapé */
-footer {
-  background-color: #000;
-  color: #fff;
-  padding: 5px 10px;
-  font-size: 10px;
+h2 {
+  font-size: 1.3em;
+  font-weight: 500;
 }
 
-/* Container principal (#app) */
-#app {
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  padding: 30px;
-  border-radius: 8px;
+p {
+  margin-bottom: 15px;
 }
 
-/* Input Fields */
+/***************************************************
+ * CAMPOS DE ENTRADA (Nome, Email, etc.)
+ ***************************************************/
 .input-field {
   width: 100%;
-  max-width: 300px;
+  max-width: 350px;
   padding: 12px;
   font-size: 1em;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin: 15px 0;
+  margin-bottom: 20px;
 }
 
-/* Botões */
+#userName {
+  text-transform: uppercase;
+}
+
+#userEmail {
+  text-transform: lowercase;
+}
+
+/***************************************************
+ * BOTÕES GERAIS
+ ***************************************************/
 .btn {
-  background: #2E7D32;
-  color: #fff;
-  border: none;
+  display: inline-block;
   padding: 12px 20px;
+  background-color: var(--brand-green);
+  color: var(--text-light);
+  border: none;
   border-radius: 4px;
   font-size: 1em;
   cursor: pointer;
-  transition: background 0.3s;
-  width: 100%;
+  text-align: center;
+  transition: background 0.3s, transform 0.2s;
   margin: 0;
 }
 .btn:hover {
-  background: #1B5E20;
+  background-color: var(--brand-green-dark);
+  transform: scale(1.01);
+}
+.btn:active {
+  transform: scale(0.98);
 }
 .btn-desabilitado {
-  background: #aaa;
+  background-color: #aaa;
   color: #fff;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 4px;
-  font-size: 1em;
   cursor: not-allowed;
-  width: 100%;
-  margin: 0;
 }
 
-/* Grid para botões no painel */
+/***************************************************
+ * GRID DE BOTÕES NO PAINEL
+ ***************************************************/
 .grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 15px;
   margin-top: 20px;
 }
 
-/* Ocultar elementos */
+/***************************************************
+ * MENSAGEM DE TESTE JÁ CONCLUÍDO
+ ***************************************************/
+.test-concluido {
+  color: var(--brand-red);
+  font-weight: 600;
+  font-size: 1em;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/***************************************************
+ * DESTAQUE PARA O NOME DO PARTICIPANTE
+ ***************************************************/
+.participant-name {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: var(--brand-green);
+}
+
+/***************************************************
+ * SEÇÕES OCULTAS
+ ***************************************************/
 .hidden {
   display: none;
+}
+
+/***************************************************
+ * BARRA DE PROGRESSO (Exemplo no questionário)
+ ***************************************************/
+.progress-container {
+  width: 100%;
+  margin: 10px 0 20px;
+}
+.progress-bar-bg {
+  width: 100%;
+  background-color: #ccc;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s;
+  background: linear-gradient(90deg, var(--accent-orange), var(--accent-orange-dark));
+}
+
+/***************************************************
+ * OPÇÕES DE PERGUNTA
+ ***************************************************/
+.question-number {
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #333;
+  text-align: left;
+}
+.question-text {
+  margin-bottom: 20px;
+  text-align: left;
+  color: #222;
+  font-weight: bold;
+  background: #f3f3f3;
+  padding: 10px;
+  border-radius: 4px;
+}
+.option {
+  display: block;
+  width: 100%;
+  background: #E8EEF3;
+  color: #333;
+  border: 1px solid #A1B0C5;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, border 0.3s;
+  text-align: left;
+}
+.option:hover {
+  background: var(--accent-orange);
+  color: #000;
+  font-weight: bold;
+  border: 1px solid #000;
+  transform: scale(1.02);
+}
+
+/***************************************************
+ * TELA DE RESULTADOS
+ ***************************************************/
+#result-header {
+  text-align: center;
+  margin: 0 0 15px;
+  font-size: 1.1em;
+  line-height: 1.4;
+  color: #333;
+}
+.result-datetime {
+  font-size: 0.85em;
+  color: #666;
+  margin-top: 4px;
+  text-align: center;
+}
+.results-container {
+  margin-top: 20px;
+}
+
+/***************************************************
+ * CARTÕES DE RESULTADO
+ ***************************************************/
+.perfil-result {
+  background: #ffffff;
+  border: 2px solid #333;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.perfil-result .info {
+  flex: 1;
+  margin-right: 15px;
+}
+.perfil-result h3 {
+  margin-bottom: 8px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #222;
+}
+.perfil-result .pontuacao {
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #444;
+}
+.perfil-result .texto-participante {
+  line-height: 1.4;
+  color: #333;
+}
+
+/***************************************************
+ * INDICADOR (CÍRCULO COM LETRA/EMOJI)
+ ***************************************************/
+.cerebro-letter, .autoest-letter {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #333;
+}
+
+/***************************************************
+ * CARTÃO DE ESTATÍSTICAS (TEMPO, MÉDIA, ETC.)
+ ***************************************************/
+.info-card {
+  background: #f8f9fa;
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 0.85em;
+  color: #333;
+}
+.info-card p {
+  margin: 6px 0;
+}
+.info-card strong {
+  font-weight: 500;
+}
+
+/***************************************************
+ * RELÓGIO DE TEMPO DECORRIDO (SE USAR)
+ ***************************************************/
+#timer {
+  font-size: 0.95em;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--brand-green-dark);
+  padding: 6px 12px;
+  border-radius: 4px;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
 }

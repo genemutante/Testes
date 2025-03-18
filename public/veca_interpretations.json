@@ -1,0 +1,86 @@
+[
+  {
+    "sigla": "V-A",
+    "perfil": "Valores",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa orientada por princípios fortes e coerentes, priorizando suas crenças pessoais nas decisões.",
+    "textoAvaliador": "Perfil ideal para funções alinhadas à cultura organizacional clara, que valorizam integridade e coerência."
+  },
+  {
+    "sigla": "V-M",
+    "perfil": "Valores",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa com valores bem definidos, mas capaz de adaptá-los quando necessário.",
+    "textoAvaliador": "Perfil adaptável, indicado para ambientes moderadamente exigentes em termos de alinhamento de valores."
+  },
+  {
+    "sigla": "V-B",
+    "perfil": "Valores",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa menos orientada por valores definidos, adaptando-se facilmente conforme as circunstâncias.",
+    "textoAvaliador": "Adequado para contextos dinâmicos, podendo exigir alinhamento cultural contínuo."
+  },
+  {
+    "sigla": "E-A",
+    "perfil": "Emoções",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa que toma decisões fortemente influenciadas pelas emoções, com alta sensibilidade ao ambiente emocional.",
+    "textoAvaliador": "Adequado para funções que exigem alta sensibilidade emocional; monitorar decisões excessivamente emocionais."
+  },
+  {
+    "sigla": "E-M",
+    "perfil": "Emoções",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa que equilibra bem emoções e racionalidade, mantendo uma gestão emocional saudável.",
+    "textoAvaliador": "Perfil ideal para ambientes com demandas emocionais moderadas."
+  },
+  {
+    "sigla": "E-B",
+    "perfil": "Emoções",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa com pouca influência emocional nas decisões, preferindo abordagens mais racionais.",
+    "textoAvaliador": "Indicado para funções técnicas, podendo enfrentar desafios em interações altamente emocionais."
+  },
+  {
+    "sigla": "C-A",
+    "perfil": "Crenças",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa com convicções firmes que orientam suas ações e decisões de forma consistente.",
+    "textoAvaliador": "Perfil ótimo para funções que exigem forte alinhamento com valores específicos; monitorar resistência à mudança."
+  },
+  {
+    "sigla": "C-M",
+    "perfil": "Crenças",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa com crenças bem definidas, mas que se adapta quando necessário.",
+    "textoAvaliador": "Boa adequação para ambientes com mudanças moderadas e alinhamento cultural flexível."
+  },
+  {
+    "sigla": "C-B",
+    "perfil": "Crenças",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa com crenças abertas e flexíveis, facilmente adaptável a novos contextos.",
+    "textoAvaliador": "Ideal para funções que requerem constante adaptação; cuidado com potencial instabilidade nas decisões."
+  },
+  {
+    "sigla": "A-A",
+    "perfil": "Atitudes",
+    "nivel": "Alta",
+    "textoParticipante": "Pessoa altamente proativa e rápida ao agir, tomando decisões com iniciativa.",
+    "textoAvaliador": "Perfil ideal para ambientes que exigem agilidade e autonomia; monitorar impulsividade excessiva."
+  },
+  {
+    "sigla": "A-M",
+    "perfil": "Atitudes",
+    "nivel": "Moderada",
+    "textoParticipante": "Pessoa equilibrada entre agir rapidamente e refletir antes de tomar decisões.",
+    "textoAvaliador": "Indicado para contextos com demandas equilibradas entre agilidade e análise."
+  },
+  {
+    "sigla": "A-B",
+    "perfil": "Atitudes",
+    "nivel": "Baixa",
+    "textoParticipante": "Pessoa que tende a refletir bastante antes de agir, evitando decisões impulsivas.",
+    "textoAvaliador": "Adequado para funções que exigem planejamento detalhado e análise profunda."
+  }
+]

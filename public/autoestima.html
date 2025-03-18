@@ -213,10 +213,10 @@
         quizDiv.appendChild(questionText);
 
         const scaleLabels = [
-          "Discordo totalmente (1)",
-          "Discordo parcialmente (2)",
-          "Concordo parcialmente (3)",
-          "Concordo totalmente (4)"
+          "a) Discordo totalmente",
+          "b) Discordo parcialment",
+          "c) Concordo parcialmente",
+          "d) Concordo totalmente"
         ];
         scaleLabels.forEach((label, index) => {
           const btn = document.createElement("button");
@@ -278,8 +278,14 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Soma de pontos por dimensão (AV, AA, CP, RE)
-      let scores = { "AV": 0, "AA": 0, "CP": 0, "RE": 0 };
+// V - Autovalorização (Valorização)
+// A - Autoaceitação (Aceitação)
+// C - Confiança Pessoal (Confiança)
+// R - Resiliência Emocional (Resiliência)
+
+      
+      // Soma de pontos por dimensão (V, A, C, R)
+      let scores = { "V": 0, "A": 0, "C": 0, "R": 0 };
       answers.forEach(resp => {
         if (scores.hasOwnProperty(resp.sigla)) {
           scores[resp.sigla] += resp.value;
@@ -293,13 +299,14 @@
       });
       compositeArray.sort((a, b) => b.score - a.score);
 
+     
       const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
       const compositeProfile = nonZeroProfiles.map(item => {
         switch(item.sigla) {
-          case "AV": return "A"; // Autovalorização
-          case "AA": return "V"; // Autoaceitação
-          case "CP": return "C"; // Confiança Pessoal
-          case "RE": return "R"; // Resiliência Emocional
+          case "V": return "V"; // Autovalorização (Valorização)
+          case "A": return "A"; // Autoaceitação (Aceitação)
+          case "C": return "C"; // Confiança Pessoal (Confiança)
+          case "R": return "R"; // Resiliência Emocional (Resiliência)
           default: return "";
         }
       }).join("");
@@ -336,10 +343,10 @@
           }
         } else {
           switch(dim) {
-            case "AV": perfilNome = "Autovalorização"; break;
-            case "AA": perfilNome = "Autoaceitação"; break;
-            case "CP": perfilNome = "Confiança Pessoal"; break;
-            case "RE": perfilNome = "Resiliência Emocional"; break;
+            case "V": perfilNome = "Valorização"; break;
+            case "A": perfilNome = "Aceitação"; break;
+            case "C": perfilNome = "Confiança"; break;
+            case "R": perfilNome = "Resiliência"; break;
           }
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
@@ -367,10 +374,10 @@
         const letterDiv = document.createElement("div");
         letterDiv.className = "autoest-letter";
         switch(dim) {
-          case "AV": letterDiv.textContent = "A"; break;
-          case "AA": letterDiv.textContent = "V"; break;
-          case "CP": letterDiv.textContent = "C"; break;
-          case "RE": letterDiv.textContent = "R"; break;
+          case "V": letterDiv.textContent = "V"; break;
+          case "A": letterDiv.textContent = "A"; break;
+          case "C": letterDiv.textContent = "C"; break;
+          case "R": letterDiv.textContent = "R"; break;
         }
 
         perfilDiv.appendChild(infoDiv);

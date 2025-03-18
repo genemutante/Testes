@@ -1,6 +1,7 @@
 {
-  "name": "@example/starter",
-  "version": "0.0.1",
+  "name": "testes-de-perfil",
+  "version": "1.0.0",
+  "description": "Projeto Netlify com Fauna",
   "private": true,
   "scripts": {
     "dev": "astro dev",
@@ -9,9 +10,11 @@
     "preview": "astro preview"
   },
   "devDependencies": {
+    "faunadb": "^4.7.1",
     "@astrojs/preact": "^1.0.2",
     "@astrojs/sitemap": "^1.0.0",
     "@netlify/netlify-marketing-tokens": "^1.1.0",
     "astro": "^2.0.0"
   }
 }
+

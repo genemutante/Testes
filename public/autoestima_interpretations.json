@@ -1,86 +1,86 @@
 [
   {
-    "sigla": "AV-A",
+    "sigla": "V-A",
     "perfil": "Autovalorização",
     "nivel": "Alta",
     "textoParticipante": "Pessoa confiante e que valoriza claramente suas qualidades e conquistas.",
     "textoAvaliador": "Ótimo para contextos que exigem iniciativa e assertividade; demonstra segurança emocional constante."
   },
   {
-    "sigla": "AV-M",
+    "sigla": "V-M",
     "perfil": "Autovalorização",
     "nivel": "Moderada",
     "textoParticipante": "Pessoa que reconhece seu valor pessoal, embora possa oscilar em situações desafiadoras.",
     "textoAvaliador": "Adequado para contextos moderadamente exigentes, com apoio emocional ocasional."
   },
   {
-    "sigla": "AV-B",
+    "sigla": "V-B",
     "perfil": "Autovalorização",
     "nivel": "Baixa",
     "textoParticipante": "Pessoa que enfrenta dificuldades para reconhecer seu próprio valor e se sente frequentemente insegura sobre suas qualidades.",
     "textoAvaliador": "Necessita de reforço positivo constante; recomendável em contextos com suporte emocional contínuo."
   },
   {
-    "sigla": "AA-A",
+    "sigla": "A-A",
     "perfil": "Autoaceitação",
     "nivel": "Alta",
     "textoParticipante": "Pessoa emocionalmente equilibrada, que aceita tranquilamente suas limitações e imperfeições.",
     "textoAvaliador": "Ideal para contextos exigentes emocionalmente, lidando bem com críticas e desafios."
   },
   {
-    "sigla": "AA-M",
+    "sigla": "A-M",
     "perfil": "Autoaceitação",
     "nivel": "Moderada",
     "textoParticipante": "Pessoa que lida razoavelmente bem com suas imperfeições, necessitando, por vezes, de reforços externos positivos.",
     "textoAvaliador": "Perfil equilibrado, indicado para ambientes com suporte emocional moderado."
   },
   {
-    "sigla": "AA-B",
+    "sigla": "A-B",
     "perfil": "Autoaceitação",
     "nivel": "Baixa",
     "textoParticipante": "Pessoa que enfrenta desafios significativos em aceitar suas próprias limitações e imperfeições.",
     "textoAvaliador": "Necessita de suporte emocional; pode ter impacto negativo se exposta a críticas constantes."
   },
   {
-    "sigla": "CP-A",
+    "sigla": "C-A",
     "perfil": "Confiança Pessoal",
     "nivel": "Alta",
     "textoParticipante": "Pessoa segura e confiante, que enfrenta desafios e toma decisões com firmeza.",
     "textoAvaliador": "Ideal para cargos que exigem autonomia e tomada de decisões rápidas."
   },
   {
-    "sigla": "CP-M",
+    "sigla": "C-M",
     "perfil": "Confiança Pessoal",
     "nivel": "Moderada",
     "textoParticipante": "Pessoa razoavelmente confiante, que pode necessitar de suporte ocasional em situações desafiadoras.",
     "textoAvaliador": "Adequado para funções com desafios moderados e suporte organizacional."
   },
   {
-    "sigla": "CP-B",
+    "sigla": "C-B",
     "perfil": "Confiança Pessoal",
     "nivel": "Baixa",
     "textoParticipante": "Pessoa frequentemente insegura e hesitante, evitando desafios ou novas experiências.",
     "textoAvaliador": "Indicado para ambientes com baixa pressão decisória; pode precisar de acompanhamento para desenvolver autonomia."
   },
   {
-    "sigla": "RE-A",
-    "perfil": "Resiliência Emocional",
+    "sigla": "R-A",
+    "perfil": "Rsiliência Emocional",
     "nivel": "Alta",
     "textoParticipante": "Pessoa resiliente, que mantém equilíbrio emocional mesmo em situações adversas.",
     "textoAvaliador": "Excelente para contextos de alta pressão, demonstrando estabilidade emocional constante."
   },
   {
-    "sigla": "RE-M",
-    "perfil": "Resiliência Emocional",
+    "sigla": "R-M",
+    "perfil": "Rsiliência Emocional",
     "nivel": "Moderada",
     "textoParticipante": "Pessoa que mantém equilíbrio emocional na maioria das situações, embora precise de apoio em momentos críticos.",
     "textoAvaliador": "Adequado para ambientes com níveis moderados de pressão; demonstra boa, mas não plena, estabilidade emocional."
   },
   {
-    "sigla": "RE-B",
-    "perfil": "Resiliência Emocional",
+    "sigla": "R-B",
+    "perfil": "Rsiliência Emocional",
     "nivel": "Baixa",
     "textoParticipante": "Pessoa que se desestabiliza facilmente diante de desafios emocionais ou adversidades.",
-    "textoAvaliador": "Requer acompanhamento próximo; pode enfrentar dificuldades em contextos de alta demanda emocional."
+    "textoAvaliador": "Rquer acompanhamento próximo; pode enfrentar dificuldades em contextos de alta demanda emocional."
   }
 ]

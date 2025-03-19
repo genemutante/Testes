@@ -1,7 +1,7 @@
 {
   "name": "testes-de-perfil",
   "version": "1.0.0",
-  "description": "Projeto Netlify com Fauna",
+  "description": "Projeto Netlify com Supabase",
   "private": true,
   "scripts": {
     "dev": "astro dev",

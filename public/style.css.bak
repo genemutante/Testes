@@ -71,8 +71,6 @@ footer {
 
 
 header h2 {
-  background-color: #000;
-  color: #fff;           /* Texto branco */
   font-size: 1.6em;
   font-weight: 600;
   margin: 0;

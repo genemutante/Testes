@@ -135,7 +135,11 @@
           }
         });
 		
+		
+	if (testsFound["9CERTRIO1"]) 	{localStorage.setItem("discTestDone", "true"); } else {  localStorage.removeItem("discTestDone");}
 	
+		
+		
 		
 
         // Exibe os botões (remove a classe 'hidden' do container)

@@ -4,13 +4,19 @@
   <meta charset="UTF-8" />
   <title>Portal de Testes de Perfil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
   <!-- Link para o CSS externo refinado -->
   <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* Caso queira um estilo específico para a área de botões quando estiver oculta */
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
-  <!-- Envolve tudo em .page-wrapper para centralizar e limitar a largura -->
   <div class="page-wrapper">
-    
     <!-- Cabeçalho -->
     <header>
       <h2>Portal de Testes de Perfil v2</h2>
@@ -35,35 +41,20 @@
         placeholder="seu email (ex.: fulano@teste.com)"
         required
       />
-
-      <!-- Grid de botões (3 colunas) -->
-      <div class="grid-container">
-        <!-- 1) 9CERTRIO1 (Cérebro Trino) – Ativo -->
-        <button id="cerebroTrinoBtn" class="btn" onclick="iniciarCerebroTrino()">9CERTRIO1</button>
-        
-        <!-- 2) 8CANCOM2 (Canais de Comunicação) – Ativo -->
-        <button id="canaisComBtn" class="btn" onclick="iniciarCanaisCom()">8CANCOM2</button>
-        
-        <!-- 3) 7COMPHA03 (Competências e Habilidades) – Ativo -->
-        <button id="comphabBtn" class="btn" onclick="iniciarCompetencias()">7COMPHA03</button>
-        
-        <!-- 4) 6ESTAUT4 (Autoestima) – Ativo -->
-        <button id="autoestBtn" class="btn" onclick="iniciarAutoestima()">6ESTAUT4</button>
-        
-        <!-- 5) 5ATVPRE005 (Proatividade) – Ativo -->
-        <button id="proatvBtn" class="btn" onclick="iniciarProatividade()">5ATVPRE005</button>
-        
-        <!-- 6) 4QEMO002 (Quociente Emocional) – Ativo -->
-        <button id="qeBtn" class="btn" onclick="iniciarQe()">4QEMO006</button>
-        
-        <!-- 7) 3SABCOM7 (Comportamentos Sabotadores) – Ativo -->
-        <button id="sabotadoresBtn" class="btn" onclick="iniciarSabotadores()">3SABCOM7</button>
-        
-        <!-- 8) 2PERDSK08 (DISK) – Ativo -->
-        <button id="discBtn" class="btn" onclick="iniciarDisc()">2PERDSK08</button>
-        
-        <!-- 9) 1VECA0009 (VECA) – Ativo -->
-        <button id="vecaBtn" class="btn" onclick="iniciarVeca()">1VECA0009</button>
+      <!-- Botão para consultar o banco -->
+      <button id="consultBtn" class="btn" onclick="consultarBanco()">Consultar Registros</button>
+      
+      <!-- Grid de botões dos testes – oculto inicialmente -->
+      <div id="gridButtons" class="grid-container hidden">
+        <button id="cerebroTrinoBtn" class="btn" onclick="iniciarTeste('cerebro-trino.html', 'cerebroTrinoDone')">9CERTRIO1</button>
+        <button id="canaisComBtn" class="btn" onclick="iniciarTeste('canaiscom.html', 'canaisComDone')">8CANCOM2</button>
+        <button id="comphabBtn" class="btn" onclick="iniciarTeste('comphab.html', 'comphabDone')">7COMPHA03</button>
+        <button id="autoestBtn" class="btn" onclick="iniciarTeste('autoestima.html', 'autoestDone')">6ESTAUT4</button>
+        <button id="proatvBtn" class="btn" onclick="iniciarTeste('proatv.html', 'proatDone')">5ATVPRE005</button>
+        <button id="qeBtn" class="btn" onclick="iniciarTeste('qe.html', 'qeTestDone')">4QEMO002</button>
+        <button id="sabotadoresBtn" class="btn" onclick="iniciarTeste('sab2.html', 'sabTestDone')">3SABCOM7</button>
+        <button id="discBtn" class="btn" onclick="iniciarTeste('disc.html', 'discTestDone')">2PERDSK08</button>
+        <button id="vecaBtn" class="btn" onclick="iniciarTeste('veca.html', 'vecaTestDone')">1VECA0009</button>
       </div>
     </div>
     
@@ -74,131 +65,95 @@
   </div> <!-- /page-wrapper -->
 
   <script>
-    // Funções de checagem para atualizar os botões com a marca de teste concluído
-    function checkCerebroTrinoStatus() {
-      const btn = document.getElementById("cerebroTrinoBtn");
-      if (localStorage.getItem("cerebroTrinoDone") === "true") {
-        btn.textContent = "9CERTRIO1 ✔";
-      }
-    }
-    function checkCanaisComStatus() {
-      const btn = document.getElementById("canaisComBtn");
-      if (localStorage.getItem("canaisComDone") === "true") {
-        btn.textContent = "8CANCOM2 ✔";
-      }
-    }
-    function checkComphabStatus() {
-      const btn = document.getElementById("comphabBtn");
-      if (localStorage.getItem("comphabDone") === "true") {
-        btn.textContent = "7COMPHA03 ✔";
-      }
-    }
-    function checkAutoestStatus() {
-      const btn = document.getElementById("autoestBtn");
-      if (localStorage.getItem("autoestDone") === "true") {
-        btn.textContent = "6ESTAUT4 ✔";
-      }
-    }
-    function checkProatStatus() {
-      const btn = document.getElementById("proatBtn");
-      if (localStorage.getItem("proatDone") === "true") {
-        btn.textContent = "5ATVPRE005 ✔";
-      }
-    }
-    function checkQeStatus() {
-      const btn = document.getElementById("qeBtn");
-      if (localStorage.getItem("qeTestDone") === "true") {
-        btn.textContent = "4QEMO002 ✔";
-      }
-    }
-    function checkSabotadoresStatus() {
-      const btn = document.getElementById("sabotadoresBtn");
-      if (localStorage.getItem("sabTestDone") === "true") {
-        btn.textContent = "3SABCOM7 ✔";
-      }
-    }
-    function checkDiscStatus() {
-      const btn = document.getElementById("discBtn");
-      if (localStorage.getItem("discTestDone") === "true") {
-        btn.textContent = "2PERDSK08 ✔";
-      }
-    }
-    function checkVecaStatus() {
-      const btn = document.getElementById("vecaBtn");
-      if (localStorage.getItem("vecaTestDone") === "true") {
-        btn.textContent = "1VECA0009 ✔";
-      }
-    }
-
-    // Função para validar os campos e redirecionar para o teste correspondente
-    function iniciarTeste(urlPage) {
-      const nameInput = document.getElementById("userName").value.trim();
-      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
-      if (!validarCampos(nameInput, emailInput)) return;
-      const url = `${urlPage}?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
-      window.location.href = url;
-    }
-
-    // Funções para iniciar cada teste
-    function iniciarCerebroTrino() {
-      iniciarTeste("cerebro-trino.html");
-    }
-    function iniciarCanaisCom() {
-      iniciarTeste("canaiscom.html");
-    }
-    function iniciarCompetencias() {
-      iniciarTeste("comphab.html");
-    }
-    function iniciarAutoestima() {
-      iniciarTeste("autoestima.html");
-    }
-    function iniciarProatividade() {
-      iniciarTeste("proativ.html");
-    }
-    function iniciarQe() {
-      iniciarTeste("qe.html");
-    }
-    function iniciarSabotadores() {
-      iniciarTeste("sab2.html");
-    }
-    function iniciarDisc() {
-      iniciarTeste("disc.html");
-    }
-    function iniciarVeca() {
-      iniciarTeste("veca.html");
-    }
-
-    // Função de validação de campos (nome e email)
-    function validarCampos(nameInput, emailInput) {
-      if (nameInput.length < 8 || !nameInput.includes(" ")) {
-        alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
-        return false;
-      }
-      if (!validateEmail(emailInput)) {
-        alert("Por favor, insira um email válido.");
-        return false;
-      }
-      return true;
-    }
-
-    // Validação simples de email
+    // Função para validar email
     function validateEmail(email) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email.toLowerCase());
     }
 
-    // Ao carregar a página, verifica o status de cada teste
-    window.onload = function() {
-      checkCerebroTrinoStatus();
-      checkCanaisComStatus();
-      checkComphabStatus();
-      checkAutoestStatus();
-      checkProatStatus();
-      checkQeStatus();
-      checkSabotadoresStatus();
-      checkDiscStatus();
-      checkVecaStatus();
+    // Função para iniciar o teste: redireciona para a página do teste com os parâmetros
+    function iniciarTeste(urlPage, storageKey) {
+      const nameInput = document.getElementById("userName").value.trim();
+      const emailInput = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (nameInput.length < 8 || !nameInput.includes(" ")) {
+        alert("Por favor, insira seu nome e último sobrenome (mínimo 8 caracteres).");
+        return;
+      }
+      if (!validateEmail(emailInput)) {
+        alert("Por favor, insira um email válido.");
+        return;
+      }
+      const url = `${urlPage}?name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`;
+      window.location.href = url;
     }
+
+    // Função para consultar o banco e mostrar os botões dos testes
+    async function consultarBanco() {
+      const email = document.getElementById("userEmail").value.trim().toLowerCase();
+      if (!validateEmail(email)) {
+        alert("Informe um email válido antes de consultar o banco.");
+        return;
+      }
+      
+      try {
+        // Chama a sua Netlify Function que consulta os registros no Supabase
+        const resp = await fetch(`/.netlify/functions/getSupabaseRecords?email=${encodeURIComponent(email)}`);
+        const data = await resp.json();
+        console.log("Retorno do banco:", data);
+        if (data.error) {
+          alert("Erro ao consultar o banco: " + data.error);
+          return;
+        }
+        // Cria um objeto para mapear os testes encontrados
+        const testsFound = {};
+        data.forEach(row => {
+          testsFound[row.Teste] = true;
+        });
+
+        // Lista dos botões com seus IDs e respectivos códigos de teste
+        const buttons = [
+          { id: "cerebroTrinoBtn", test: "9CERTRIO1" },
+          { id: "canaisComBtn", test: "8CANCOM2" },
+          { id: "comphabBtn", test: "7COMPHA03" },
+          { id: "autoestBtn", test: "6ESTAUT4" },
+          { id: "proatvBtn", test: "5ATVPRE005" },
+          { id: "qeBtn", test: "4QEMO002" },
+          { id: "sabotadoresBtn", test: "3SABCOM7" },
+          { id: "discBtn", test: "2PERDSK08" },
+          { id: "vecaBtn", test: "1VECA0009" },
+        ];
+
+        // Atualiza cada botão: se o teste foi encontrado, exibe o texto com marcação e muda cor para vermelho; se não, para azul.
+        buttons.forEach(item => {
+          const btn = document.getElementById(item.id);
+          if (testsFound[item.test]) {
+            btn.textContent = `${item.test} ✔ (BD)`;
+            btn.style.backgroundColor = "red";
+          } else {
+            btn.textContent = item.test;
+            btn.style.backgroundColor = "blue";
+          }
+        });
+		
+		
+	if (testsFound["2PERDSK08"]) 	{localStorage.setItem("discTestDone", "true"); } else {  localStorage.removeItem("discTestDone");}
+	
+		
+		
+		
+
+        // Exibe os botões (remove a classe 'hidden' do container)
+        document.getElementById("gridButtons").classList.remove("hidden");
+
+      } catch (err) {
+        console.error("Erro no fetch da function getSupabaseRecords:", err);
+        alert("Não foi possível consultar o banco. Tente novamente mais tarde.");
+      }
+    }
+
+    // Ao carregar a página, você pode opcionalmente chamar a consulta (ou deixar que o usuário clique no botão "Consultar")
+    // window.onload = () => { consultarBanco(); };
+
   </script>
 </body>
 </html>

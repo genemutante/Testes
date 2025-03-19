@@ -2,41 +2,36 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>TESTE DE PERFIL - 7COMPHA03xx</title>
+  <title>TESTE DE PERFIL - 4QEMO006</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <!-- Link para o CSS externo -->
+  <!-- CSS externo -->
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body onload="carregarParametros(); checkIfDone();">
-  <!-- Cabeçalho fixo -->
   <header>
-    TESTE DE PERFIL - 7COMPHA03
+    TESTE DE PERFIL - 4QEMO006
   </header>
 
   <!-- Cronômetro -->
-  <div id="timer"></div>
+  <div id="timer">00:00</div>
 
+  <!-- Container principal -->
   <main id="app" class="container">
-    <!-- Marca de teste já concluído -->
-    <div id="testDoneMark" class="test-concluido"></div>
-
-    <!-- Tela de Introdução -->
+    <div id="testDoneMark" class="test-concluido">Teste já concluído ✔</div>
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Leia atentamente as afirmações abaixo e escolha a opção que mais se aproxima da maneira como você geralmente age ou se sente. Não existem respostas certas ou erradas.
+        Leia atentamente as afirmações abaixo e selecione a opção que melhor descreve como você pensa, sente ou age.
+        Não há respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
-
-    <!-- Tela do Questionário -->
     <section id="quiz" class="hidden"></section>
-
-    <!-- Tela de Resultados -->
     <section id="result" class="hidden"></section>
   </main>
+  
 
   <footer id="footer"></footer>
 
@@ -63,16 +58,18 @@
     }
 
     /******************************************************
-     * 1.1) Verifica se o teste já foi feito e exibe a marca
+     * 1.1) Verifica se o teste QE já foi concluído e exibe a marca
      ******************************************************/
     function checkIfDone() {
-      if (localStorage.getItem("comphabDone") === "true") {
-        document.getElementById("testDoneMark").textContent = "";
+      if (localStorage.getItem("sabTestDone") === "true") {
+        const doneMark = document.getElementById("testDoneMark");
+        doneMark.textContent = "Teste já concluído ✔";
+        doneMark.style.display = "block";
       }
     }
 
     /******************************************************
-     * 2) Função para formatar tempo (min:seg)
+     * 2) Formata tempo (minutos e segundos)
      ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
@@ -93,11 +90,10 @@
     }
 
     /******************************************************
-     * 4) Função para remover indicadores do final do texto
-     * (não necessário para este teste, mas mantida para compatibilidade)
+     * 4) Função para remover indicadores (texto entre parênteses)
      ******************************************************/
     function removeIndicador(text) {
-      return text;
+      return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
 
     /******************************************************
@@ -106,7 +102,7 @@
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = [];  // Cada resposta: { sigla, value }
+    const answers = []; // Cada resposta: { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
@@ -122,22 +118,8 @@
     /******************************************************
      * 7) Carrega os JSONs de afirmações e interpretações
      ******************************************************/
-    let questions = [];       // Carregado de comphab_assertions.json
-    let interpretations = {}; // Carregado de comphab_interpretations.json
-
-    fetch("/comphab_assertions.json")
-      .then(resp => resp.json())
-      .then(data => { questions = data; })
-      .catch(err => console.error("Erro ao carregar comphab_assertions.json:", err));
-
-    fetch("/comphab_interpretations.json")
-      .then(resp => resp.json())
-      .then(data => {
-        data.forEach(item => {
-          interpretations[item.sigla] = item;
-        });
-      })
-      .catch(err => console.error("Erro ao carregar comphab_interpretations.json:", err));
+    let questions = [];       // qe_assertions.json
+    let interpretations = {}; // qe_interpretations.json
 
     /******************************************************
      * 8) Captura IP
@@ -148,7 +130,7 @@
       .catch(err => { ipAddress = "Indisponível"; console.error(err); });
 
     /******************************************************
-     * 9) Atualiza rodapé (IP, hora, SO)
+     * 9) Atualiza rodapé (IP, hora, SO) – utiliza função updateFooter do style.css
      ******************************************************/
     function getOS() {
       const platform = window.navigator.platform;
@@ -167,7 +149,27 @@
     setInterval(updateFooter, 1000);
 
     /******************************************************
-     * 10) Inicia o Teste
+     * 10) Carrega JSON de afirmações
+     ******************************************************/
+    fetch("/qe_assertions.json")
+      .then(resp => resp.json())
+      .then(data => { questions = data; })
+      .catch(err => console.error("Erro ao carregar qe_assertions.json:", err));
+
+    /******************************************************
+     * 11) Carrega JSON de interpretações
+     ******************************************************/
+    fetch("/qe_interpretations.json")
+      .then(resp => resp.json())
+      .then(data => {
+        data.forEach(item => {
+          interpretations[item.sigla] = item;
+        });
+      })
+      .catch(err => console.error("Erro ao carregar qe_interpretations.json:", err));
+
+    /******************************************************
+     * 12) Inicia o Teste
      ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
@@ -177,7 +179,7 @@
     });
 
     /******************************************************
-     * 11) Renderiza a questão atual
+     * 13) Renderiza a questão atual
      ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
@@ -235,29 +237,30 @@
     }
 
     /******************************************************
-     * 12) Converte a soma (8-32) em "Baixa", "Moderada" ou "Alta"
+     * 14) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
      ******************************************************/
     function somaParaNivel(soma) {
-      if (soma >= 26) return "Alta";
-      if (soma >= 17) return "Moderada";
-      return "Baixa";
+      if (soma >= 7) return "Alto";
+      if (soma >= 5) return "Médio";
+      return "Baixo";
     }
 
     /******************************************************
-     * 13) Renderiza o Resultado
+     * 15) Renderiza o Resultado final
      ******************************************************/
     function renderResult() {
       clearInterval(timerInterval);
-      localStorage.setItem("comphabDone", "true");
+      localStorage.setItem("sabTestDone", "true");
+
       resultDiv.innerHTML = "";
 
-      // Cabeçalho do resultado com destaque para o nome
+      // Cabeçalho com nome destacado e resultado
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (7COMPHA03)`;
+      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (4QEMO006)`;
       resultDiv.appendChild(headerDiv);
 
-      // Exibe email centralizado, se disponível
+      // Exibe email centralizado
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
@@ -274,77 +277,49 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Calcula a soma dos pontos por competência
-      let scores = { "C": 0, "T": 0, "A": 0, "P": 0, "O": 0 };
+ // Soma de pontos
+      let scores = {};
       answers.forEach(resp => {
-        if (scores.hasOwnProperty(resp.sigla)) {
-          scores[resp.sigla] += resp.value;
-        }
+        if (!scores[resp.sigla]) scores[resp.sigla] = 0;
+        scores[resp.sigla] += resp.value;
       });
 
-      // Cria o perfil composto (apenas as competências pontuadas)
-      let compositeArray = [];
-      Object.keys(scores).forEach(key => {
-        compositeArray.push({ sigla: key, score: scores[key] });
-      });
-      compositeArray.sort((a, b) => b.score - a.score);
-      const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
-      const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
-
-      // Card do Perfil Composto (destacado)
-      const compositeDiv = document.createElement("div");
-      compositeDiv.className = "composite-card";
-      compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
-      resultDiv.appendChild(compositeDiv);
-
-      // Exibe os cards de cada competência
-      const allProfiles = ["C", "T", "A", "P", "O"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
-      allProfiles.forEach(sig => {
+      // Siglas únicas do questionário
+      const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
+
+      // Função auxiliar para emoji
+      function getEmoji(nivel) {
+        if (nivel === "Alto") return "🔴";
+        if (nivel === "Médio") return "🟡";
+        return "🟢";
+      }
+
+        siglasUnicas.forEach(sig => {
         const soma = scores[sig] || 0;
-        let nivel = "";
-        let interpretObj = null;
-        let perfilNome = "";
-        let textoInterpretacao = "";
-        if (soma > 0) {
-          nivel = somaParaNivel(soma);
-          const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderada" ? "M" : "B");
-          const interpretKey = sig + "-" + suffix;
-          interpretObj = interpretations[interpretKey];
-          if (interpretObj) {
-            perfilNome = interpretObj.perfil;
-            textoInterpretacao = interpretObj.textoParticipante;
-          } else {
-            perfilNome = sig;
-            textoInterpretacao = "Sem interpretação disponível.";
-          }
-        } else {
-          // Se não pontuou, exibe o nome completo da competência
-          switch(sig) {
-            case "C": perfilNome = "Comunicação"; break;
-            case "T": perfilNome = "Trabalho em Equipe"; break;
-            case "A": perfilNome = "Adaptabilidade"; break;
-            case "P": perfilNome = "Resolução de Problemas"; break;
-            case "O": perfilNome = "Organização e Planejamento"; break;
-          }
-          textoInterpretacao = "Não houve pontuação neste perfil.";
-        }
+        const nivel = somaParaNivel(soma);
+
+        // Ex.: "CONTR-A", "PERFE-B" etc.
+        const suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
+        const interpretKey = sig + "-" + suffix;
+        const interpretObj = interpretations[interpretKey];
+
+        let perfilNome = interpretObj ? interpretObj.sabotador : sig;
+        let textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
+
+        // Monta card
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
-        const infoDiv = document.createElement("div");
-        infoDiv.className = "info";
-        infoDiv.innerHTML = `
-          <h3>${perfilNome}</h3>
-          <p class="pontuacao">Pontuação: ${soma} (${nivel || "Nenhuma"})</p>
-          <p class="texto-participante">${textoInterpretacao}</p>
+        perfilDiv.innerHTML = `
+          <div class="info">
+            <h3>${perfilNome}</h3>
+            <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel})</p>
+            <p class="texto-participante">${textoInterpretacao}</p>
+          </div>
+          <div class="indicador">${getEmoji(nivel)}</div>
         `;
-        const letterDiv = document.createElement("div");
-        letterDiv.className = "comphab-letter";
-        letterDiv.textContent = sig;
-        perfilDiv.appendChild(infoDiv);
-        perfilDiv.appendChild(letterDiv);
         resultsContainer.appendChild(perfilDiv);
       });
 
@@ -352,61 +327,71 @@
 
       // Estatísticas de tempo
       const testTotalTime = new Date() - testStartTime;
-      const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
-      const fastestTime = Math.min(...questionTimes);
-      const slowestTime = Math.max(...questionTimes);
+      let averageTime = 0;
+      let fastestTime = Infinity;
+      let slowestTime = 0;
+
+      if (questionTimes.length > 0) {
+        averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
+        fastestTime = Math.min(...questionTimes);
+        slowestTime = Math.max(...questionTimes);
+      }
+
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
+
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `
         <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
-        <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
-        <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
-        <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
+        <p><strong>Média:</strong> ${questionTimes.length > 0 ? formatMinSec(averageTime) : "0"} </p>
+        <p><strong>Rápida:</strong> ${questionTimes.length > 0 
+          ? "Q" + fastestQuestion + " (" + formatMinSec(fastestTime) + ")"
+          : "N/A"
+        }</p>
+        <p><strong>Lenta:</strong> ${questionTimes.length > 0 
+          ? "Q" + slowestQuestion + " (" + formatMinSec(slowestTime) + ")"
+          : "N/A"
+        }</p>
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão Imprimir centralizado com espaçamento acima
+      // Botão Imprimir
       const printDiv = document.createElement("div");
       printDiv.style.textAlign = "center";
       printDiv.style.marginTop = "20px";
+
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";
       printBtn.onclick = () => window.print();
+
       printDiv.appendChild(printBtn);
       resultDiv.appendChild(printDiv);
 
+      // Gera "compositeProfile" (siglas com pontuação > 0) para envio ao banco
+      const nonZeroProfiles = Object.keys(scores).filter(s => scores[s] > 0);
+      const compositeProfile = nonZeroProfiles.join("") || "N/A";
 
-///////////////////////////////////////////////////
-	
-     // ===> CHAMA A FUNÇÃO DE ENVIO AO BANCO <===
+      // Monta doc
+        const doc = {
+        DateTime_Envio: new Date().toISOString(),
+        IP: ipAddress,
+        Nome: userName || "SEM_NOME",
+        Email: userEmail || "SEM_EMAIL",
+        Teste: "3SABCOM7",
+        Versao: "v1.0",
+        Resposta: compositeProfile
+      };
 
-// Monta o objeto com os dados reais do teste
-
-const doc = {
-    DateTime_Envio: new Date().toISOString(),
-    IP:             ipAddress,
-    Nome:           userName || "SEM_NOME",
-    Email:          userEmail || "SEM_EMAIL",
-    Teste:          "7COMPHA03",
-    Versao:         "v1.0",
-    Resposta:       compositeProfile || "N/A"
-};
-
-enviarAoBanco(doc);
-
-resultDiv.classList.remove("hidden");
+      enviarAoBanco(doc);
     }
 
-///////////////////////////////////////////////////
-
-    // Função para enviar os dados ao banco (exemplo usando Supabase via Netlify Function)
+    // =====================================================
+    // 7) Função para enviar ao banco (ex. Supabase)
+    // =====================================================
     async function enviarAoBanco(doc) {
       try {
-        // A URL abaixo chama a sua function Netlify;
-		
         const resp = await fetch("/.netlify/functions/insertSupabase", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -418,8 +403,7 @@ resultDiv.classList.remove("hidden");
         console.error("Erro ao enviar ao banco:", err);
       }
     }
-	
-///////////////////////////////////////////////////
+
   </script>
 </body>
 </html>

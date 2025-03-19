@@ -1,0 +1,422 @@
+[
+  {
+    "sigla": "CO-B",
+    "sabotador": "Controlador",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa demonstra baixa necessidade psicológica de controle sobre pessoas e situações, indicando um bom nível de confiança interpessoal e segurança emocional.",
+    "textoAvaliador": "Perfil positivo para equipes colaborativas, ideal para cargos que demandem adaptação rápida pode ser limitado em posições que exijam liderança autoritária."
+  },
+  {
+    "sigla": "CO-M",
+    "sabotador": "Controlador",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa possui equilíbrio psicológico saudável na necessidade de controle, demonstrando segurança, mas eventualmente precisando reafirmar seu domínio sobre situações específicas.",
+    "textoAvaliador": "Indicado para funções com liderança moderada, em que precisa assumir controle pontualmente sem prejudicar dinâmicas de grupo."
+  },
+  {
+    "sigla": "CO-A",
+    "sabotador": "Controlador",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa revela uma necessidade psicológica elevada por controle, possivelmente ligada à insegurança ou ansiedade interna, gerando forte desgaste emocional quando perde o domínio da situação.",
+    "textoAvaliador": "Alto risco em cargos colaborativos ou que exijam autonomia das equipes tendência a centralizar decisões e gerar desgaste interpessoal."
+  },
+  {
+    "sigla": "PE-B",
+    "sabotador": "Perfeccionista",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa apresenta boa tolerância psicológica a imperfeições, mostrando equilíbrio emocional frente a erros e situações imprevistas.",
+    "textoAvaliador": "Ideal para ambientes dinâmicos e tarefas que exigem agilidade, podendo, no entanto, negligenciar detalhes importantes."
+  },
+  {
+    "sigla": "PE-M",
+    "sabotador": "Perfeccionista",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa possui uma preocupação moderada com detalhes, refletindo equilíbrio emocional entre buscar qualidade e aceitar imprevistos.",
+    "textoAvaliador": "Bom desempenho em ambientes detalhistas, mantendo entregas consistentes sem prejuízo à produtividade."
+  },
+  {
+    "sigla": "PE-A",
+    "sabotador": "Perfeccionista",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa mostra forte rigidez emocional frente a erros ou imperfeições, associada à ansiedade e dificuldade significativa em lidar com o imprevisto.",
+    "textoAvaliador": "Potencial para atrasar entregas e apresentar dificuldades em ambientes sob pressão ideal monitorar de perto para minimizar impacto negativo."
+  },
+  {
+    "sigla": "DE-B",
+    "sabotador": "Desconfiado/Hipervigilante",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Desconfiado/Hipervigilante', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Desconfiado/Hipervigilante'."
+  },
+  {
+    "sigla": "DE-M",
+    "sabotador": "Desconfiado/Hipervigilante",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Desconfiado/Hipervigilante', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Desconfiado/Hipervigilante', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "DE-A",
+    "sabotador": "Desconfiado/Hipervigilante",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Desconfiado/Hipervigilante', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "ES-B",
+    "sabotador": "Esquivo",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Esquivo', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Esquivo'."
+  },
+  {
+    "sigla": "ES-M",
+    "sabotador": "Esquivo",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Esquivo', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Esquivo', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "ES-A",
+    "sabotador": "Esquivo",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Esquivo', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "HR-B",
+    "sabotador": "Hiperracional",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Hiperracional', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Hiperracional'."
+  },
+  {
+    "sigla": "HR-M",
+    "sabotador": "Hiperracional",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Hiperracional', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Hiperracional', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "HR-A",
+    "sabotador": "Hiperracional",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Hiperracional', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "RE-B",
+    "sabotador": "Hiper-realizador",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Hiper-realizador', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Hiper-realizador'."
+  },
+  {
+    "sigla": "RE-M",
+    "sabotador": "Hiper-realizador",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Hiper-realizador', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Hiper-realizador', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "RE-A",
+    "sabotador": "Hiper-realizador",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Hiper-realizador', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "HV-B",
+    "sabotador": "Hipervigilante",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Hipervigilante', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Hipervigilante'."
+  },
+  {
+    "sigla": "HV-M",
+    "sabotador": "Hipervigilante",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Hipervigilante', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Hipervigilante', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "HV-A",
+    "sabotador": "Hipervigilante",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Hipervigilante', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "IN-B",
+    "sabotador": "Inquieto",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Inquieto', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Inquieto'."
+  },
+  {
+    "sigla": "IN-M",
+    "sabotador": "Inquieto",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Inquieto', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Inquieto', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "IN-A",
+    "sabotador": "Inquieto",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Inquieto', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "AE-B",
+    "sabotador": "Juiz (Autocrítica Excessiva)",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Juiz', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Juiz'."
+  },
+  {
+    "sigla": "AE-M",
+    "sabotador": "Juiz (Autocrítica Excessiva)",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Juiz', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Juiz', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "AE-A",
+    "sabotador": "Juiz (Autocrítica Excessiva)",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Juiz', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "PR-B",
+    "sabotador": "Prestativo",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Prestativo', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Prestativo'."
+  },
+  {
+    "sigla": "PR-M",
+    "sabotador": "Prestativo",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Prestativo', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Prestativo', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "PR-A",
+    "sabotador": "Prestativo",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Prestativo', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "PX-B",
+    "sabotador": "Prestativo excessivo",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Prestativo excessivo', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Prestativo excessivo'."
+  },
+  {
+    "sigla": "PX-M",
+    "sabotador": "Prestativo excessivo",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Prestativo excessivo', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Prestativo excessivo', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "PX-A",
+    "sabotador": "Prestativo excessivo",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Prestativo excessivo', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "VI-B",
+    "sabotador": "Vítima",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Vítima', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Vítima'."
+  },
+  {
+    "sigla": "VI-M",
+    "sabotador": "Vítima",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Vítima', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Vítima', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "VI-A",
+    "sabotador": "Vítima",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Vítima', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "BA-B",
+    "sabotador": "À busca de atenção",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'À busca de atenção', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'À busca de atenção'."
+  },
+  {
+    "sigla": "BA-M",
+    "sabotador": "À busca de atenção",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'À busca de atenção', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'À busca de atenção', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "BA-A",
+    "sabotador": "À busca de atenção",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'À busca de atenção', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "BC-B",
+    "sabotador": "Baixo comprometimento",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Baixo comprometimento', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Baixo comprometimento'."
+  },
+  {
+    "sigla": "BC-M",
+    "sabotador": "Baixo comprometimento",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Baixo comprometimento', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Baixo comprometimento', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "BC-A",
+    "sabotador": "Baixo comprometimento",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Baixo comprometimento', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "DI-B",
+    "sabotador": "Distanciamento",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Distanciamento', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Distanciamento'."
+  },
+  {
+    "sigla": "DI-M",
+    "sabotador": "Distanciamento",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Distanciamento', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Distanciamento', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "DI-A",
+    "sabotador": "Distanciamento",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Distanciamento', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "EC-B",
+    "sabotador": "Excesso de confiança",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Excesso de confiança', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Excesso de confiança'."
+  },
+  {
+    "sigla": "EC-M",
+    "sabotador": "Excesso de confiança",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Excesso de confiança', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Excesso de confiança', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "EC-A",
+    "sabotador": "Excesso de confiança",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Excesso de confiança', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "EP-B",
+    "sabotador": "Excesso de preocupação com aceitação",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Excesso de preocupação com aceitação', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Excesso de preocupação com aceitação'."
+  },
+  {
+    "sigla": "EP-M",
+    "sabotador": "Excesso de preocupação com aceitação",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Excesso de preocupação com aceitação', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Excesso de preocupação com aceitação', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "EP-A",
+    "sabotador": "Excesso de preocupação com aceitação",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Excesso de preocupação com aceitação', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "IE-B",
+    "sabotador": "Instabilidade emocional",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Instabilidade emocional', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Instabilidade emocional'."
+  },
+  {
+    "sigla": "IE-M",
+    "sabotador": "Instabilidade emocional",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Instabilidade emocional', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Instabilidade emocional', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "IE-A",
+    "sabotador": "Instabilidade emocional",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Instabilidade emocional', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "RP-B",
+    "sabotador": "Resistência passiva",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Resistência passiva', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Resistência passiva'."
+  },
+  {
+    "sigla": "RP-M",
+    "sabotador": "Resistência passiva",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Resistência passiva', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Resistência passiva', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "RP-A",
+    "sabotador": "Resistência passiva",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Resistência passiva', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  },
+  {
+    "sigla": "VE-B",
+    "sabotador": "Volatilidade emocional",
+    "nivel": "Baixo",
+    "textoParticipante": "A pessoa exibe baixa manifestação do comportamento relacionado ao sabotador 'Volatilidade emocional', indicando maturidade emocional e boa adaptação social às situações envolvidas.",
+    "textoAvaliador": "Risco mínimo na contratação pessoa provavelmente estável em relação aos desafios associados ao sabotador 'Volatilidade emocional'."
+  },
+  {
+    "sigla": "VE-M",
+    "sabotador": "Volatilidade emocional",
+    "nivel": "Médio",
+    "textoParticipante": "A pessoa demonstra manifestações ocasionais do comportamento associado ao sabotador 'Volatilidade emocional', indicando possível conflito emocional ou social moderado.",
+    "textoAvaliador": "Atenção recomendada para monitorar comportamento em situações específicas relacionadas ao sabotador 'Volatilidade emocional', com risco gerenciável se houver acompanhamento adequado."
+  },
+  {
+    "sigla": "VE-A",
+    "sabotador": "Volatilidade emocional",
+    "nivel": "Alto",
+    "textoParticipante": "A pessoa possui alta frequência do comportamento associado ao sabotador 'Volatilidade emocional', sinalizando potenciais dificuldades emocionais, sociais ou adaptativas significativas.",
+    "textoAvaliador": "Risco elevado na contratação, com possibilidade de impacto negativo no desempenho e no ambiente recomenda-se cautela e estratégias preventivas específicas."
+  }
+]

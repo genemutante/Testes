@@ -1,0 +1,162 @@
+[
+  {
+    "text": "Faço questão de ser notado pelas coisas que realizo. (BUSCA ATENCAO)",
+    "sigla": "BA"
+  },
+  {
+    "text": "Gosto muito de ser o centro das atenções. (BUSCA ATENCAO)",
+    "sigla": "BA"
+  },
+  {
+    "text": "Desisto facilmente quando as coisas ficam difíceis ou desinteressantes. (BAIXO COMPROMETIMENTO)",
+    "sigla": "BC"
+  },
+  {
+    "text": "Tenho dificuldade em terminar o que começo. (BAIXO COMPROMETIMENTO)",
+    "sigla": "BC"
+  },
+  {
+    "text": "Me sinto desconfortável quando não controlo uma situação. (CONTROLADOR)",
+    "sigla": "CO"
+  },
+  {
+    "text": "Prefiro fazer as coisas sozinho para garantir que sejam feitas corretamente. (CONTROLADOR)",
+    "sigla": "CO"
+  },
+  {
+    "text": "Estou sempre alerta para possíveis problemas futuros. (DESCONFIANÇA)",
+    "sigla": "DE"
+  },
+  {
+    "text": "Frequentemente desconfio das intenções das pessoas. (DESCONFIANÇA)",
+    "sigla": "DE"
+  },
+  {
+    "text": "Evito criar vínculos emocionais muito profundos. (DISTANCIAMENTO)",
+    "sigla": "DI"
+  },
+  {
+    "text": "Prefiro não demonstrar meus sentimentos às pessoas. (DISTANCIAMENTO)",
+    "sigla": "DI"
+  },
+  {
+    "text": "Adio frequentemente atividades que não gosto. (ESQUIVO)",
+    "sigla": "ES"
+  },
+  {
+    "text": "Costumo adiar tarefas desagradáveis. (ESQUIVO)",
+    "sigla": "ES"
+  },
+  {
+    "text": "Confio muito nas minhas primeiras impressões sobre pessoas ou situações. (EXCESSO CONFIANÇA)",
+    "sigla": "EC"
+  },
+  {
+    "text": "Sinto que quase sempre estou certo nas discussões. (EXCESSO CONFIANÇA)",
+    "sigla": "EC"
+  },
+  {
+    "text": "Me preocupo muito com a opinião dos outros sobre mim. (EXCESSO PREOCUPA ACEITACAO)",
+    "sigla": "EP"
+  },
+  {
+    "text": "Sinto forte necessidade de agradar as pessoas. (EXCESSO PREOCUPA ACEITACAO)",
+    "sigla": "EP"
+  },
+  {
+    "text": "Prefiro ser lógico do que emocional ao lidar com problemas. (HIPER RACIONAL)",
+    "sigla": "HR"
+  },
+  {
+    "text": "Quase sempre ignoro meus sentimentos quando tomo decisões. (HIPER RACIONAL)",
+    "sigla": "HR"
+  },
+  {
+    "text": "Nunca me sinto plenamente satisfeito com minhas conquistas. (HIPER REALIZADOR)",
+    "sigla": "RE"
+  },
+  {
+    "text": "Sinto constante necessidade de me superar. (HIPER REALIZADOR)",
+    "sigla": "RE"
+  },
+  {
+    "text": "Costumo imaginar cenários negativos com frequência. (HIPER VIGILANTE)",
+    "sigla": "HV"
+  },
+  {
+    "text": "Fico preocupado constantemente com coisas que ainda não aconteceram. (HIPER VIGILANTE)",
+    "sigla": "HV"
+  },
+  {
+    "text": "Me canso facilmente de atividades rotineiras. (INQUIETO)",
+    "sigla": "IN"
+  },
+  {
+    "text": "Sinto grande necessidade de mudanças e novidades constantes. (INQUIETO)",
+    "sigla": "IN"
+  },
+  {
+    "text": "Meu humor costuma mudar rapidamente. (INSTABILIDADE EMOCIONAL)",
+    "sigla": "IE"
+  },
+  {
+    "text": "Tenho dificuldade para manter o equilíbrio emocional em situações estressantes. (INSTABILIDADE EMOCIONAL)",
+    "sigla": "IE"
+  },
+  {
+    "text": "Me critico duramente por erros que cometo. (AUTOCRÍTICA EXCESSIVA)",
+    "sigla": "AE"
+  },
+  {
+    "text": "Tenho tendência a julgar as pessoas rapidamente. (AUTOCRÍTICA EXCESSIVA)",
+    "sigla": "AE"
+  },
+  {
+    "text": "Me incomodo profundamente com pequenos erros ou falhas. (PERFE)",
+    "sigla": "PERFE"
+  },
+  {
+    "text": "Pequenos erros ou imperfeições costumam me incomodar muito. (PERFE)",
+    "sigla": "PERFE"
+  },
+  {
+    "text": "Costumo me sentir bem ajudando outras pessoas. (PRESTATIVO)",
+    "sigla": "PR"
+  },
+  {
+    "text": "Gosto de ser útil para as pessoas próximas. (PRESTATIVO)",
+    "sigla": "PR"
+  },
+  {
+    "text": "Costumo me sobrecarregar ajudando os outros. (PRES-EX)",
+    "sigla": "PRES-EX"
+  },
+  {
+    "text": "Tenho dificuldade em dizer não quando me pedem algo. (PRES-EX)",
+    "sigla": "PRES-EX"
+  },
+  {
+    "text": "Mesmo discordando, evito demonstrar isso diretamente. (RESPASS)",
+    "sigla": "RESPASS"
+  },
+  {
+    "text": "Prefiro concordar superficialmente do que gerar conflitos. (RESPASS)",
+    "sigla": "RESPASS"
+  },
+  {
+    "text": "Costumo sentir pena de mim mesmo com frequência. (VITIMA)",
+    "sigla": "VI"
+  },
+  {
+    "text": "Me sinto injustiçado facilmente nas situações do dia a dia. (VITIMA)",
+    "sigla": "VI"
+  },
+  {
+    "text": "É comum que emoções fortes dominem minhas ações rapidamente. (VOLEMO)",
+    "sigla": "VOLEMO"
+  },
+  {
+    "text": "Pequenas coisas facilmente me irritam ou me deixam triste. (VOLEMO)",
+    "sigla": "VOLEMO"
+  }
+]

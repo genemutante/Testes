@@ -75,7 +75,7 @@
       // Caso o teste de Cérebro Trino já esteja concluído no localStorage
       if (localStorage.getItem("cerebroTrinoDone") === "true") {
         const mark = document.getElementById("testDoneMark");
-        mark.textContent = "Teste já concluído ✔";
+        mark.textContent = "";
         mark.style.display = "block";
       }
     }
@@ -419,70 +419,47 @@
       printDiv.appendChild(printBtn);
       resultDiv.appendChild(printDiv);
 
-      resultDiv.classList.remove("hidden");
+///////////////////////////////////////////////////
+	
+     // ===> CHAMA A FUNÇÃO DE ENVIO AO BANCO <===
+
+// Monta o objeto com os dados reais do teste
+
+const doc = {
+    DateTime_Envio: new Date().toISOString(),
+    IP:             ipAddress,
+    Nome:           userName || "SEM_NOME",
+    Email:          userEmail || "SEM_EMAIL",
+    Teste:          "9CERTRIO1",
+    Versao:         "v1.0",
+    Resposta:       compositeProfile || "N/A"
+};
+
+enviarAoBanco(doc);
+
+resultDiv.classList.remove("hidden");
     }
 
-    /******************************************************
-     * 16) Gera PDF com html2pdf.js (opcional)
-     ******************************************************/
-    function gerarPDF() {
-      const elemento = document.getElementById("result");
-      const opcoes = {
-        margin: 0.5,
-        filename: 'resultado-9CERTRIO1.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      html2pdf().from(elemento).set(opcoes).save();
+///////////////////////////////////////////////////
+
+    // Função para enviar os dados ao banco (exemplo usando Supabase via Netlify Function)
+    async function enviarAoBanco(doc) {
+      try {
+        // A URL abaixo chama a sua function Netlify;
+		
+        const resp = await fetch("/.netlify/functions/insertSupabase", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(doc)
+        });
+        const data = await resp.json();
+        console.log("Resposta do banco:", data);
+      } catch (err) {
+        console.error("Erro ao enviar ao banco:", err);
+      }
     }
-
-    /******************************************************
-     * 17) Exemplo de função para enviar ao AppSheet (não chamada)
-     ******************************************************/
-    function enviarAoAppSheet() {
-      const appId = "108acbee-fe0e-47f2-95b5-bcc84";
-      const tableName = "Página1";
-      const accessKey = "V2-1EQ1k-HDQOS-YOURKEY";
-      const endpoint = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${encodeURIComponent(tableName)}/Action`;
-
-      const bodyData = {
-        Action: "Add",
-        Properties: {
-          Locale: "pt-BR",
-          Location: "0,0",
-          Timezone: "E. South America Standard Time"
-        },
-        Rows: [
-          {
-            "DateTime_Envio": new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
-            "IP": ipAddress,
-            "Nome": userName || "SEM_NOME",
-            "Email": userEmail || "SEM_EMAIL",
-            "Nome_Teste": "9CERTRIO1",
-            "Versao_Teste": "1.0",
-            "Resultado": "Exemplo de resultado fixo"
-          }
-        ]
-      };
-
-      fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "ApplicationAccessKey": accessKey
-        },
-        body: JSON.stringify(bodyData)
-      })
-      .then(resp => resp.json())
-      .then(data => {
-        alert("Enviado ao AppSheet com sucesso!");
-      })
-      .catch(err => {
-        alert("Erro ao enviar ao AppSheet!");
-        console.error("Erro ao enviar ao AppSheet:", err);
-      });
-    }
+	
+///////////////////////////////////////////////////
   </script>
 </body>
 </html>

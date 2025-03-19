@@ -49,25 +49,25 @@
     /******************************************************
      * 1) Carrega parâmetros (nome e email) da URL
      ******************************************************/
-    function carregarParametros() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const nomeParam = urlParams.get("name");
-      const emailParam = urlParams.get("email");
-      if (nomeParam) {
-        document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
-        userName = nomeParam.toUpperCase();
-      }
-      if (emailParam) {
-        userEmail = emailParam.toLowerCase();
-      }
-    }
+  //function carregarParametros() {
+  //  const urlParams = new URLSearchParams(window.location.search);
+  //  const nomeParam = urlParams.get("name");
+  //  const emailParam = urlParams.get("email");
+  //  if (nomeParam) {
+  //    document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
+  //    userName = nomeParam.toUpperCase();
+  //  }
+  //  if (emailParam) {
+  //    userEmail = emailParam.toLowerCase();
+  //  }
+  //}
 
     /******************************************************
      * 1.1) Verifica se o teste já foi feito e exibe a marca
      ******************************************************/
     function checkIfDone() {
       if (localStorage.getItem("comphabDone") === "true") {
-        document.getElementById("testDoneMark").textContent = "";
+        document.getElementById("testDoneMark").textContent = "Teste já concluído ✔";
       }
     }
 

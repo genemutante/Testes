@@ -6,48 +6,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <!-- CSS Externo -->
+  <!-- Link para o CSS externo -->
   <link rel="stylesheet" href="/style.css" />
+
+  <!-- Ajustes adicionais para o relógio e layout -->
+  <style>
+    /* Timer fixo no canto superior direito */
+    #timer {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #fff;
+      background-color: #1B5E20;
+      padding: 5px 10px;
+      border-radius: 4px;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+
+    /* Centralizar o email no resultado */
+    .result-email {
+      text-align: center !important; /* força centralização */
+    }
+  </style>
 </head>
+
 <body onload="carregarParametros(); checkIfDone();">
+  <!-- Cabeçalho fixo (preto), como nos outros testes -->
   <header>
     TESTE DE PERFIL - 3SABCOM7
   </header>
 
-  <!-- Relógio -->
+  <!-- Relógio (tempo decorrido) -->
   <div id="timer">00:00</div>
 
-  <!-- Container principal -->
+  <!-- Container principal, com classe .container para manter o layout -->
   <main id="app" class="container">
-    <div id="testDoneMark" class="test-concluido">Teste já concluído ✔</div>
+    <!-- Marca de teste já concluído (invisível por padrão, exibe se localStorage indicar) -->
+    <div id="testDoneMark" class="test-concluido" style="display: none;"></div>
+
+    <!-- Tela de Introdução -->
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Leia atentamente as afirmações abaixo e selecione a opção que melhor descreve como você pensa, sente ou age.
+        Leia cada afirmação e escolha a opção que mais representa como você age ou pensa em situações similares.
         Não há respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
+
+    <!-- Tela do Questionário -->
     <section id="quiz" class="hidden"></section>
+
+    <!-- Tela de Resultados -->
     <section id="result" class="hidden"></section>
   </main>
-  
 
-  
-
+  <!-- Rodapé fixo (preto) -->
   <footer id="footer"></footer>
 
   <!-- Biblioteca html2pdf.js (opcional para gerar PDF) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
-          integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
+    integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  </script>
 
   <script>
-    // 1) Carrega parâmetros (nome e email) da URL
+    /******************************************************
+     * 1) Carrega parâmetros (nome e email) da URL
+     ******************************************************/
     function carregarParametros() {
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
       const emailParam = urlParams.get("email");
+
       if (nomeParam) {
         document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
         userName = nomeParam.toUpperCase();
@@ -57,16 +92,20 @@
       }
     }
 
-    // 1.1) Verifica se o teste já foi concluído e exibe a marca
+    /******************************************************
+     * 1.1) Verifica se o teste já foi feito e exibe a marca
+     ******************************************************/
     function checkIfDone() {
       if (localStorage.getItem("sabTestDone") === "true") {
         const doneMark = document.getElementById("testDoneMark");
-        doneMark.textContent = "Teste já concluído ✔";
+        doneMark.textContent = "";
         doneMark.style.display = "block";
       }
     }
 
-    // 2) Formata tempo (min:seg)
+    /******************************************************
+     * 2) Função para formatar tempo (min:seg)
+     ******************************************************/
     function formatMinSec(ms) {
       const totalSec = Math.floor(ms / 1000);
       const min = Math.floor(totalSec / 60);
@@ -74,7 +113,9 @@
       return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
     }
 
-    // 3) Atualiza o cronômetro
+    /******************************************************
+     * 3) Atualiza o cronômetro (timer)
+     ******************************************************/
     let timerInterval = setInterval(updateTimer, 1000);
     function updateTimer() {
       if (testStartTime) {
@@ -83,37 +124,75 @@
       }
     }
 
-    // 4) Remove indicador (remove texto entre parênteses no final, se houver)
+    /******************************************************
+     * 4) Remove indicadores (caso houvesse sigla no final)
+     ******************************************************/
     function removeIndicador(text) {
+      // Exemplo: remover algo entre parênteses ao final, se necessário
       return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
 
-    // 5) Variáveis globais
+    /******************************************************
+     * 5) Variáveis globais
+     ******************************************************/
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = [];  // Cada resposta: { sigla, value }
+    const answers = [];  // Cada resposta será { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
     let ipAddress = "Carregando...";
 
-    // 6) Referências aos elementos
+    /******************************************************
+     * 6) Referências aos elementos
+     ******************************************************/
     const introDiv = document.getElementById("intro");
     const quizDiv = document.getElementById("quiz");
     const resultDiv = document.getElementById("result");
 
-    // 7) Carrega os JSONs de afirmações e interpretações
+    /******************************************************
+     * 7) Arrays/Objetos carregados via fetch
+     ******************************************************/
     let questions = [];       // sab_assertions.json
     let interpretations = {}; // sab_interpretations.json
 
-    // 8) Captura IP
+    // Carrega sab_assertions.json
+    fetch("/sab_assertions.json")
+      .then(r => r.json())
+      .then(data => { questions = data; })
+      .catch(err => {
+        console.error("Erro ao carregar sab_assertions.json:", err);
+        alert("Não foi possível carregar as questões. Por favor, tente novamente mais tarde.");
+      });
+
+    // Carrega sab_interpretations.json
+    fetch("/sab_interpretations.json")
+      .then(r => r.json())
+      .then(data => {
+        data.forEach(item => {
+          interpretations[item.sigla] = item;
+        });
+      })
+      .catch(err => {
+        console.error("Erro ao carregar sab_interpretations.json:", err);
+        alert("Não foi possível carregar as interpretações. Por favor, tente novamente mais tarde.");
+      });
+
+    /******************************************************
+     * 8) Captura IP
+     ******************************************************/
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
-      .catch(err => { ipAddress = "Indisponível"; console.error(err); });
+      .catch(err => { 
+        ipAddress = "Indisponível"; 
+        console.error(err); 
+      });
 
-    // 9) Atualiza rodapé (IP, hora, SO)
+    /******************************************************
+     * 9) Atualiza rodapé (IP, hora, SO)
+     ******************************************************/
     function getOS() {
       const platform = window.navigator.platform;
       const ua = window.navigator.userAgent;
@@ -130,23 +209,9 @@
     }
     setInterval(updateFooter, 1000);
 
-    // 10) Carrega JSON de afirmações
-    fetch("/sab_assertions.json")
-      .then(resp => resp.json())
-      .then(data => { questions = data; })
-      .catch(err => console.error("Erro ao carregar sab_assertions.json:", err));
-
-    // 11) Carrega JSON de interpretações
-    fetch("/sab_interpretations.json")
-      .then(resp => resp.json())
-      .then(data => {
-        data.forEach(item => {
-          interpretations[item.sigla] = item;
-        });
-      })
-      .catch(err => console.error("Erro ao carregar sab_interpretations.json:", err));
-
-    // 12) Inicia o teste
+    /******************************************************
+     * 10) Inicia o Teste
+     ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
       introDiv.classList.add("hidden");
@@ -154,18 +219,23 @@
       renderQuestion();
     });
 
-    // 13) Renderiza a questão atual
+    /******************************************************
+     * 11) Renderiza a questão atual
+     ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
+
       if (currentQuestion < questions.length) {
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
 
+        // Título "Pergunta X de Y"
         const questionNumber = document.createElement("h2");
         questionNumber.className = "question-number";
         questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
         quizDiv.appendChild(questionNumber);
 
+        // Barra de progresso
         const progressContainer = document.createElement("div");
         progressContainer.className = "progress-container";
         quizDiv.appendChild(progressContainer);
@@ -179,18 +249,20 @@
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
 
+        // Texto da pergunta
         const questionText = document.createElement("p");
         questionText.className = "question-text";
         questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
 
+        // Opções da escala Likert
         const scaleLabels = [
           "a) Discordo totalmente",
           "b) Discordo parcialmente",
           "c) Concordo parcialmente",
           "d) Concordo totalmente"
         ];
-        
+
         scaleLabels.forEach((label, index) => {
           const btn = document.createElement("button");
           btn.className = "option";
@@ -210,36 +282,40 @@
       }
     }
 
-    // 14) Converte a soma (2-8) em "Baixo", "Médio" ou "Alto"
+    // 12) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
     function somaParaNivel(soma) {
       if (soma >= 7) return "Alto";
       if (soma >= 5) return "Médio";
       return "Baixo";
     }
 
-    // 15) Renderiza o resultado final
+    /******************************************************
+     * 13) Renderiza Resultado
+     ******************************************************/
     function renderResult() {
       clearInterval(timerInterval);
+
+      // Marca localStorage como concluído
       localStorage.setItem("sabTestDone", "true");
 
       resultDiv.innerHTML = "";
 
-      // Cabeçalho com nome destacado
+      // Cabeçalho do resultado
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
       headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (3SABCOM7)`;
       resultDiv.appendChild(headerDiv);
 
-      // Email centralizado
+      // Exibe o email centralizado, se houver
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
-        emailLine.style.textAlign = "center";
+        emailLine.style.textAlign = "center";  /* Centraliza */
         emailLine.textContent = userEmail;
         resultDiv.appendChild(emailLine);
       }
 
-      // Data/hora
+      // Data/hora do resultado
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
       const dateLine = document.createElement("p");
@@ -247,65 +323,98 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Calcula pontuação por dimensão
+      // =======================
+      // Calcula pontuações
+      // =======================
       let scores = {};
       answers.forEach(resp => {
         if (!scores[resp.sigla]) scores[resp.sigla] = 0;
         scores[resp.sigla] += resp.value;
       });
 
+      // Lista de siglas (para exibir "Siglas/Pontos")
       const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
+
+      // Monta a linha "SiglaPontuacao" (ex.: "CONTR2-PERFE4-...") logo abaixo de "Gerado em"
+      const sabotageLine = siglasUnicas.map(sig => {
+        const soma = scores[sig] || 0;
+        return `${sig}${soma}`;
+      }).join("-");
+
+     // const sabotageP = document.createElement("p");
+     // sabotageP.innerHTML = `<strong>PERFIL:</strong> ${sabotageLine}`;
+     // resultDiv.appendChild(sabotageP);
+	  
+	  
+	  
+// Cria o elemento <div> que será nosso card
+const sabotageCard = document.createElement("div");
+sabotageCard.className = "sabotage-card";   // Aplica a classe CSS
+
+// Insere o texto no card (pode ser textContent ou innerHTML)
+sabotageCard.textContent = `PERFIL: ${sabotageLine}`;
+
+// Por fim, anexa esse card ao local desejado, por exemplo resultDiv
+resultDiv.appendChild(sabotageCard);
+
+	  
+	  
+	  
+	  
+	  
+	  
+
+      // =======================
+      // Exibe os cards de cada sabotador
+      // =======================
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
-      // Exibe os cards individuais (cada dimensão)
+      function getEmoji(nivel) {
+        if (nivel === "Alto")   return "🔴";
+        if (nivel === "Médio") return "🟡";
+        return "🟢";
+      }
+
       siglasUnicas.forEach(sig => {
         const soma = scores[sig] || 0;
         const nivel = somaParaNivel(soma);
-        let suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
-        let interpretKey = sig + "-" + suffix;
-        let interpretObj = interpretations[interpretKey];
+        const suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
+        const interpretKey = sig + "-" + suffix;
+        const interpretObj = interpretations[interpretKey];
+
         let perfilNome = interpretObj ? interpretObj.sabotador : sig;
         let textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
 
-        // Se não houver pontuação, exibe o nome completo fixo
-        if (soma === 0) {
-          switch(sig) {
-            case "D": perfilNome = "Dominância"; break;
-            case "I": perfilNome = "Influência"; break;
-            case "S": perfilNome = "Estabilidade"; break;
-            case "C": perfilNome = "Conformidade"; break;
-          }
-          textoInterpretacao = "Não houve pontuação neste perfil.";
-        }
-
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
-
-        const infoDiv = document.createElement("div");
-        infoDiv.className = "info";
-        infoDiv.innerHTML = `
-          <h3>${perfilNome}</h3>
-          <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel || "Nenhuma"})</p>
-          <p class="texto-participante">${textoInterpretacao}</p>
+        perfilDiv.innerHTML = `
+          <div class="info">
+            <h3>${perfilNome}</h3>
+            <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel})</p>
+            <p class="texto-participante">${textoInterpretacao}</p>
+          </div>
+          <div class="indicador">${getEmoji(nivel)}</div>
         `;
-
-        const letterDiv = document.createElement("div");
-        letterDiv.className = "sab-letter";
-        letterDiv.textContent = sig;
-
-        perfilDiv.appendChild(infoDiv);
-        perfilDiv.appendChild(letterDiv);
         resultsContainer.appendChild(perfilDiv);
       });
 
       resultDiv.appendChild(resultsContainer);
 
+      // =======================
       // Estatísticas de tempo
+      // =======================
       const testTotalTime = new Date() - testStartTime;
-      const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
-      const fastestTime = Math.min(...questionTimes);
-      const slowestTime = Math.max(...questionTimes);
+      let averageTime = 0;
+      let fastestTime = Infinity;
+      let slowestTime = 0;
+
+      if (questionTimes.length > 0) {
+        averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
+        fastestTime = Math.min(...questionTimes);
+        slowestTime = Math.max(...questionTimes);
+      }
+
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
 
@@ -313,36 +422,85 @@
       infoCard.className = "info-card";
       infoCard.innerHTML = `
         <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
-        <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
-        <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
-        <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
+        <p><strong>Média:</strong> ${
+          questionTimes.length > 0 ? formatMinSec(averageTime) : "0"
+        }</p>
+        <p><strong>Rápida:</strong> ${
+          questionTimes.length > 0
+            ? "Q" + fastestQuestion + " (" + formatMinSec(fastestTime) + ")"
+            : "N/A"
+        }</p>
+        <p><strong>Lenta:</strong> ${
+          questionTimes.length > 0
+            ? "Q" + slowestQuestion + " (" + formatMinSec(slowestTime) + ")"
+            : "N/A"
+        }</p>
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão Imprimir centralizado com espaçamento
+      // =======================
+      // Botão Imprimir
+      // =======================
       const printDiv = document.createElement("div");
-      printDiv.className = "print-container";
+      printDiv.style.textAlign = "center";
+      printDiv.style.marginTop = "20px";
+
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";
       printBtn.onclick = () => window.print();
+
       printDiv.appendChild(printBtn);
       resultDiv.appendChild(printDiv);
 
+      // =======================
+      // Exibe Card "Seu Perfil: X"
+      // (Siglas com pontuação > 0)
+      // =======================
+      const nonZeroProfiles = Object.keys(scores).filter(s => scores[s] > 0);
+      const compositeProfile = nonZeroProfiles.join("") || "N/A";
+
+     // const compositeDiv = document.createElement("div");
+     // compositeDiv.className = "composite-card";
+     // compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile}</h2>`;
+     // resultDiv.appendChild(compositeDiv);
+	 
+	 
+	 
+
+      // =======================
+      // Envia ao banco
+      // =======================
+      const doc = {
+        DateTime_Envio: new Date().toISOString(),
+        IP: ipAddress,
+        Nome: userName || "SEM_NOME",
+        Email: userEmail || "SEM_EMAIL",
+        Teste: "3SABCOM7",
+        Versao: "v1.0",
+        Resposta: sabotageLine
+      };
+      enviarAoBanco(doc);
+
+      // Exibe a div de resultados
       resultDiv.classList.remove("hidden");
     }
 
-    // 16) Gera PDF (opcional)
-    function gerarPDF() {
-      const elemento = document.getElementById("result");
-      const opcoes = {
-        margin: 0.5,
-        filename: 'resultado-teste.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      html2pdf().from(elemento).set(opcoes).save();
+    /******************************************************
+     * Função de Envio ao Banco (exemplo Supabase)
+     ******************************************************/
+    async function enviarAoBanco(doc) {
+      try {
+        const resp = await fetch("/.netlify/functions/insertSupabase", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(doc)
+        });
+        const data = await resp.json();
+        console.log("Resposta do banco:", data);
+      } catch (err) {
+        console.error("Erro ao enviar ao banco:", err);
+      }
     }
   </script>
 </body>

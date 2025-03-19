@@ -2,31 +2,56 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>TESTE DE PERFIL - 7COMPHA03xx</title>
+  <title>TESTE DE PERFIL - 3SABCOM7</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
   <!-- Link para o CSS externo -->
   <link rel="stylesheet" href="/style.css" />
+
+  <!-- Ajustes adicionais para o relógio e layout -->
+  <style>
+    /* Timer fixo no canto superior direito */
+    #timer {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #fff;
+      background-color: #1B5E20;
+      padding: 5px 10px;
+      border-radius: 4px;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+
+    /* Centralizar o email no resultado */
+    .result-email {
+      text-align: center !important; /* força centralização */
+    }
+  </style>
 </head>
+
 <body onload="carregarParametros(); checkIfDone();">
-  <!-- Cabeçalho fixo -->
+  <!-- Cabeçalho fixo (preto), como nos outros testes -->
   <header>
-    TESTE DE PERFIL - 7COMPHA03
+    TESTE DE PERFIL - 3SABCOM7
   </header>
 
-  <!-- Cronômetro -->
-  <div id="timer"></div>
+  <!-- Relógio (tempo decorrido) -->
+  <div id="timer">00:00</div>
 
+  <!-- Container principal, com classe .container para manter o layout -->
   <main id="app" class="container">
-    <!-- Marca de teste já concluído -->
-    <div id="testDoneMark" class="test-concluido"></div>
+    <!-- Marca de teste já concluído (invisível por padrão, exibe se localStorage indicar) -->
+    <div id="testDoneMark" class="test-concluido" style="display: none;"></div>
 
     <!-- Tela de Introdução -->
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Leia atentamente as afirmações abaixo e escolha a opção que mais se aproxima da maneira como você geralmente age ou se sente. Não existem respostas certas ou erradas.
+        Leia cada afirmação e escolha a opção que mais representa como você age ou pensa em situações similares.
+        Não há respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
@@ -38,12 +63,16 @@
     <section id="result" class="hidden"></section>
   </main>
 
+  <!-- Rodapé fixo (preto) -->
   <footer id="footer"></footer>
 
   <!-- Biblioteca html2pdf.js (opcional para gerar PDF) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
-          integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
+    integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  </script>
 
   <script>
     /******************************************************
@@ -53,6 +82,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       const nomeParam = urlParams.get("name");
       const emailParam = urlParams.get("email");
+
       if (nomeParam) {
         document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
         userName = nomeParam.toUpperCase();
@@ -65,11 +95,13 @@
     /******************************************************
      * 1.1) Verifica se o teste já foi feito e exibe a marca
      ******************************************************/
-    function checkIfDone() {
-      if (localStorage.getItem("comphabDone") === "true") {
-        document.getElementById("testDoneMark").textContent = "";
-      }
-    }
+  //  function checkIfDone() {
+  //    if (localStorage.getItem("sabTestDone") === "true") {
+  //      const doneMark = document.getElementById("testDoneMark");
+  //      doneMark.textContent = "Teste já concluído ✔";
+  //      doneMark.style.display = "block";
+  //    }
+  //  }
 
     /******************************************************
      * 2) Função para formatar tempo (min:seg)
@@ -93,11 +125,11 @@
     }
 
     /******************************************************
-     * 4) Função para remover indicadores do final do texto
-     * (não necessário para este teste, mas mantida para compatibilidade)
+     * 4) Remove indicadores (caso houvesse sigla no final)
      ******************************************************/
     function removeIndicador(text) {
-      return text;
+      // Exemplo: remover algo entre parênteses ao final, se necessário
+      return text.replace(/\s*\([^)]*\)\s*$/, "");
     }
 
     /******************************************************
@@ -106,7 +138,7 @@
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = [];  // Cada resposta: { sigla, value }
+    const answers = [];  // Cada resposta será { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
@@ -120,24 +152,32 @@
     const resultDiv = document.getElementById("result");
 
     /******************************************************
-     * 7) Carrega os JSONs de afirmações e interpretações
+     * 7) Arrays/Objetos carregados via fetch
      ******************************************************/
-    let questions = [];       // Carregado de comphab_assertions.json
-    let interpretations = {}; // Carregado de comphab_interpretations.json
+    let questions = [];       // sab_assertions.json
+    let interpretations = {}; // sab_interpretations.json
 
-    fetch("/comphab_assertions.json")
-      .then(resp => resp.json())
+    // Carrega sab_assertions.json
+    fetch("/sab_assertions.json")
+      .then(r => r.json())
       .then(data => { questions = data; })
-      .catch(err => console.error("Erro ao carregar comphab_assertions.json:", err));
+      .catch(err => {
+        console.error("Erro ao carregar sab_assertions.json:", err);
+        alert("Não foi possível carregar as questões. Por favor, tente novamente mais tarde.");
+      });
 
-    fetch("/comphab_interpretations.json")
-      .then(resp => resp.json())
+    // Carrega sab_interpretations.json
+    fetch("/sab_interpretations.json")
+      .then(r => r.json())
       .then(data => {
         data.forEach(item => {
           interpretations[item.sigla] = item;
         });
       })
-      .catch(err => console.error("Erro ao carregar comphab_interpretations.json:", err));
+      .catch(err => {
+        console.error("Erro ao carregar sab_interpretations.json:", err);
+        alert("Não foi possível carregar as interpretações. Por favor, tente novamente mais tarde.");
+      });
 
     /******************************************************
      * 8) Captura IP
@@ -145,7 +185,10 @@
     fetch("https://api.ipify.org?format=json")
       .then(resp => resp.json())
       .then(data => { ipAddress = data.ip; })
-      .catch(err => { ipAddress = "Indisponível"; console.error(err); });
+      .catch(err => { 
+        ipAddress = "Indisponível"; 
+        console.error(err); 
+      });
 
     /******************************************************
      * 9) Atualiza rodapé (IP, hora, SO)
@@ -181,15 +224,18 @@
      ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
+
       if (currentQuestion < questions.length) {
         const qData = questions[currentQuestion];
         questionStartTime = new Date();
 
+        // Título "Pergunta X de Y"
         const questionNumber = document.createElement("h2");
         questionNumber.className = "question-number";
         questionNumber.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
         quizDiv.appendChild(questionNumber);
 
+        // Barra de progresso
         const progressContainer = document.createElement("div");
         progressContainer.className = "progress-container";
         quizDiv.appendChild(progressContainer);
@@ -203,18 +249,20 @@
         progressBarFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
         progressBarBg.appendChild(progressBarFill);
 
+        // Texto da pergunta
         const questionText = document.createElement("p");
         questionText.className = "question-text";
         questionText.textContent = removeIndicador(qData.text);
         quizDiv.appendChild(questionText);
 
+        // Opções da escala Likert
         const scaleLabels = [
           "a) Discordo totalmente",
           "b) Discordo parcialmente",
           "c) Concordo parcialmente",
           "d) Concordo totalmente"
         ];
-        
+
         scaleLabels.forEach((label, index) => {
           const btn = document.createElement("button");
           btn.className = "option";
@@ -234,39 +282,40 @@
       }
     }
 
-    /******************************************************
-     * 12) Converte a soma (8-32) em "Baixa", "Moderada" ou "Alta"
-     ******************************************************/
+    // 12) Converte soma (2..8) em "Baixo", "Médio" ou "Alto"
     function somaParaNivel(soma) {
-      if (soma >= 26) return "Alta";
-      if (soma >= 17) return "Moderada";
-      return "Baixa";
+      if (soma >= 7) return "Alto";
+      if (soma >= 5) return "Médio";
+      return "Baixo";
     }
 
     /******************************************************
-     * 13) Renderiza o Resultado
+     * 13) Renderiza Resultado
      ******************************************************/
     function renderResult() {
       clearInterval(timerInterval);
-      localStorage.setItem("comphabDone", "true");
+
+      // Marca localStorage como concluído
+      localStorage.setItem("sabTestDone", "true");
+
       resultDiv.innerHTML = "";
 
-      // Cabeçalho do resultado com destaque para o nome
+      // Cabeçalho do resultado
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (7COMPHA03)`;
+      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (3SABCOM7)`;
       resultDiv.appendChild(headerDiv);
 
-      // Exibe email centralizado, se disponível
+      // Exibe o email centralizado, se houver
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
-        emailLine.style.textAlign = "center";
+        emailLine.style.textAlign = "center";  /* Centraliza */
         emailLine.textContent = userEmail;
         resultDiv.appendChild(emailLine);
       }
 
-      // Data/hora
+      // Data/hora do resultado
       const now = new Date();
       const resultDatetime = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
       const dateLine = document.createElement("p");
@@ -274,139 +323,174 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Calcula a soma dos pontos por competência
-      let scores = { "C": 0, "T": 0, "A": 0, "P": 0, "O": 0 };
+      // =======================
+      // Calcula pontuações
+      // =======================
+      let scores = {};
       answers.forEach(resp => {
-        if (scores.hasOwnProperty(resp.sigla)) {
-          scores[resp.sigla] += resp.value;
-        }
+        if (!scores[resp.sigla]) scores[resp.sigla] = 0;
+        scores[resp.sigla] += resp.value;
       });
 
-      // Cria o perfil composto (apenas as competências pontuadas)
-      let compositeArray = [];
-      Object.keys(scores).forEach(key => {
-        compositeArray.push({ sigla: key, score: scores[key] });
-      });
-      compositeArray.sort((a, b) => b.score - a.score);
-      const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
-      const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
+      // Lista de siglas (para exibir "Siglas/Pontos")
+      const siglasUnicas = [...new Set(questions.map(q => q.sigla))];
 
-      // Card do Perfil Composto (destacado)
-      const compositeDiv = document.createElement("div");
-      compositeDiv.className = "composite-card";
-      compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
-      resultDiv.appendChild(compositeDiv);
+      // Monta a linha "SiglaPontuacao" (ex.: "CONTR2-PERFE4-...") logo abaixo de "Gerado em"
+      const sabotageLine = siglasUnicas.map(sig => {
+        const soma = scores[sig] || 0;
+        return `${sig}${soma}`;
+      }).join("-");
 
-      // Exibe os cards de cada competência
-      const allProfiles = ["C", "T", "A", "P", "O"];
+     // const sabotageP = document.createElement("p");
+     // sabotageP.innerHTML = `<strong>PERFIL:</strong> ${sabotageLine}`;
+     // resultDiv.appendChild(sabotageP);
+	  
+	  
+	  
+// Cria o elemento <div> que será nosso card
+const sabotageCard = document.createElement("div");
+sabotageCard.className = "sabotage-card";   // Aplica a classe CSS
+
+// Insere o texto no card (pode ser textContent ou innerHTML)
+sabotageCard.textContent = `PERFIL: ${sabotageLine}`;
+
+// Por fim, anexa esse card ao local desejado, por exemplo resultDiv
+resultDiv.appendChild(sabotageCard);
+
+	  
+	  
+	  
+	  
+	  
+	  
+
+      // =======================
+      // Exibe os cards de cada sabotador
+      // =======================
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
-      allProfiles.forEach(sig => {
+      function getEmoji(nivel) {
+        if (nivel === "Alto")   return "🔴";
+        if (nivel === "Médio") return "🟡";
+        return "🟢";
+      }
+
+      siglasUnicas.forEach(sig => {
         const soma = scores[sig] || 0;
-        let nivel = "";
-        let interpretObj = null;
-        let perfilNome = "";
-        let textoInterpretacao = "";
-        if (soma > 0) {
-          nivel = somaParaNivel(soma);
-          const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderada" ? "M" : "B");
-          const interpretKey = sig + "-" + suffix;
-          interpretObj = interpretations[interpretKey];
-          if (interpretObj) {
-            perfilNome = interpretObj.perfil;
-            textoInterpretacao = interpretObj.textoParticipante;
-          } else {
-            perfilNome = sig;
-            textoInterpretacao = "Sem interpretação disponível.";
-          }
-        } else {
-          // Se não pontuou, exibe o nome completo da competência
-          switch(sig) {
-            case "C": perfilNome = "Comunicação"; break;
-            case "T": perfilNome = "Trabalho em Equipe"; break;
-            case "A": perfilNome = "Adaptabilidade"; break;
-            case "P": perfilNome = "Resolução de Problemas"; break;
-            case "O": perfilNome = "Organização e Planejamento"; break;
-          }
-          textoInterpretacao = "Não houve pontuação neste perfil.";
-        }
+        const nivel = somaParaNivel(soma);
+        const suffix = (nivel === "Alto") ? "A" : (nivel === "Médio" ? "M" : "B");
+        const interpretKey = sig + "-" + suffix;
+        const interpretObj = interpretations[interpretKey];
+
+        let perfilNome = interpretObj ? interpretObj.sabotador : sig;
+        let textoInterpretacao = interpretObj ? interpretObj.textoParticipante : "Sem interpretação disponível.";
+
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
-        const infoDiv = document.createElement("div");
-        infoDiv.className = "info";
-        infoDiv.innerHTML = `
-          <h3>${perfilNome}</h3>
-          <p class="pontuacao">Pontuação: ${soma} (${nivel || "Nenhuma"})</p>
-          <p class="texto-participante">${textoInterpretacao}</p>
+        perfilDiv.innerHTML = `
+          <div class="info">
+            <h3>${perfilNome}</h3>
+            <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel})</p>
+            <p class="texto-participante">${textoInterpretacao}</p>
+          </div>
+          <div class="indicador">${getEmoji(nivel)}</div>
         `;
-        const letterDiv = document.createElement("div");
-        letterDiv.className = "comphab-letter";
-        letterDiv.textContent = sig;
-        perfilDiv.appendChild(infoDiv);
-        perfilDiv.appendChild(letterDiv);
         resultsContainer.appendChild(perfilDiv);
       });
 
       resultDiv.appendChild(resultsContainer);
 
+      // =======================
       // Estatísticas de tempo
+      // =======================
       const testTotalTime = new Date() - testStartTime;
-      const averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
-      const fastestTime = Math.min(...questionTimes);
-      const slowestTime = Math.max(...questionTimes);
+      let averageTime = 0;
+      let fastestTime = Infinity;
+      let slowestTime = 0;
+
+      if (questionTimes.length > 0) {
+        averageTime = questionTimes.reduce((sum, t) => sum + t, 0) / questionTimes.length;
+        fastestTime = Math.min(...questionTimes);
+        slowestTime = Math.max(...questionTimes);
+      }
+
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
+
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `
         <p><strong>Total:</strong> ${formatMinSec(testTotalTime)}</p>
-        <p><strong>Média:</strong> ${formatMinSec(averageTime)}</p>
-        <p><strong>Rápida:</strong> Q${fastestQuestion} (${formatMinSec(fastestTime)})</p>
-        <p><strong>Lenta:</strong> Q${slowestQuestion} (${formatMinSec(slowestTime)})</p>
+        <p><strong>Média:</strong> ${
+          questionTimes.length > 0 ? formatMinSec(averageTime) : "0"
+        }</p>
+        <p><strong>Rápida:</strong> ${
+          questionTimes.length > 0
+            ? "Q" + fastestQuestion + " (" + formatMinSec(fastestTime) + ")"
+            : "N/A"
+        }</p>
+        <p><strong>Lenta:</strong> ${
+          questionTimes.length > 0
+            ? "Q" + slowestQuestion + " (" + formatMinSec(slowestTime) + ")"
+            : "N/A"
+        }</p>
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão Imprimir centralizado com espaçamento acima
+      // =======================
+      // Botão Imprimir
+      // =======================
       const printDiv = document.createElement("div");
       printDiv.style.textAlign = "center";
       printDiv.style.marginTop = "20px";
+
       const printBtn = document.createElement("button");
       printBtn.textContent = "Imprimir";
       printBtn.className = "btn";
       printBtn.onclick = () => window.print();
+
       printDiv.appendChild(printBtn);
       resultDiv.appendChild(printDiv);
 
+      // =======================
+      // Exibe Card "Seu Perfil: X"
+      // (Siglas com pontuação > 0)
+      // =======================
+      const nonZeroProfiles = Object.keys(scores).filter(s => scores[s] > 0);
+      const compositeProfile = nonZeroProfiles.join("") || "N/A";
 
-///////////////////////////////////////////////////
-	
-     // ===> CHAMA A FUNÇÃO DE ENVIO AO BANCO <===
+     // const compositeDiv = document.createElement("div");
+     // compositeDiv.className = "composite-card";
+     // compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile}</h2>`;
+     // resultDiv.appendChild(compositeDiv);
+	 
+	 
+	 
 
-// Monta o objeto com os dados reais do teste
+      // =======================
+      // Envia ao banco
+      // =======================
+      const doc = {
+        DateTime_Envio: new Date().toISOString(),
+        IP: ipAddress,
+        Nome: userName || "SEM_NOME",
+        Email: userEmail || "SEM_EMAIL",
+        Teste: "3SABCOM7",
+        Versao: "v1.0",
+        Resposta: sabotageLine
+      };
+      enviarAoBanco(doc);
 
-const doc = {
-    DateTime_Envio: new Date().toISOString(),
-    IP:             ipAddress,
-    Nome:           userName || "SEM_NOME",
-    Email:          userEmail || "SEM_EMAIL",
-    Teste:          "7COMPHA03",
-    Versao:         "v1.0",
-    Resposta:       compositeProfile || "N/A"
-};
-
-enviarAoBanco(doc);
-
-resultDiv.classList.remove("hidden");
+      // Exibe a div de resultados
+      resultDiv.classList.remove("hidden");
     }
 
-///////////////////////////////////////////////////
-
-    // Função para enviar os dados ao banco (exemplo usando Supabase via Netlify Function)
+    /******************************************************
+     * Função de Envio ao Banco (exemplo Supabase)
+     ******************************************************/
     async function enviarAoBanco(doc) {
       try {
-        // A URL abaixo chama a sua function Netlify;
-		
         const resp = await fetch("/.netlify/functions/insertSupabase", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -418,8 +502,6 @@ resultDiv.classList.remove("hidden");
         console.error("Erro ao enviar ao banco:", err);
       }
     }
-	
-///////////////////////////////////////////////////
   </script>
 </body>
 </html>

@@ -2,31 +2,35 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>TESTE DE PERFIL - 7COMPHA03xx</title>
+  <title>Teste de Perfil - 5ATVPRE005</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-  <!-- Link para o CSS externo -->
+  <!-- Link para o CSS externo (style.css) -->
   <link rel="stylesheet" href="/style.css" />
 </head>
+
+
+
 <body onload="carregarParametros(); checkIfDone();">
   <!-- Cabeçalho fixo -->
   <header>
-    TESTE DE PERFIL - 7COMPHA03
+    Teste de Perfil - 5ATVPRE005
   </header>
 
-  <!-- Cronômetro -->
-  <div id="timer"></div>
+  <!-- Relógio (tempo decorrido) -->
+  <div id="timer">00:00</div>
 
   <main id="app" class="container">
     <!-- Marca de teste já concluído -->
-    <div id="testDoneMark" class="test-concluido"></div>
+    <div id="testDoneMark" class="test-concluido" style="display:none;"></div>
 
     <!-- Tela de Introdução -->
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
-        Leia atentamente as afirmações abaixo e escolha a opção que mais se aproxima da maneira como você geralmente age ou se sente. Não existem respostas certas ou erradas.
+        Abaixo estão afirmações sobre como você age ou se sente em relação a Iniciativa, Antecipação, Persistência e Responsabilidade.
+        Não há respostas certas ou erradas.
       </p>
       <button id="startBtn" class="btn" aria-label="Iniciar Teste">Iniciar Teste</button>
     </section>
@@ -40,34 +44,41 @@
 
   <footer id="footer"></footer>
 
-  <!-- Biblioteca html2pdf.js (opcional para gerar PDF) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
-          integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Biblioteca html2pdf.js (opcional) -->
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"
+    integrity="sha512-V5qfKLaOYYxQbwrZB3w+JJW9ypB4G2vQDsFSshBjWrv8OJVo10E0fYJlFiZ/bPXx8ChnMV4JZil5Y3ONBSfCfQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  </script>
 
   <script>
     /******************************************************
      * 1) Carrega parâmetros (nome e email) da URL
      ******************************************************/
-    function carregarParametros() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const nomeParam = urlParams.get("name");
-      const emailParam = urlParams.get("email");
-      if (nomeParam) {
-        document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
-        userName = nomeParam.toUpperCase();
-      }
-      if (emailParam) {
-        userEmail = emailParam.toLowerCase();
-      }
-    }
+   // function carregarParametros() {
+   //   const urlParams = new URLSearchParams(window.location.search);
+   //   const nomeParam = urlParams.get("name");
+   //   const emailParam = urlParams.get("email");
+   //
+   //   if (nomeParam) {
+   //     document.getElementById("nomeParticipante").textContent = nomeParam.toUpperCase();
+   //     userName = nomeParam.toUpperCase();
+   //   }
+   //   if (emailParam) {
+   //     userEmail = emailParam.toLowerCase();
+   //   }
+   // }
 
     /******************************************************
      * 1.1) Verifica se o teste já foi feito e exibe a marca
      ******************************************************/
     function checkIfDone() {
-      if (localStorage.getItem("comphabDone") === "true") {
-        document.getElementById("testDoneMark").textContent = "";
+      if (localStorage.getItem("proatDone") === "true") {
+        // Se já concluído, mostra o aviso
+        const mark = document.getElementById("testDoneMark");
+        mark.textContent = "Teste já concluído ✔";
+        mark.style.display = "block";
       }
     }
 
@@ -93,11 +104,10 @@
     }
 
     /******************************************************
-     * 4) Função para remover indicadores do final do texto
-     * (não necessário para este teste, mas mantida para compatibilidade)
+     * 4) Função para remover indicadores (caso houvesse sigla no final)
      ******************************************************/
     function removeIndicador(text) {
-      return text;
+      return text; // sem remoção extra aqui
     }
 
     /******************************************************
@@ -106,7 +116,7 @@
     let currentQuestion = 0;
     let userName = '';
     let userEmail = '';
-    const answers = [];  // Cada resposta: { sigla, value }
+    const answers = [];  // { sigla, value }
     const questionTimes = [];
     let testStartTime = 0;
     let questionStartTime = 0;
@@ -120,24 +130,10 @@
     const resultDiv = document.getElementById("result");
 
     /******************************************************
-     * 7) Carrega os JSONs de afirmações e interpretações
+     * 7) Arrays/Objetos carregados via fetch
      ******************************************************/
-    let questions = [];       // Carregado de comphab_assertions.json
-    let interpretations = {}; // Carregado de comphab_interpretations.json
-
-    fetch("/comphab_assertions.json")
-      .then(resp => resp.json())
-      .then(data => { questions = data; })
-      .catch(err => console.error("Erro ao carregar comphab_assertions.json:", err));
-
-    fetch("/comphab_interpretations.json")
-      .then(resp => resp.json())
-      .then(data => {
-        data.forEach(item => {
-          interpretations[item.sigla] = item;
-        });
-      })
-      .catch(err => console.error("Erro ao carregar comphab_interpretations.json:", err));
+    let questions = [];       // proatv_assertions.json
+    let interpretations = {}; // proatv_interpretations.json
 
     /******************************************************
      * 8) Captura IP
@@ -167,7 +163,27 @@
     setInterval(updateFooter, 1000);
 
     /******************************************************
-     * 10) Inicia o Teste
+     * 10) Carrega JSON de afirmações
+     ******************************************************/
+    fetch("/proatv_assertions.json")
+      .then(r => r.json())
+      .then(data => { questions = data; })
+      .catch(err => console.error("Erro ao carregar proatv_assertions.json:", err));
+
+    /******************************************************
+     * 11) Carrega JSON de interpretações
+     ******************************************************/
+    fetch("/proatv_interpretations.json")
+      .then(r => r.json())
+      .then(data => {
+        data.forEach(item => {
+          interpretations[item.sigla] = item;
+        });
+      })
+      .catch(err => console.error("Erro ao carregar proatv_interpretations.json:", err));
+
+    /******************************************************
+     * 12) Inicia Teste
      ******************************************************/
     document.getElementById("startBtn").addEventListener("click", () => {
       testStartTime = new Date();
@@ -177,7 +193,7 @@
     });
 
     /******************************************************
-     * 11) Renderiza a questão atual
+     * 13) Renderiza a questão atual
      ******************************************************/
     function renderQuestion() {
       quizDiv.innerHTML = "";
@@ -209,12 +225,11 @@
         quizDiv.appendChild(questionText);
 
         const scaleLabels = [
-          "a) Discordo totalmente",
-          "b) Discordo parcialmente",
-          "c) Concordo parcialmente",
-          "d) Concordo totalmente"
+          "Discordo totalmente (1)",
+          "Discordo parcialmente (2)",
+          "Concordo parcialmente (3)",
+          "Concordo totalmente (4)"
         ];
-        
         scaleLabels.forEach((label, index) => {
           const btn = document.createElement("button");
           btn.className = "option";
@@ -235,33 +250,33 @@
     }
 
     /******************************************************
-     * 12) Converte a soma (8-32) em "Baixa", "Moderada" ou "Alta"
+     * 14) Converte soma (10..40) em "Baixa", "Moderada" ou "Alta"
      ******************************************************/
     function somaParaNivel(soma) {
-      if (soma >= 26) return "Alta";
-      if (soma >= 17) return "Moderada";
+      if (soma >= 31) return "Alta";
+      if (soma >= 21) return "Moderada";
       return "Baixa";
     }
 
     /******************************************************
-     * 13) Renderiza o Resultado
+     * 15) Renderiza Resultado
      ******************************************************/
     function renderResult() {
       clearInterval(timerInterval);
-      localStorage.setItem("comphabDone", "true");
+      localStorage.setItem("proatDone", "true"); // marca como concluído
+
       resultDiv.innerHTML = "";
 
-      // Cabeçalho do resultado com destaque para o nome
+      // Cabeçalho
       const headerDiv = document.createElement("div");
       headerDiv.id = "result-header";
-      headerDiv.innerHTML = `<strong>Resultado:</strong> <span class="participant-name">${userName || "Participante"}</span> (7COMPHA03)`;
+      headerDiv.innerHTML = `<strong>Resultado:</strong> ${userName || "Participante"} (5ATVPRE005)`;
       resultDiv.appendChild(headerDiv);
 
-      // Exibe email centralizado, se disponível
+      // Email, se houver
       if (userEmail) {
         const emailLine = document.createElement("p");
         emailLine.className = "result-email";
-        emailLine.style.textAlign = "center";
         emailLine.textContent = userEmail;
         resultDiv.appendChild(emailLine);
       }
@@ -274,75 +289,92 @@
       dateLine.textContent = `Gerado em: ${resultDatetime}`;
       resultDiv.appendChild(dateLine);
 
-      // Calcula a soma dos pontos por competência
-      let scores = { "C": 0, "T": 0, "A": 0, "P": 0, "O": 0 };
+      // Calcula soma
+      let scores = { "I": 0, "A": 0, "P": 0, "R": 0 };
       answers.forEach(resp => {
-        if (scores.hasOwnProperty(resp.sigla)) {
-          scores[resp.sigla] += resp.value;
-        }
+        if (!scores[resp.sigla]) scores[resp.sigla] = 0;
+        scores[resp.sigla] += resp.value;
       });
 
-      // Cria o perfil composto (apenas as competências pontuadas)
+      // Monta array e ordena
       let compositeArray = [];
       Object.keys(scores).forEach(key => {
         compositeArray.push({ sigla: key, score: scores[key] });
       });
       compositeArray.sort((a, b) => b.score - a.score);
+
+      // Perfil composto (somente siglas com pontuação > 0)
       const nonZeroProfiles = compositeArray.filter(item => item.score > 0);
       const compositeProfile = nonZeroProfiles.map(item => item.sigla).join("");
 
-      // Card do Perfil Composto (destacado)
+      // Card do Perfil Composto
       const compositeDiv = document.createElement("div");
       compositeDiv.className = "composite-card";
-      compositeDiv.innerHTML = `<h2 style="font-size:1.5em; font-weight:bold;">Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
+      compositeDiv.innerHTML = `<h2>Seu Perfil: ${compositeProfile || "N/A"}</h2>`;
       resultDiv.appendChild(compositeDiv);
 
-      // Exibe os cards de cada competência
-      const allProfiles = ["C", "T", "A", "P", "O"];
+      // Exibe as 4 dimensões (I, A, P, R)
+      const allDims = ["I", "A", "P", "R"];
       const resultsContainer = document.createElement("div");
       resultsContainer.className = "results-container";
 
-      allProfiles.forEach(sig => {
-        const soma = scores[sig] || 0;
+      allDims.forEach(dim => {
+        const soma = scores[dim] || 0;
         let nivel = "";
         let interpretObj = null;
         let perfilNome = "";
         let textoInterpretacao = "";
+
         if (soma > 0) {
           nivel = somaParaNivel(soma);
           const suffix = (nivel === "Alta") ? "A" : (nivel === "Moderada" ? "M" : "B");
-          const interpretKey = sig + "-" + suffix;
+          const interpretKey = dim + "-" + suffix; // Ex.: "I-A", "P-B", etc.
           interpretObj = interpretations[interpretKey];
+
           if (interpretObj) {
-            perfilNome = interpretObj.perfil;
-            textoInterpretacao = interpretObj.textoParticipante;
+            perfilNome = interpretObj.perfil;              // Ex.: "Iniciativa"
+            textoInterpretacao = interpretObj.textoParticipante; // ex.: "Pessoa altamente proativa..."
           } else {
-            perfilNome = sig;
+            perfilNome = dim;
             textoInterpretacao = "Sem interpretação disponível.";
           }
         } else {
-          // Se não pontuou, exibe o nome completo da competência
-          switch(sig) {
-            case "C": perfilNome = "Comunicação"; break;
-            case "T": perfilNome = "Trabalho em Equipe"; break;
-            case "A": perfilNome = "Adaptabilidade"; break;
-            case "P": perfilNome = "Resolução de Problemas"; break;
-            case "O": perfilNome = "Organização e Planejamento"; break;
+          // Se pontuação = 0
+          switch(dim) {
+            case "I": perfilNome = "Iniciativa"; break;
+            case "A": perfilNome = "Antecipação"; break;
+            case "P": perfilNome = "Persistência"; break;
+            case "R": perfilNome = "Responsabilidade"; break;
           }
           textoInterpretacao = "Não houve pontuação neste perfil.";
         }
+
         const perfilDiv = document.createElement("div");
         perfilDiv.className = "perfil-result";
+
+        // Div de texto
         const infoDiv = document.createElement("div");
         infoDiv.className = "info";
-        infoDiv.innerHTML = `
-          <h3>${perfilNome}</h3>
-          <p class="pontuacao">Pontuação: ${soma} (${nivel || "Nenhuma"})</p>
-          <p class="texto-participante">${textoInterpretacao}</p>
-        `;
+
+        if (soma > 0) {
+          infoDiv.innerHTML = `
+            <h3>${perfilNome}</h3>
+            <p class="pontuacao"><strong>Pontuação:</strong> ${soma} (${nivel})</p>
+            <p class="texto-participante">${textoInterpretacao}</p>
+          `;
+        } else {
+          infoDiv.innerHTML = `
+            <h3>${perfilNome}</h3>
+            <p class="pontuacao"><strong>Pontuação:</strong> 0 (Nenhuma)</p>
+            <p class="texto-participante">${textoInterpretacao}</p>
+          `;
+        }
+
+        // Letra no círculo
         const letterDiv = document.createElement("div");
-        letterDiv.className = "comphab-letter";
-        letterDiv.textContent = sig;
+        letterDiv.className = "autoest-letter"; // ou .profile-letter
+        letterDiv.textContent = dim; // "I", "A", "P", "R"
+
         perfilDiv.appendChild(infoDiv);
         perfilDiv.appendChild(letterDiv);
         resultsContainer.appendChild(perfilDiv);
@@ -357,6 +389,7 @@
       const slowestTime = Math.max(...questionTimes);
       const fastestQuestion = questionTimes.indexOf(fastestTime) + 1;
       const slowestQuestion = questionTimes.indexOf(slowestTime) + 1;
+
       const infoCard = document.createElement("div");
       infoCard.className = "info-card";
       infoCard.innerHTML = `
@@ -367,7 +400,7 @@
       `;
       resultDiv.appendChild(infoCard);
 
-      // Botão Imprimir centralizado com espaçamento acima
+      // Botão Imprimir centralizado
       const printDiv = document.createElement("div");
       printDiv.style.textAlign = "center";
       printDiv.style.marginTop = "20px";
@@ -377,7 +410,6 @@
       printBtn.onclick = () => window.print();
       printDiv.appendChild(printBtn);
       resultDiv.appendChild(printDiv);
-
 
 ///////////////////////////////////////////////////
 	
@@ -390,7 +422,7 @@ const doc = {
     IP:             ipAddress,
     Nome:           userName || "SEM_NOME",
     Email:          userEmail || "SEM_EMAIL",
-    Teste:          "7COMPHA03",
+    Teste:          "5ATVPRE005",
     Versao:         "v1.0",
     Resposta:       compositeProfile || "N/A"
 };

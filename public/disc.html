@@ -20,7 +20,7 @@
 
   <!-- Container principal -->
   <main id="app" class="container">
-    <div id="testDoneMark" class="test-concluido">Teste já concluído ✔</div>
+    <div id="testDoneMark" class="test-concluido"></div>
     <section id="intro">
       <h1>Olá, <span id="nomeParticipante"></span>!</h1>
       <p>
@@ -61,7 +61,7 @@
     // 1.1) Verifica se o teste DISC já foi concluído e exibe a marca
     function checkIfDone() {
       if (localStorage.getItem("discTestDone") === "true") {
-        document.getElementById("testDoneMark").textContent = "Teste já concluído ✔";
+        document.getElementById("testDoneMark").textContent = "";
         document.getElementById("testDoneMark").style.display = "block";
       }
     }
@@ -345,21 +345,48 @@
       printDiv.appendChild(printBtn);
       resultDiv.appendChild(printDiv);
 
-      resultDiv.classList.remove("hidden");
+
+///////////////////////////////////////////////////
+	
+     // ===> CHAMA A FUNÇÃO DE ENVIO AO BANCO <===
+
+// Monta o objeto com os dados reais do teste
+
+const doc = {
+    DateTime_Envio: new Date().toISOString(),
+    IP:             ipAddress,
+    Nome:           userName || "SEM_NOME",
+    Email:          userEmail || "SEM_EMAIL",
+    Teste:          "2PERDSK08",
+    Versao:         "v1.0",
+    Resposta:       compositeProfile || "N/A"
+};
+
+enviarAoBanco(doc);
+
+resultDiv.classList.remove("hidden");
     }
 
-    // 16) Gera PDF com html2pdf.js (opcional)
-    function gerarPDF() {
-      const elemento = document.getElementById("result");
-      const opcoes = {
-        margin: 0.5,
-        filename: 'resultado-teste.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      html2pdf().from(elemento).set(opcoes).save();
+///////////////////////////////////////////////////
+
+    // Função para enviar os dados ao banco (exemplo usando Supabase via Netlify Function)
+    async function enviarAoBanco(doc) {
+      try {
+        // A URL abaixo chama a sua function Netlify;
+		
+        const resp = await fetch("/.netlify/functions/insertSupabase", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(doc)
+        });
+        const data = await resp.json();
+        console.log("Resposta do banco:", data);
+      } catch (err) {
+        console.error("Erro ao enviar ao banco:", err);
+      }
     }
+	
+///////////////////////////////////////////////////
   </script>
 </body>
 </html>

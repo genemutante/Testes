@@ -4,5 +4,3 @@
   functions = "netlify/functions"  # pasta onde suas serverless functions ficam
 
 
-[build.environment]
-  FAUNA_SECRET = "fnacapi_omd2ZXJzaW9uAWdwYXlsb2FkWFiiYmlkcjQyNTc5Mzk0NzQyNzY2ODU2NWZzZWNyZXR4OEdIRTVoOVZvb2oyazdNVk1kMnJKYThndnpmZDlCVVlMQ0JZcjFybE1XeCtUY0JBNlNBUDBWZz09"

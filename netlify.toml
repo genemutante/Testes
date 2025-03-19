@@ -1,5 +1,5 @@
 [build]
-  publish = "public"  # onde ficam seus arquivos estáticos (HTML, CSS, JS)
+  publish = "dist"  # onde ficam seus arquivos estáticos (HTML, CSS, JS)
   command = "npm run build"
   functions = "netlify/functions"  # pasta onde suas serverless functions ficam
 

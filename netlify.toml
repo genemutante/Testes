@@ -1,6 +1,4 @@
 [build]
-  publish = "dist"  # onde ficam seus arquivos estáticos (HTML, CSS, JS)
-  command = "npm run build"
-  functions = "netlify/functions"  # pasta onde suas serverless functions ficam
-
-
+command = "npm run build"
+publish = "dist"
+functions = "netlify/functions"
